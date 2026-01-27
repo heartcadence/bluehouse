@@ -83,7 +83,7 @@ const App: React.FC = () => {
             <img 
               src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700&auto=format&fit=crop" 
               alt="Luxury Architecture" 
-              className={`w-full h-full object-cover transition-opacity duration-300 ${isDarkMode ? 'opacity-40' : 'opacity-[0.45]'}`}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${isDarkMode ? 'opacity-40' : 'opacity-90'}`}
             />
             {/* Gradient Overlay matches theme background */}
             <div className={`absolute inset-0 bg-gradient-to-b transition-colors duration-300 ${isDarkMode ? 'from-deep-teal/80 via-deep-teal/40 to-deep-teal' : 'from-light-bg/80 via-light-bg/40 to-light-bg'}`}></div>
