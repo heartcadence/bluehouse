@@ -27,19 +27,26 @@ const App: React.FC = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  const scrollToContent = () => {
+    const element = document.getElementById('dynamic-content');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handleNavigateToContact = () => {
     setActiveView('contact');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToContent();
   };
 
   const handleNavigateToCollection = () => {
     setActiveView('collection');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToContent();
   };
 
   const handleNavigateToPhilosophy = () => {
     setActiveView('philosophy');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToContent();
   };
 
   // Admin Logic
