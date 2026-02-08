@@ -32,6 +32,11 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateToStorefront = () => {
+    setActiveView('store');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Admin Logic
   const handleLogin = (password: string) => {
     if (password === 'bluehouse') {
@@ -65,6 +70,7 @@ const App: React.FC = () => {
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
         onContactClick={handleNavigateToContact}
+        onStorefrontClick={handleNavigateToStorefront}
       />
 
       <main className="pt-20">

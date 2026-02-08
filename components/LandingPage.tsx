@@ -27,6 +27,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
     alert("Admin Action: Opening 'Add New Product' form in CMS...");
   };
 
+  const scrollToContent = () => {
+    const contentElement = document.getElementById('dynamic-content');
+    if (contentElement) {
+        contentElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleHeroCta = () => {
+    setActiveView('store');
+    scrollToContent();
+  };
+
   return (
     <div className="animate-fade-in w-full">
       {/* Hero */}
@@ -47,39 +59,48 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
           <h1 className={`font-display text-6xl md:text-8xl lg:text-9xl mb-10 leading-none ${textColor} animate-slide-up animation-delay-200`}>
             Visionary <br/> <span className="italic text-muted-gold">Architecture</span>
           </h1>
-          
-          {/* Main Toggles */}
-          <div className="flex justify-center items-center animate-slide-up animation-delay-400">
-            <div className={`flex p-1 rounded-full backdrop-blur-md border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-deep-teal/5 border-deep-teal/10'}`}>
-                <button
-                    onClick={() => setActiveView('contact')}
-                    className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                        activeView === 'contact'
-                        ? 'bg-muted-gold text-deep-teal shadow-lg'
-                        : `${textColor} hover:bg-white/10`
-                    }`}
-                >
-                    Contact Us
-                </button>
-                <button
-                    onClick={() => setActiveView('store')}
-                    className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                        activeView === 'store'
-                        ? 'bg-muted-gold text-deep-teal shadow-lg'
-                        : `${textColor} hover:bg-white/10`
-                    }`}
-                >
-                    Storefront
-                </button>
-            </div>
+
+          <div className="mt-8 animate-slide-up animation-delay-400">
+             <button 
+               onClick={handleHeroCta}
+               className="px-10 py-4 bg-muted-gold text-deep-teal font-bold tracking-[0.2em] uppercase text-xs rounded-sm hover:bg-off-white transition-all duration-300 shadow-[0_0_20px_rgba(166,133,98,0.3)] hover:shadow-[0_0_30px_rgba(166,133,98,0.5)]"
+             >
+               Find My Dream Home
+             </button>
           </div>
         </div>
       </section>
 
       {/* Dynamic Content Section */}
-      <section className="min-h-[600px] relative z-20 -mt-20 pb-24">
+      <section id="dynamic-content" className="min-h-[600px] relative z-20 -mt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            {/* Sticky Toggle Bar */}
+            <div className="sticky top-24 z-50 flex justify-center mb-16 animate-slide-up animation-delay-400 pointer-events-none">
+                 <div className={`pointer-events-auto flex p-1 rounded-full backdrop-blur-md border shadow-2xl ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'}`}>
+                    <button
+                        onClick={() => setActiveView('contact')}
+                        className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                            activeView === 'contact'
+                            ? 'bg-muted-gold text-deep-teal shadow-lg'
+                            : `${textColor} hover:bg-white/10`
+                        }`}
+                    >
+                        Contact Us
+                    </button>
+                    <button
+                        onClick={() => setActiveView('store')}
+                        className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                            activeView === 'store'
+                            ? 'bg-muted-gold text-deep-teal shadow-lg'
+                            : `${textColor} hover:bg-white/10`
+                        }`}
+                    >
+                        Storefront
+                    </button>
+                </div>
+            </div>
+
             {/* --- STOREFRONT VIEW --- */}
             <div className={`transition-all duration-500 ease-in-out ${activeView === 'store' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
                 {/* Controls Bar */}

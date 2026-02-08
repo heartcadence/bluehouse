@@ -8,6 +8,7 @@ interface HeaderProps {
   isDarkMode: boolean;
   toggleTheme: () => void;
   onContactClick: () => void;
+  onStorefrontClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -16,7 +17,8 @@ const Header: React.FC<HeaderProps> = ({
   onLogoutClick, 
   isDarkMode, 
   toggleTheme,
-  onContactClick
+  onContactClick,
+  onStorefrontClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -30,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   const logoTextMain = isDarkMode ? 'text-off-white' : 'text-deep-teal';
 
   // Navigation Items
-  const navItems = ['Philosophy', 'Contact'];
+  const navItems = ['Storefront', 'Philosophy', 'Contact'];
 
   return (
     <header className={`fixed w-full top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${headerBg}`}>
@@ -57,6 +59,17 @@ const Header: React.FC<HeaderProps> = ({
                     <button 
                         key={item} 
                         onClick={onContactClick}
+                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
+                    >
+                        {item}
+                    </button>
+                  );
+               }
+               if (item === 'Storefront') {
+                  return (
+                    <button 
+                        key={item} 
+                        onClick={onStorefrontClick}
                         className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
                     >
                         {item}
@@ -142,6 +155,20 @@ const Header: React.FC<HeaderProps> = ({
                         key={item} 
                         onClick={() => {
                             onContactClick();
+                            setIsMobileMenuOpen(false);
+                        }}
+                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
+                    >
+                        {item}
+                    </button>
+                 );
+              }
+              if (item === 'Storefront') {
+                 return (
+                    <button 
+                        key={item} 
+                        onClick={() => {
+                            onStorefrontClick();
                             setIsMobileMenuOpen(false);
                         }}
                         className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
