@@ -184,6 +184,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                                 key={product._id} 
                                 product={product} 
                                 isAdmin={isAdmin} 
+                                isDarkMode={isDarkMode}
                                 />
                             ))}
                             </div>

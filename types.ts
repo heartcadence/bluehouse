@@ -5,8 +5,8 @@ export interface Product {
   price: number;
   category: string;
   slug: { current: string };
-  imageFront: string;
-  imageBack: string; // URL for the blueprint
+  images: string[];
+  blueprints: string[];
   fileFormat: string;
   sqft: number;
   bedrooms: number;

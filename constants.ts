@@ -16,9 +16,16 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 1200,
     category: 'Modern Farmhouse',
     slug: { current: 'minimalist-haven' },
-    // Dusk/Night shot, modern architecture
-    imageFront: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop', 
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nMinimalist+Haven',
+    images: [
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Main+Floor+Plan',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Second+Floor+Plan',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Elevations'
+    ],
     fileFormat: 'PDF',
     sqft: 2400,
     bedrooms: 3,
@@ -31,9 +38,16 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 3500,
     category: 'Estate',
     slug: { current: 'nocturne-manor' },
-    // Luxury night pool shot
-    imageFront: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop',
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nNocturne+Manor',
+    images: [
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1613545325278-f24b0cae1224?q=80&w=2070&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Ground+Level',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Upper+Level',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Site+Plan'
+    ],
     fileFormat: 'PDF',
     sqft: 5200,
     bedrooms: 6,
@@ -46,9 +60,15 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 850,
     category: 'Cottage',
     slug: { current: 'creekside-retreat' },
-    // Cozy cabin night
-    imageFront: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1965&auto=format&fit=crop',
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nCreekside+Retreat',
+    images: [
+      'https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1965&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?q=80&w=2077&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Floor+Plan',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Roof+Plan'
+    ],
     fileFormat: 'PDF',
     sqft: 1100,
     bedrooms: 2,
@@ -61,9 +81,15 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 1800,
     category: 'Contemporary',
     slug: { current: 'obsidian-cube' },
-    // Modern geometric dark
-    imageFront: 'https://images.unsplash.com/photo-1524061511843-fd43443e3cb2?q=80&w=2070&auto=format&fit=crop',
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nObsidian+Cube',
+    images: [
+      'https://images.unsplash.com/photo-1524061511843-fd43443e3cb2?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=2074&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Layout+A',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Layout+B'
+    ],
     fileFormat: 'PDF',
     sqft: 3100,
     bedrooms: 4,
@@ -76,9 +102,15 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 2200,
     category: 'Contemporary',
     slug: { current: 'glass-horizon' },
-    // Glass house at night
-    imageFront: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=2070&auto=format&fit=crop',
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nGlass+Horizon',
+    images: [
+      'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=2070&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Main+Layout',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Structural+Details'
+    ],
     fileFormat: 'PDF',
     sqft: 2800,
     bedrooms: 3,
@@ -91,9 +123,16 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 4500,
     category: 'Estate',
     slug: { current: 'gilded-estate' },
-    // Large mansion lit up
-    imageFront: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
-    imageBack: 'https://placehold.co/600x800/002147/F2F2F2?text=BLUEPRINT+VIEW\nThe+Gilded+Estate',
+    images: [
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2070&auto=format&fit=crop'
+    ],
+    blueprints: [
+      'https://placehold.co/800x600/002147/F2F2F2?text=Estate+Master+Plan',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Guest+House',
+      'https://placehold.co/800x600/002147/F2F2F2?text=Gardens'
+    ],
     fileFormat: 'PDF',
     sqft: 6500,
     bedrooms: 7,
