@@ -247,19 +247,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       </section>
 
       {/* Philosophy / About */}
-      <section id="philosophy" className="py-24 px-6 bg-deep-teal text-off-white">
+      <section id="philosophy" className={`py-24 px-6 transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal text-off-white' : 'bg-light-bg text-deep-teal'}`}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
             {/* Left Content */}
             <div className="space-y-8">
                 <div>
                   <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                  <h2 className="font-display text-4xl md:text-5xl leading-tight text-off-white">
+                  <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor}`}>
                       The DNA of a Home.
                   </h2>
                 </div>
                 
-                <div className="space-y-6 text-lg font-light text-off-white/80 leading-relaxed">
+                <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
                    <p>
                       At Bluehouse, we provide more than just blueprints; we engineer the very DNA of your sanctuary. Our process transcends simple drafting, bridging the delicate divide between your ethereal vision and the rigid technical reality of construction.
                    </p>
@@ -272,27 +272,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                 </div>
 
                 {/* Hard Proof / Certifications */}
-                <div className="pt-6 border-t border-off-white/10">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-off-white mb-4">Technical Assurance</h4>
+                <div className={`pt-6 border-t ${borderColor}`}>
+                    <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
                     <ul className="space-y-3">
                         <li className="flex items-center space-x-3">
                             <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className="text-sm tracking-wide">BCIN Registered Designers (Ontario Compliant)</span>
+                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>BCIN Registered Designers (Ontario Compliant)</span>
                         </li>
                          <li className="flex items-center space-x-3">
                             <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className="text-sm tracking-wide">Permit-Ready Architectural Drawings</span>
+                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>Permit-Ready Architectural Drawings</span>
                         </li>
                          <li className="flex items-center space-x-3">
                             <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className="text-sm tracking-wide">High-Fidelity 3D Contour Visualization</span>
+                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>High-Fidelity 3D Contour Visualization</span>
                         </li>
                     </ul>
                 </div>
 
                  <button 
                   onClick={handlePhilosophyCta}
-                  className="mt-8 flex items-center gap-3 text-muted-gold uppercase tracking-widest text-sm font-bold hover:text-white transition-colors group"
+                  className={`mt-8 flex items-center gap-3 uppercase tracking-widest text-sm font-bold transition-colors group ${isDarkMode ? 'text-muted-gold hover:text-white' : 'text-muted-gold hover:text-deep-teal'}`}
                 >
                   <span>View BCIN-Ready Plans</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -302,25 +302,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
             {/* Right Visuals */}
             <div className="space-y-8">
                 {/* Image */}
-                <div className="relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border border-off-white/10">
+                <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
                     <img 
                         src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
                         alt="Interior Design" 
                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
                     />
-                    <div className="absolute inset-0 bg-deep-teal/20 mix-blend-multiply"></div>
+                    <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
                 </div>
 
                 {/* Testimonial Placeholder */}
-                <div className="bg-white/5 p-8 rounded-sm border border-white/5 backdrop-blur-sm relative">
+                <div className={`p-8 rounded-sm border backdrop-blur-sm relative ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
                     <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
-                    <p className="relative z-10 text-off-white/90 italic font-display text-xl leading-relaxed mb-6 pt-4">
+                    <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
                       "The precision of the plans gave our builder total confidence. Bluehouse didn't just design a house; they engineered our home."
                     </p>
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">H</div>
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-widest text-off-white">The Harrison Family</p>
+                            <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>The Harrison Family</p>
                             <p className="text-[10px] uppercase tracking-wide text-muted-gold">Custom Build, 2023</p>
                         </div>
                     </div>
