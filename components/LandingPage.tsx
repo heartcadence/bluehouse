@@ -300,7 +300,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         {/* Image */}
                         <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
                             <img 
-                                src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
+                                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
                                 alt="Interior Design" 
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
                             />
