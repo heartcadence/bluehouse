@@ -92,6 +92,7 @@ const App: React.FC = () => {
         onAdminClick={openAdminModal} 
         isDarkMode={isDarkMode} 
         onContactClick={handleNavigateToContact}
+        onPhilosophyClick={handleNavigateToPhilosophy}
       />
       
       <AdminModal 
