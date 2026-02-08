@@ -80,8 +80,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       <section id="dynamic-content" className="min-h-[600px] relative z-20 -mt-20 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {/* Sticky Toggle Bar */}
-            <div className="sticky top-24 z-50 flex justify-center mb-16 animate-slide-up animation-delay-400 pointer-events-none">
+            {/* Toggle Bar */}
+            <div className="flex justify-center mb-16 animate-slide-up animation-delay-400 pointer-events-none">
                  <div className={`pointer-events-auto flex p-1 rounded-full backdrop-blur-md border shadow-2xl ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'}`}>
                     <button
                         onClick={() => setActiveView('contact')}
@@ -102,16 +102,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         }`}
                     >
                         Collection
-                    </button>
-                    <button
-                        onClick={() => setActiveView('philosophy')}
-                        className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                            activeView === 'philosophy'
-                            ? 'bg-muted-gold text-deep-teal shadow-lg'
-                            : `${textColor} hover:bg-white/10`
-                        }`}
-                    >
-                        Philosophy
                     </button>
                 </div>
             </div>
