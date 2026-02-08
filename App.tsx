@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [activeView, setActiveView] = useState<'store' | 'contact'>('contact');
   
   // Toggle Body Background
   useEffect(() => {
@@ -24,6 +25,11 @@ const App: React.FC = () => {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const handleNavigateToContact = () => {
+    setActiveView('contact');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Admin Logic
@@ -58,13 +64,23 @@ const App: React.FC = () => {
         onLogoutClick={handleLogout}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
+        onContactClick={handleNavigateToContact}
       />
 
       <main className="pt-20">
-        <LandingPage isDarkMode={isDarkMode} isAdmin={isAdmin} />
+        <LandingPage 
+          isDarkMode={isDarkMode} 
+          isAdmin={isAdmin} 
+          activeView={activeView}
+          setActiveView={setActiveView}
+        />
       </main>
 
-      <Footer onAdminClick={openAdminModal} isDarkMode={isDarkMode} />
+      <Footer 
+        onAdminClick={openAdminModal} 
+        isDarkMode={isDarkMode} 
+        onContactClick={handleNavigateToContact}
+      />
       
       <AdminModal 
         isOpen={isAdminModalOpen} 

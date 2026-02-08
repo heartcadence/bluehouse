@@ -7,10 +7,11 @@ import ProductCard from './ProductCard';
 interface LandingPageProps {
   isDarkMode: boolean;
   isAdmin: boolean;
+  activeView: 'store' | 'contact';
+  setActiveView: (view: 'store' | 'contact') => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin }) => {
-  const [activeView, setActiveView] = useState<'store' | 'contact'>('store');
+const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
 
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';

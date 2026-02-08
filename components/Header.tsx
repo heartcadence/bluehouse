@@ -7,6 +7,7 @@ interface HeaderProps {
   onLogoutClick: () => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
+  onContactClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -14,7 +15,8 @@ const Header: React.FC<HeaderProps> = ({
   onLoginClick, 
   onLogoutClick, 
   isDarkMode, 
-  toggleTheme
+  toggleTheme,
+  onContactClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -49,15 +51,28 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-12 items-center">
-            {navItems.map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`} 
-                className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
-              >
-                {item}
-              </a>
-            ))}
+            {navItems.map((item) => {
+               if (item === 'Contact') {
+                  return (
+                    <button 
+                        key={item} 
+                        onClick={onContactClick}
+                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
+                    >
+                        {item}
+                    </button>
+                  );
+               }
+               return (
+                <a 
+                    key={item} 
+                    href={`#${item.toLowerCase()}`} 
+                    className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
+                >
+                    {item}
+                </a>
+               );
+            })}
           </nav>
 
           {/* Actions */}
@@ -120,16 +135,32 @@ const Header: React.FC<HeaderProps> = ({
         } ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}
       >
         <div className="flex flex-col h-full pt-20 px-8 space-y-8">
-           {navItems.map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`} 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`font-display text-2xl hover:text-muted-gold transition-colors ${textColor}`}
-              >
-                {item}
-              </a>
-            ))}
+           {navItems.map((item) => {
+              if (item === 'Contact') {
+                 return (
+                    <button 
+                        key={item} 
+                        onClick={() => {
+                            onContactClick();
+                            setIsMobileMenuOpen(false);
+                        }}
+                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
+                    >
+                        {item}
+                    </button>
+                 );
+              }
+              return (
+                <a 
+                    key={item} 
+                    href={`#${item.toLowerCase()}`} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`font-display text-2xl hover:text-muted-gold transition-colors ${textColor}`}
+                >
+                    {item}
+                </a>
+              );
+            })}
             
             <div className={`border-t pt-8 mt-auto mb-8 ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'}`}>
                {isAdmin ? (

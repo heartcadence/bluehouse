@@ -3,9 +3,10 @@ import React from 'react';
 interface FooterProps {
   onAdminClick: () => void;
   isDarkMode: boolean;
+  onContactClick: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClick }) => {
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const textColor = isDarkMode ? 'text-off-white/50' : 'text-dark-text/60';
@@ -37,7 +38,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode }) => {
             <ul className={`space-y-3 text-sm font-light ${linkColor}`}>
               <li><a href="#" className="hover:text-muted-gold transition-colors">FAQ</a></li>
               <li><a href="#" className="hover:text-muted-gold transition-colors">Licensing</a></li>
-              <li><a href="#" className="hover:text-muted-gold transition-colors">Contact Us</a></li>
+              <li><button onClick={onContactClick} className="hover:text-muted-gold transition-colors text-left">Contact Us</button></li>
             </ul>
           </div>
 
