@@ -4,10 +4,10 @@ interface FooterProps {
   onAdminClick: () => void;
   isDarkMode: boolean;
   onContactClick: () => void;
-  onPhilosophyClick: () => void;
+  onAboutClick: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClick, onPhilosophyClick }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClick, onAboutClick }) => {
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const textColor = isDarkMode ? 'text-off-white/50' : 'text-dark-text/60';
@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClic
           <div>
             <h4 className="text-muted-gold text-xs uppercase tracking-widest mb-6">Support</h4>
             <ul className={`space-y-3 text-sm font-light ${linkColor}`}>
-              <li><button onClick={onPhilosophyClick} className="hover:text-muted-gold transition-colors text-left">Licensing</button></li>
+              <li><button onClick={onAboutClick} className="hover:text-muted-gold transition-colors text-left">About Us</button></li>
               <li><button onClick={onContactClick} className="hover:text-muted-gold transition-colors text-left">Contact Us</button></li>
             </ul>
           </div>

@@ -7,8 +7,8 @@ import ProductCard from './ProductCard';
 interface LandingPageProps {
   isDarkMode: boolean;
   isAdmin: boolean;
-  activeView: 'collection' | 'contact' | 'philosophy';
-  setActiveView: (view: 'collection' | 'contact' | 'philosophy') => void;
+  activeView: 'collection' | 'contact' | 'about';
+  setActiveView: (view: 'collection' | 'contact' | 'about') => void;
 }
 
 const TESTIMONIALS = [
@@ -68,7 +68,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
     scrollToContent();
   };
 
-  const handlePhilosophyCta = () => {
+  const handleAboutCta = () => {
     setActiveView('collection');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -274,91 +274,113 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                  </div>
             </div>
 
-            {/* --- PHILOSOPHY VIEW --- */}
-            <div className={`transition-all duration-500 ease-in-out ${activeView === 'philosophy' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
-               <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-                    {/* Left Content */}
-                    <div className="space-y-8">
-                        <div>
-                        <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                        <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor} mb-6`}>
-                           Great Homes Start with Great Planning.
+            {/* --- ABOUT VIEW (Formerly Philosophy) --- */}
+            <div className={`transition-all duration-500 ease-in-out ${activeView === 'about' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
+               <div className="max-w-7xl mx-auto">
+                    
+                    {/* Top Level Heading */}
+                    <div className="mb-16 text-center">
+                        <h2 className={`font-display text-4xl md:text-5xl lg:text-6xl ${textColor}`}>
+                            About Bluehouse Planning & Designs Inc.
                         </h2>
-                        <h3 className={`font-display text-xl md:text-2xl leading-relaxed italic ${mutedColor}`}>
-                            We turn your ideas into clear, high-quality plans, so you can build with confidence.
-                        </h3>
-                        </div>
-                        
-                        <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
-                        <p>
-                           At Bluehouse, we know that building a home is a big deal. You shouldn’t have to guess if what’s on paper will actually look good when it's finished. We use high-quality imagery to show you exactly how your rooms will look and feel before you ever break ground.
-                        </p>
-                        <p>
-                           By getting every detail right at the start, we help you avoid mistakes and keep your project on track. We specialize in navigating local requirements to get your <span className="text-muted-gold">building permits approved quickly and easily</span>. We handle the technical headaches and paperwork so you can focus on the excitement of finally moving into a home that fits your life perfectly.
-                        </p>
-                        </div>
-
-                        {/* Hard Proof / Certifications */}
-                        <div className={`pt-6 border-t ${borderColor}`}>
-                            <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
-                            <ul className="space-y-3">
-                                <li className="flex items-center space-x-3">
-                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>BCIN Registered Designers (Ontario Compliant)</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>Permit-Ready Architectural Drawings</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>High-Fidelity 3D Contour Visualization</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <button 
-                        onClick={handlePhilosophyCta}
-                        className={`mt-8 flex items-center gap-3 uppercase tracking-widest text-sm font-bold transition-colors group ${isDarkMode ? 'text-muted-gold hover:text-white' : 'text-muted-gold hover:text-deep-teal'}`}
-                        >
-                        <span>View BCIN-Ready Plans</span>
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </button>
                     </div>
 
-                    {/* Right Visuals */}
-                    <div className="space-y-8">
-                        {/* Image */}
-                        <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
-                            <img 
-                                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
-                                alt="Interior Design" 
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                            />
-                            <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                        {/* Left Content */}
+                        <div className="space-y-16">
+                             
+                            {/* Who We Are Section */}
+                            <div>
+                                <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-6">Who We Are</h3>
+                                <p className={`text-lg font-light leading-relaxed ${mutedColor} italic border-l-2 border-muted-gold pl-6`}>
+                                    [Placeholder: Content focusing on Bluehouse's local expertise, permit handling capabilities, and history in the region.]
+                                </p>
+                            </div>
+
+                            {/* Philosophy Section (Demoted) */}
+                            <div className="space-y-8">
+                                <div>
+                                    <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
+                                    <h4 className={`font-display text-3xl md:text-4xl leading-tight ${textColor} mb-6`}>
+                                    Great Homes Start with Great Planning.
+                                    </h4>
+                                    <p className={`font-display text-xl leading-relaxed italic ${mutedColor}`}>
+                                        We turn your ideas into clear, high-quality plans, so you can build with confidence.
+                                    </p>
+                                </div>
+                                
+                                <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
+                                    <p>
+                                    At Bluehouse, we know that building a home is a big deal. You shouldn’t have to guess if what’s on paper will actually look good when it's finished. We use high-quality imagery to show you exactly how your rooms will look and feel before you ever break ground.
+                                    </p>
+                                    <p>
+                                    By getting every detail right at the start, we help you avoid mistakes and keep your project on track. We specialize in navigating local requirements to get your <span className="text-muted-gold">building permits approved quickly and easily</span>. We handle the technical headaches and paperwork so you can focus on the excitement of finally moving into a home that fits your life perfectly.
+                                    </p>
+                                </div>
+
+                                {/* Hard Proof / Certifications */}
+                                <div className={`pt-6 border-t ${borderColor}`}>
+                                    <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-center space-x-3">
+                                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>BCIN Registered Designers (Ontario Compliant)</span>
+                                        </li>
+                                        <li className="flex items-center space-x-3">
+                                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>Permit-Ready Architectural Drawings</span>
+                                        </li>
+                                        <li className="flex items-center space-x-3">
+                                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>High-Fidelity 3D Contour Visualization</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <button 
+                                    onClick={handleAboutCta}
+                                    className={`mt-8 flex items-center gap-3 uppercase tracking-widest text-sm font-bold transition-colors group ${isDarkMode ? 'text-muted-gold hover:text-white' : 'text-muted-gold hover:text-deep-teal'}`}
+                                >
+                                    <span>View BCIN-Ready Plans</span>
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Testimonial Placeholder */}
-                        <div className={`p-8 rounded-sm border backdrop-blur-sm relative transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
-                            <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
-                            
-                            <div className={`transition-opacity duration-[1125ms] ease-in-out ${isTestimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
-                              <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
-                              "{currentTestimonial.text}"
-                              </p>
-                              <div className="flex items-center gap-4">
-                                  <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">
-                                    {currentTestimonial.initial}
-                                  </div>
-                                  <div>
-                                      <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>{currentTestimonial.author}</p>
-                                      <p className="text-[10px] uppercase tracking-wide text-muted-gold">{currentTestimonial.role}</p>
-                                  </div>
-                              </div>
+                        {/* Right Visuals */}
+                        <div className="space-y-8 lg:sticky lg:top-32">
+                            {/* Image */}
+                            <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
+                                <img 
+                                    src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
+                                    alt="Interior Design" 
+                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                                />
+                                <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
+                            </div>
+
+                            {/* Testimonial Placeholder */}
+                            <div className={`p-8 rounded-sm border backdrop-blur-sm relative transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
+                                <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
+                                
+                                <div className={`transition-opacity duration-[1125ms] ease-in-out ${isTestimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
+                                <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
+                                "{currentTestimonial.text}"
+                                </p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">
+                                        {currentTestimonial.initial}
+                                    </div>
+                                    <div>
+                                        <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>{currentTestimonial.author}</p>
+                                        <p className="text-[10px] uppercase tracking-wide text-muted-gold">{currentTestimonial.role}</p>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+               </div>
             </div>
 
         </div>
