@@ -50,7 +50,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2700&auto=format&fit=crop"
+            src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp"
             alt="Modern Architectural House"
             className={`w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
           />
