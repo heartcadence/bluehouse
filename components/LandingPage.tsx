@@ -281,20 +281,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                     <div className="space-y-8">
                         <div>
                         <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                        <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor}`}>
-                            The DNA of a Home.
+                        <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor} mb-6`}>
+                           Great Homes Start with Great Planning.
                         </h2>
+                        <h3 className={`font-display text-xl md:text-2xl leading-relaxed italic ${mutedColor}`}>
+                            We turn your ideas into clear, high-quality plans, so you can build with confidence.
+                        </h3>
                         </div>
                         
                         <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
                         <p>
-                            At Bluehouse, we provide more than just blueprints; we engineer the very DNA of your sanctuary. Our process transcends simple drafting, bridging the delicate divide between your ethereal vision and the rigid technical reality of construction.
+                           At Bluehouse, we know that building a home is a big deal. You shouldn’t have to guess if what’s on paper will actually look good when it's finished. We use high-quality imagery to show you exactly how your rooms will look and feel before you ever break ground.
                         </p>
                         <p>
-                            We have pioneered the use of <span className="text-muted-gold">animated contour renders</span>, a technique that offers superior spatial accuracy over traditional static imagery. This ensures that what you see is exactly what your builder delivers—precision in every line, beauty in every volume.
-                        </p>
-                        <p>
-                            True luxury is peace of mind. Our designs are not merely artistic expressions but rigorous technical documents, crafted to reduce friction and ensure a seamless path from permit to occupancy.
+                           By getting every detail right at the start, we help you avoid mistakes and keep your project on track. We specialize in navigating local requirements to get your <span className="text-muted-gold">building permits approved quickly and easily</span>. We handle the technical headaches and paperwork so you can focus on the excitement of finally moving into a home that fits your life perfectly.
                         </p>
                         </div>
 
