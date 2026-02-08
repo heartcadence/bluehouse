@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   const logoTextMain = isDarkMode ? 'text-off-white' : 'text-deep-teal';
 
   // Navigation Items
-  const navItems = ['Collection', 'Philosophy', 'Contact'];
+  const navItems = ['Contact', 'Collection', 'Philosophy'];
 
   return (
     <header className={`fixed w-full top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${headerBg}`}>
