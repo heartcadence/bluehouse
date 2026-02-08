@@ -28,7 +28,6 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClic
             <h4 className="text-muted-gold text-xs uppercase tracking-widest mb-6">Explore</h4>
             <ul className={`space-y-3 text-sm font-light ${linkColor}`}>
               <li><a href="#" className="hover:text-muted-gold transition-colors">Collection</a></li>
-              <li><a href="#" className="hover:text-muted-gold transition-colors">New Arrivals</a></li>
               <li><a href="#" className="hover:text-muted-gold transition-colors">Architects</a></li>
             </ul>
           </div>
@@ -36,7 +35,6 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClic
           <div>
             <h4 className="text-muted-gold text-xs uppercase tracking-widest mb-6">Support</h4>
             <ul className={`space-y-3 text-sm font-light ${linkColor}`}>
-              <li><a href="#" className="hover:text-muted-gold transition-colors">FAQ</a></li>
               <li><a href="#" className="hover:text-muted-gold transition-colors">Licensing</a></li>
               <li><button onClick={onContactClick} className="hover:text-muted-gold transition-colors text-left">Contact Us</button></li>
             </ul>
