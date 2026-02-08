@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Facebook, Plus } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Plus, CheckCircle, Quote, ArrowRight } from 'lucide-react';
 import { Product, Category } from '../types';
 import { MOCK_PRODUCTS, CATEGORIES } from '../constants';
 import ProductCard from './ProductCard';
@@ -37,6 +37,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   const handleHeroCta = () => {
     setActiveView('store');
     scrollToContent();
+  };
+
+  const handlePhilosophyCta = () => {
+    setActiveView('store');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -242,28 +247,86 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       </section>
 
       {/* Philosophy / About */}
-      <section id="philosophy" className={`py-24 px-6 ${isDarkMode ? 'bg-deep-teal-dark' : 'bg-white'}`}>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h3 className="text-muted-gold text-sm tracking-widest uppercase mb-4">Our Philosophy</h3>
-                <h2 className={`font-display text-4xl md:text-5xl mb-8 leading-tight ${textColor}`}>
-                    Precision in every line. <br/> beauty in every volume.
-                </h2>
-                <p className={`text-lg leading-relaxed mb-6 font-light ${mutedColor}`}>
-                    At Bluehouse, we believe that a blueprint is more than a technical document—it is the seed of a legacy. Our designs balance the pragmatic needs of construction with the aesthetic desires of the modern dweller.
-                </p>
-                <p className={`text-lg leading-relaxed font-light ${mutedColor}`}>
-                    Specializing in contemporary estates and modern farmhouses, our digital storefront offers immediate access to high-fidelity, BCIN-ready plans.
-                </p>
+      <section id="philosophy" className="py-24 px-6 bg-deep-teal text-off-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            
+            {/* Left Content */}
+            <div className="space-y-8">
+                <div>
+                  <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
+                  <h2 className="font-display text-4xl md:text-5xl leading-tight text-off-white">
+                      The DNA of a Home.
+                  </h2>
+                </div>
+                
+                <div className="space-y-6 text-lg font-light text-off-white/80 leading-relaxed">
+                   <p>
+                      At Bluehouse, we provide more than just blueprints; we engineer the very DNA of your sanctuary. Our process transcends simple drafting, bridging the delicate divide between your ethereal vision and the rigid technical reality of construction.
+                   </p>
+                   <p>
+                      We have pioneered the use of <span className="text-muted-gold">animated contour renders</span>, a technique that offers superior spatial accuracy over traditional static imagery. This ensures that what you see is exactly what your builder delivers—precision in every line, beauty in every volume.
+                   </p>
+                   <p>
+                      True luxury is peace of mind. Our designs are not merely artistic expressions but rigorous technical documents, crafted to reduce friction and ensure a seamless path from permit to occupancy.
+                   </p>
+                </div>
+
+                {/* Hard Proof / Certifications */}
+                <div className="pt-6 border-t border-off-white/10">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-off-white mb-4">Technical Assurance</h4>
+                    <ul className="space-y-3">
+                        <li className="flex items-center space-x-3">
+                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                            <span className="text-sm tracking-wide">BCIN Registered Designers (Ontario Compliant)</span>
+                        </li>
+                         <li className="flex items-center space-x-3">
+                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                            <span className="text-sm tracking-wide">Permit-Ready Architectural Drawings</span>
+                        </li>
+                         <li className="flex items-center space-x-3">
+                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                            <span className="text-sm tracking-wide">High-Fidelity 3D Contour Visualization</span>
+                        </li>
+                    </ul>
+                </div>
+
+                 <button 
+                  onClick={handlePhilosophyCta}
+                  className="mt-8 flex items-center gap-3 text-muted-gold uppercase tracking-widest text-sm font-bold hover:text-white transition-colors group"
+                >
+                  <span>View BCIN-Ready Plans</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
             </div>
-            <div className="relative h-[600px] w-full group overflow-hidden shadow-2xl">
-                <img 
-                    src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
-                    alt="Interior Design" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                />
-                <div className={`absolute inset-0 border-[1px] m-4 ${isDarkMode ? 'border-off-white/20' : 'border-deep-teal/20'}`}></div>
+
+            {/* Right Visuals */}
+            <div className="space-y-8">
+                {/* Image */}
+                <div className="relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border border-off-white/10">
+                    <img 
+                        src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
+                        alt="Interior Design" 
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-deep-teal/20 mix-blend-multiply"></div>
+                </div>
+
+                {/* Testimonial Placeholder */}
+                <div className="bg-white/5 p-8 rounded-sm border border-white/5 backdrop-blur-sm relative">
+                    <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
+                    <p className="relative z-10 text-off-white/90 italic font-display text-xl leading-relaxed mb-6 pt-4">
+                      "The precision of the plans gave our builder total confidence. Bluehouse didn't just design a house; they engineered our home."
+                    </p>
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">H</div>
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-widest text-off-white">The Harrison Family</p>
+                            <p className="text-[10px] uppercase tracking-wide text-muted-gold">Custom Build, 2023</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
       </section>
     </div>
