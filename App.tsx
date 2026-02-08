@@ -10,7 +10,7 @@ const App: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeView, setActiveView] = useState<'collection' | 'contact'>('contact');
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'philosophy'>('contact');
   
   // Toggle Body Background
   useEffect(() => {
@@ -34,6 +34,11 @@ const App: React.FC = () => {
 
   const handleNavigateToCollection = () => {
     setActiveView('collection');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateToPhilosophy = () => {
+    setActiveView('philosophy');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -71,6 +76,7 @@ const App: React.FC = () => {
         toggleTheme={toggleTheme}
         onContactClick={handleNavigateToContact}
         onCollectionClick={handleNavigateToCollection}
+        onPhilosophyClick={handleNavigateToPhilosophy}
       />
 
       <main className="pt-20">

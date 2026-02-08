@@ -9,6 +9,7 @@ interface HeaderProps {
   toggleTheme: () => void;
   onContactClick: () => void;
   onCollectionClick: () => void;
+  onPhilosophyClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -18,7 +19,8 @@ const Header: React.FC<HeaderProps> = ({
   isDarkMode, 
   toggleTheme,
   onContactClick,
-  onCollectionClick
+  onCollectionClick,
+  onPhilosophyClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -70,6 +72,17 @@ const Header: React.FC<HeaderProps> = ({
                     <button 
                         key={item} 
                         onClick={onCollectionClick}
+                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
+                    >
+                        {item}
+                    </button>
+                  );
+               }
+               if (item === 'Philosophy') {
+                  return (
+                    <button 
+                        key={item} 
+                        onClick={onPhilosophyClick}
                         className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
                     >
                         {item}
@@ -169,6 +182,20 @@ const Header: React.FC<HeaderProps> = ({
                         key={item} 
                         onClick={() => {
                             onCollectionClick();
+                            setIsMobileMenuOpen(false);
+                        }}
+                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
+                    >
+                        {item}
+                    </button>
+                 );
+              }
+              if (item === 'Philosophy') {
+                 return (
+                    <button 
+                        key={item} 
+                        onClick={() => {
+                            onPhilosophyClick();
                             setIsMobileMenuOpen(false);
                         }}
                         className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}

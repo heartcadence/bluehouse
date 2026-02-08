@@ -7,8 +7,8 @@ import ProductCard from './ProductCard';
 interface LandingPageProps {
   isDarkMode: boolean;
   isAdmin: boolean;
-  activeView: 'collection' | 'contact';
-  setActiveView: (view: 'collection' | 'contact') => void;
+  activeView: 'collection' | 'contact' | 'philosophy';
+  setActiveView: (view: 'collection' | 'contact' | 'philosophy') => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
@@ -102,6 +102,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         }`}
                     >
                         Collection
+                    </button>
+                    <button
+                        onClick={() => setActiveView('philosophy')}
+                        className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                            activeView === 'philosophy'
+                            ? 'bg-muted-gold text-deep-teal shadow-lg'
+                            : `${textColor} hover:bg-white/10`
+                        }`}
+                    >
+                        Philosophy
                     </button>
                 </div>
             </div>
@@ -243,85 +253,83 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                  </div>
             </div>
 
-        </div>
-      </section>
-
-      {/* Philosophy / About */}
-      <section id="philosophy" className={`py-24 px-6 transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal text-off-white' : 'bg-light-bg text-deep-teal'}`}>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            
-            {/* Left Content */}
-            <div className="space-y-8">
-                <div>
-                  <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                  <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor}`}>
-                      The DNA of a Home.
-                  </h2>
-                </div>
-                
-                <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
-                   <p>
-                      At Bluehouse, we provide more than just blueprints; we engineer the very DNA of your sanctuary. Our process transcends simple drafting, bridging the delicate divide between your ethereal vision and the rigid technical reality of construction.
-                   </p>
-                   <p>
-                      We have pioneered the use of <span className="text-muted-gold">animated contour renders</span>, a technique that offers superior spatial accuracy over traditional static imagery. This ensures that what you see is exactly what your builder delivers—precision in every line, beauty in every volume.
-                   </p>
-                   <p>
-                      True luxury is peace of mind. Our designs are not merely artistic expressions but rigorous technical documents, crafted to reduce friction and ensure a seamless path from permit to occupancy.
-                   </p>
-                </div>
-
-                {/* Hard Proof / Certifications */}
-                <div className={`pt-6 border-t ${borderColor}`}>
-                    <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
-                    <ul className="space-y-3">
-                        <li className="flex items-center space-x-3">
-                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>BCIN Registered Designers (Ontario Compliant)</span>
-                        </li>
-                         <li className="flex items-center space-x-3">
-                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>Permit-Ready Architectural Drawings</span>
-                        </li>
-                         <li className="flex items-center space-x-3">
-                            <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
-                            <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>High-Fidelity 3D Contour Visualization</span>
-                        </li>
-                    </ul>
-                </div>
-
-                 <button 
-                  onClick={handlePhilosophyCta}
-                  className={`mt-8 flex items-center gap-3 uppercase tracking-widest text-sm font-bold transition-colors group ${isDarkMode ? 'text-muted-gold hover:text-white' : 'text-muted-gold hover:text-deep-teal'}`}
-                >
-                  <span>View BCIN-Ready Plans</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
-            </div>
-
-            {/* Right Visuals */}
-            <div className="space-y-8">
-                {/* Image */}
-                <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
-                    <img 
-                        src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
-                        alt="Interior Design" 
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                    />
-                    <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
-                </div>
-
-                {/* Testimonial Placeholder */}
-                <div className={`p-8 rounded-sm border backdrop-blur-sm relative ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
-                    <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
-                    <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
-                      "The precision of the plans gave our builder total confidence. Bluehouse didn't just design a house; they engineered our home."
-                    </p>
-                    <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">H</div>
+            {/* --- PHILOSOPHY VIEW --- */}
+            <div className={`transition-all duration-500 ease-in-out ${activeView === 'philosophy' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
+               <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    {/* Left Content */}
+                    <div className="space-y-8">
                         <div>
-                            <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>The Harrison Family</p>
-                            <p className="text-[10px] uppercase tracking-wide text-muted-gold">Custom Build, 2023</p>
+                        <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
+                        <h2 className={`font-display text-4xl md:text-5xl leading-tight ${textColor}`}>
+                            The DNA of a Home.
+                        </h2>
+                        </div>
+                        
+                        <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
+                        <p>
+                            At Bluehouse, we provide more than just blueprints; we engineer the very DNA of your sanctuary. Our process transcends simple drafting, bridging the delicate divide between your ethereal vision and the rigid technical reality of construction.
+                        </p>
+                        <p>
+                            We have pioneered the use of <span className="text-muted-gold">animated contour renders</span>, a technique that offers superior spatial accuracy over traditional static imagery. This ensures that what you see is exactly what your builder delivers—precision in every line, beauty in every volume.
+                        </p>
+                        <p>
+                            True luxury is peace of mind. Our designs are not merely artistic expressions but rigorous technical documents, crafted to reduce friction and ensure a seamless path from permit to occupancy.
+                        </p>
+                        </div>
+
+                        {/* Hard Proof / Certifications */}
+                        <div className={`pt-6 border-t ${borderColor}`}>
+                            <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
+                            <ul className="space-y-3">
+                                <li className="flex items-center space-x-3">
+                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>BCIN Registered Designers (Ontario Compliant)</span>
+                                </li>
+                                <li className="flex items-center space-x-3">
+                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>Permit-Ready Architectural Drawings</span>
+                                </li>
+                                <li className="flex items-center space-x-3">
+                                    <CheckCircle className="text-muted-gold w-5 h-5 flex-shrink-0" />
+                                    <span className={`text-sm tracking-wide ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>High-Fidelity 3D Contour Visualization</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button 
+                        onClick={handlePhilosophyCta}
+                        className={`mt-8 flex items-center gap-3 uppercase tracking-widest text-sm font-bold transition-colors group ${isDarkMode ? 'text-muted-gold hover:text-white' : 'text-muted-gold hover:text-deep-teal'}`}
+                        >
+                        <span>View BCIN-Ready Plans</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </button>
+                    </div>
+
+                    {/* Right Visuals */}
+                    <div className="space-y-8">
+                        {/* Image */}
+                        <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
+                            <img 
+                                src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2670&auto=format&fit=crop" 
+                                alt="Interior Design" 
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                            />
+                            <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
+                        </div>
+
+                        {/* Testimonial Placeholder */}
+                        <div className={`p-8 rounded-sm border backdrop-blur-sm relative ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
+                            <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
+                            <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
+                            "The precision of the plans gave our builder total confidence. Bluehouse didn't just design a house; they engineered our home."
+                            </p>
+                            <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">H</div>
+                                <div>
+                                    <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>The Harrison Family</p>
+                                    <p className="text-[10px] uppercase tracking-wide text-muted-gold">Custom Build, 2023</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
