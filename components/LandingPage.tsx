@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Facebook, Plus, CheckCircle, Quote, ArrowRight } from 'lucide-react';
 import { Product, Category } from '../types';
 import { MOCK_PRODUCTS, CATEGORIES } from '../constants';
@@ -11,8 +11,25 @@ interface LandingPageProps {
   setActiveView: (view: 'collection' | 'contact' | 'philosophy') => void;
 }
 
+const TESTIMONIALS = [
+  {
+    text: "It has been a privilege partnering with Bluehouse Planning & Designs Inc. over the last few years; we eagerly anticipate our upcoming projects this season!",
+    author: "Nailed It Fencing & Decks",
+    role: "Strategic Partner",
+    initial: "N"
+  },
+  {
+    text: "If you are building a deck, putting in a beam or building a new house Bluehouse Planning and Designs Inc. is very highly recommended.",
+    author: "Dan B",
+    role: "House Reconstruction",
+    initial: "D"
+  }
+];
+
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
 
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
@@ -22,6 +39,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   const filteredProducts = activeCategory === 'All' 
     ? MOCK_PRODUCTS 
     : MOCK_PRODUCTS.filter(p => p.category === activeCategory);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTestimonialVisible(false);
+      setTimeout(() => {
+        setCurrentTestimonialIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+        setIsTestimonialVisible(true);
+      }, 500); // Wait for fade out
+    }, 6000); // Change every 6 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleAddNewPlan = () => {
     alert("Admin Action: Opening 'Add New Product' form in CMS...");
@@ -43,6 +72,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
     setActiveView('collection');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const currentTestimonial = TESTIMONIALS[currentTestimonialIndex];
 
   return (
     <div className="animate-fade-in w-full">
@@ -308,17 +339,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         </div>
 
                         {/* Testimonial Placeholder */}
-                        <div className={`p-8 rounded-sm border backdrop-blur-sm relative ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
+                        <div className={`p-8 rounded-sm border backdrop-blur-sm relative transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
                             <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
-                            <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
-                            "The precision of the plans gave our builder total confidence. Bluehouse didn't just design a house; they engineered our home."
-                            </p>
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">H</div>
-                                <div>
-                                    <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>The Harrison Family</p>
-                                    <p className="text-[10px] uppercase tracking-wide text-muted-gold">Custom Build, 2023</p>
-                                </div>
+                            
+                            <div className={`transition-opacity duration-500 ease-in-out ${isTestimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
+                              <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
+                              "{currentTestimonial.text}"
+                              </p>
+                              <div className="flex items-center gap-4">
+                                  <div className="w-10 h-10 bg-muted-gold rounded-full flex items-center justify-center text-deep-teal font-bold text-xs">
+                                    {currentTestimonial.initial}
+                                  </div>
+                                  <div>
+                                      <p className={`text-xs font-bold uppercase tracking-widest ${textColor}`}>{currentTestimonial.author}</p>
+                                      <p className="text-[10px] uppercase tracking-wide text-muted-gold">{currentTestimonial.role}</p>
+                                  </div>
+                              </div>
                             </div>
                         </div>
                     </div>
