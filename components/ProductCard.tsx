@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pencil, ArrowRight } from 'lucide-react';
+import { Pencil, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProductCardProps {
@@ -14,9 +14,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
     setIsFlipped(!isFlipped);
   };
 
-  const handlePurchase = (e: React.MouseEvent) => {
+  const handleBuyNow = (e: React.MouseEvent) => {
     e.stopPropagation();
-    alert(`Purchase complete! ${product.title}.pdf has been sent to your email.`);
+    alert(`Initiating Stripe Checkout for: ${product.title}. Price: $${product.price}`);
+  };
+
+  const handleComplianceCheck = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert(`Checking BCIN Compliance for ${product.title}...\n\nStatus: VALID\nZone: ON, CA`);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -26,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
 
   return (
     <div 
-      className="group relative w-full h-[500px] perspective-1000 cursor-pointer"
+      className="group relative w-full h-[550px] perspective-1000 cursor-pointer"
       onClick={handleCardClick}
     >
       {/* 3D Container */}
@@ -72,60 +77,68 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
             </div>
             
             <div className="mt-6 flex items-center text-muted-gold text-sm tracking-widest uppercase group-hover:translate-x-2 transition-transform duration-300">
-              <span>View Plans</span>
+              <span>View Blueprints</span>
               <ArrowRight size={16} className="ml-2" />
             </div>
           </div>
         </div>
 
         {/* --- BACK SIDE (Blueprint) --- */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-off-white text-deep-teal rounded-sm overflow-hidden">
+        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-off-white text-deep-teal rounded-sm overflow-hidden flex flex-col">
           
           {/* Blueprint Background */}
           <div 
-            className="absolute inset-0 opacity-10"
+            className="absolute inset-0 opacity-10 pointer-events-none"
             style={{ 
-                backgroundImage: `radial-gradient(#063543 1px, transparent 1px)`, 
+                backgroundImage: `radial-gradient(#002147 1px, transparent 1px)`, 
                 backgroundSize: '20px 20px' 
             }}
           ></div>
           
-          <div className="relative h-full flex flex-col">
-            {/* Blueprint Image */}
-            <div className="h-3/5 w-full bg-deep-teal/5 p-4 flex items-center justify-center relative overflow-hidden">
-                 <img 
-                    src={product.imageBack} 
-                    alt="Blueprint" 
-                    className="w-full h-full object-contain mix-blend-multiply opacity-80"
-                 />
-                 <div className="absolute bottom-2 right-2 text-[10px] tracking-widest opacity-40">
-                    PLAN ID: {product._id.padStart(4, '0')}
-                 </div>
+          {/* Blueprint Image */}
+          <div className="h-1/2 w-full bg-deep-teal/5 p-4 flex items-center justify-center relative overflow-hidden">
+               <img 
+                  src={product.imageBack} 
+                  alt="Blueprint" 
+                  className="w-full h-full object-contain mix-blend-multiply opacity-80"
+               />
+               <div className="absolute bottom-2 right-2 text-[10px] tracking-widest opacity-40">
+                  PLAN ID: {product._id.padStart(4, '0')}
+               </div>
+          </div>
+
+          {/* Details & Actions */}
+          <div className="h-1/2 p-6 flex flex-col justify-between bg-off-white relative z-10">
+            <div>
+              <h4 className="font-display text-xl text-deep-teal mb-3">{product.title}</h4>
+              <div className="grid grid-cols-2 gap-y-2 text-sm text-deep-teal/70 font-light mb-4">
+                <p>Bedrooms: <span className="font-bold">{product.bedrooms}</span></p>
+                <p>Bathrooms: <span className="font-bold">{product.bathrooms}</span></p>
+                <p>Format: <span className="font-bold">{product.fileFormat}</span></p>
+                <p>Delivery: <span className="font-bold">Instant</span></p>
+              </div>
             </div>
 
-            {/* Details & Purchase */}
-            <div className="h-2/5 p-6 flex flex-col justify-between bg-off-white">
-              <div>
-                <h4 className="font-display text-xl text-deep-teal mb-2">{product.title}</h4>
-                <div className="grid grid-cols-2 gap-y-2 text-sm text-deep-teal/70 font-light">
-                  <p>Bedrooms: <span className="font-bold">{product.bedrooms}</span></p>
-                  <p>Bathrooms: <span className="font-bold">{product.bathrooms}</span></p>
-                  <p>Format: <span className="font-bold">{product.fileFormat}</span></p>
-                  <p>Download: <span className="font-bold">Instant</span></p>
-                </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                 <span className="font-display text-2xl text-deep-teal">
+                    ${product.price}
+                 </span>
+                 <button
+                    onClick={handleBuyNow}
+                    className="bg-deep-teal text-off-white px-6 py-2 rounded-sm hover:bg-muted-gold transition-colors duration-300 uppercase tracking-widest text-xs font-bold shadow-lg"
+                 >
+                    Buy Now
+                 </button>
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-deep-teal/10">
-                <span className="font-display text-2xl text-deep-teal">
-                  ${product.price}
-                </span>
-                <button
-                  onClick={handlePurchase}
-                  className="bg-deep-teal text-off-white px-6 py-3 rounded-sm hover:bg-muted-gold transition-colors duration-300 uppercase tracking-widest text-xs font-bold shadow-lg"
-                >
-                  Purchase PDF
-                </button>
-              </div>
+              <button 
+                onClick={handleComplianceCheck}
+                className="w-full flex items-center justify-center space-x-2 border border-deep-teal/20 py-2 rounded-sm text-[10px] uppercase tracking-widest text-deep-teal hover:bg-deep-teal/5 transition-colors"
+              >
+                <ShieldCheck size={14} />
+                <span>Check BCIN Compliance</span>
+              </button>
             </div>
           </div>
         </div>
