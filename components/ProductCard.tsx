@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pencil, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Pencil, ArrowRight, ShieldCheck, Touchpad } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProductCardProps {
@@ -11,6 +11,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleCardClick = () => {
+    // Toggle flip state on click (primary interaction for mobile)
     setIsFlipped(!isFlipped);
   };
 
@@ -36,8 +37,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
     >
       {/* 3D Container */}
       <div 
-        className={`relative w-full h-full text-center transition-transform duration-700 transform-style-3d shadow-xl ${
-          isFlipped ? 'rotate-y-180' : ''
+        className={`relative w-full h-full text-center transition-transform duration-700 transform-style-3d shadow-xl md:group-hover:[transform:rotateY(180deg)] ${
+          isFlipped ? '[transform:rotateY(180deg)]' : ''
         }`}
       >
         {/* --- FRONT SIDE --- */}
@@ -62,6 +63,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
           {/* Overlay Gradient for readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-deep-teal via-transparent to-transparent opacity-90"></div>
 
+          {/* Mobile Tap Badge (Visual Guidance) */}
+          <div className="absolute bottom-4 right-4 z-20 md:hidden flex items-center space-x-2 bg-deep-teal/90 px-3 py-1.5 rounded-full border border-muted-gold/30 backdrop-blur-sm animate-pulse">
+            <Touchpad size={14} className="text-muted-gold" />
+            <span className="text-[10px] uppercase tracking-widest text-muted-gold font-bold">Tap to View Plan</span>
+          </div>
+
           {/* Content */}
           <div className="absolute bottom-0 left-0 w-full p-8 text-left">
             <span className="inline-block px-3 py-1 mb-3 text-xs tracking-widest uppercase border border-muted-gold/50 text-muted-gold rounded-full backdrop-blur-sm">
@@ -76,7 +83,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
               <span>${product.price} USD</span>
             </div>
             
-            <div className="mt-6 flex items-center text-muted-gold text-sm tracking-widest uppercase group-hover:translate-x-2 transition-transform duration-300">
+            {/* Desktop Hover Hint */}
+            <div className="hidden md:flex mt-6 items-center text-muted-gold text-sm tracking-widest uppercase group-hover:translate-x-2 transition-transform duration-300">
               <span>View Blueprints</span>
               <ArrowRight size={16} className="ml-2" />
             </div>
@@ -84,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin }) => {
         </div>
 
         {/* --- BACK SIDE (Blueprint) --- */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-off-white text-deep-teal rounded-sm overflow-hidden flex flex-col">
+        <div className="absolute w-full h-full backface-hidden [transform:rotateY(180deg)] bg-off-white text-deep-teal rounded-sm overflow-hidden flex flex-col">
           
           {/* Blueprint Background */}
           <div 
