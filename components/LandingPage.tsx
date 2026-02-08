@@ -46,8 +46,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       setTimeout(() => {
         setCurrentTestimonialIndex((prev) => (prev + 1) % TESTIMONIALS.length);
         setIsTestimonialVisible(true);
-      }, 750); // Wait for fade out (increased to 750ms)
-    }, 6000); // Change every 6 seconds
+      }, 1125); // Wait for fade out (increased to 1125ms)
+    }, 9000); // Change every 9 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -342,7 +342,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         <div className={`p-8 rounded-sm border backdrop-blur-sm relative transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/5' : 'bg-deep-teal/5 border-deep-teal/5'}`}>
                             <Quote className="absolute top-6 left-6 text-muted-gold opacity-30 w-10 h-10" />
                             
-                            <div className={`transition-opacity duration-[750ms] ease-in-out ${isTestimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
+                            <div className={`transition-opacity duration-[1125ms] ease-in-out ${isTestimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
                               <p className={`relative z-10 italic font-display text-xl leading-relaxed mb-6 pt-4 ${isDarkMode ? 'text-off-white/90' : 'text-deep-teal/90'}`}>
                               "{currentTestimonial.text}"
                               </p>
