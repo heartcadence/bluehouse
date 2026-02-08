@@ -8,7 +8,7 @@ interface HeaderProps {
   isDarkMode: boolean;
   toggleTheme: () => void;
   onContactClick: () => void;
-  onStorefrontClick: () => void;
+  onCollectionClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({
   isDarkMode, 
   toggleTheme,
   onContactClick,
-  onStorefrontClick
+  onCollectionClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   const logoTextMain = isDarkMode ? 'text-off-white' : 'text-deep-teal';
 
   // Navigation Items
-  const navItems = ['Storefront', 'Philosophy', 'Contact'];
+  const navItems = ['Collection', 'Philosophy', 'Contact'];
 
   return (
     <header className={`fixed w-full top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${headerBg}`}>
@@ -65,11 +65,11 @@ const Header: React.FC<HeaderProps> = ({
                     </button>
                   );
                }
-               if (item === 'Storefront') {
+               if (item === 'Collection') {
                   return (
                     <button 
                         key={item} 
-                        onClick={onStorefrontClick}
+                        onClick={onCollectionClick}
                         className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
                     >
                         {item}
@@ -163,12 +163,12 @@ const Header: React.FC<HeaderProps> = ({
                     </button>
                  );
               }
-              if (item === 'Storefront') {
+              if (item === 'Collection') {
                  return (
                     <button 
                         key={item} 
                         onClick={() => {
-                            onStorefrontClick();
+                            onCollectionClick();
                             setIsMobileMenuOpen(false);
                         }}
                         className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}

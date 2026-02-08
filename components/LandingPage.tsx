@@ -7,8 +7,8 @@ import ProductCard from './ProductCard';
 interface LandingPageProps {
   isDarkMode: boolean;
   isAdmin: boolean;
-  activeView: 'store' | 'contact';
-  setActiveView: (view: 'store' | 'contact') => void;
+  activeView: 'collection' | 'contact';
+  setActiveView: (view: 'collection' | 'contact') => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
@@ -18,7 +18,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
   const borderColor = isDarkMode ? 'border-off-white/20' : 'border-deep-teal/20';
 
-  // Storefront Logic
+  // Collection Logic
   const filteredProducts = activeCategory === 'All' 
     ? MOCK_PRODUCTS 
     : MOCK_PRODUCTS.filter(p => p.category === activeCategory);
@@ -35,12 +35,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   };
 
   const handleHeroCta = () => {
-    setActiveView('store');
+    setActiveView('collection');
     scrollToContent();
   };
 
   const handlePhilosophyCta = () => {
-    setActiveView('store');
+    setActiveView('collection');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -94,20 +94,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         Contact Us
                     </button>
                     <button
-                        onClick={() => setActiveView('store')}
+                        onClick={() => setActiveView('collection')}
                         className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                            activeView === 'store'
+                            activeView === 'collection'
                             ? 'bg-muted-gold text-deep-teal shadow-lg'
                             : `${textColor} hover:bg-white/10`
                         }`}
                     >
-                        Storefront
+                        Collection
                     </button>
                 </div>
             </div>
 
-            {/* --- STOREFRONT VIEW --- */}
-            <div className={`transition-all duration-500 ease-in-out ${activeView === 'store' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
+            {/* --- COLLECTION VIEW --- */}
+            <div className={`transition-all duration-500 ease-in-out ${activeView === 'collection' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
                 {/* Controls Bar */}
                 <div className={`flex flex-col md:flex-row justify-between items-center mb-12 p-6 rounded-sm backdrop-blur-md border ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10 shadow-lg'}`}>
                     
