@@ -156,7 +156,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
           </div>
 
           {/* Content & Action */}
-          <div className="relative flex-1 p-5 flex flex-col justify-between">
+          <div className="relative flex-1 p-5 flex flex-col">
              <div>
                 <div className="flex justify-between items-start mb-2">
                     <span className="inline-block px-3 py-1 text-[10px] tracking-widest uppercase border border-muted-gold/50 text-muted-gold rounded-full backdrop-blur-sm">
@@ -179,7 +179,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
                 </div>
              </div>
 
-             <div className="mt-4">
+             {/* Dimensions Section (New) */}
+             <div className="flex-grow flex items-end pb-1">
+                 <p className={`text-[10px] uppercase tracking-widest opacity-60 ${subTextColor}`}>
+                    DIMENSIONS: {plan.specs?.width || '—'}’ x {plan.specs?.depth || '—'}’
+                 </p>
+             </div>
+
+             <div className="mt-3">
                 <button 
                     onClick={handleFlip}
                     disabled={!!plan.isPlaceholder}
@@ -218,6 +225,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
                      <p>Bathrooms: <span className="font-bold">{plan.specs?.baths || 0}</span></p>
                      <p>Format: <span className="font-bold">{plan.fileFormat || 'PDF'}</span></p>
                      <p>Est. Build Cost: <span className="font-bold">$$$</span></p>
+                     <p>Width: <span className="font-bold">{plan.specs?.width || '-'}’</span></p>
+                     <p>Depth: <span className="font-bold">{plan.specs?.depth || '-'}’</span></p>
                  </div>
              </div>
              
