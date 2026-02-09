@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Facebook, Plus, CheckCircle, Quote, ArrowRight } from 'lucide-react';
 import { Product, Category } from '../types';
-import { MOCK_PRODUCTS, CATEGORIES } from '../constants';
+import { MOCK_PRODUCTS, CATEGORIES, PLACEHOLDER_PRODUCT } from '../constants';
 import ProductCard from './ProductCard';
+import { client } from '../lib/sanity.client';
 
 interface LandingPageProps {
   isDarkMode: boolean;
@@ -28,6 +29,7 @@ const TESTIMONIALS = [
 
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
+  const [plans, setPlans] = useState<Product[]>([]);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
 
@@ -35,10 +37,59 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
   const borderColor = isDarkMode ? 'border-off-white/20' : 'border-deep-teal/20';
 
-  // Collection Logic
-  const filteredProducts = activeCategory === 'All' 
-    ? MOCK_PRODUCTS 
-    : MOCK_PRODUCTS.filter(p => p.category === activeCategory);
+  // Fetch Sanity Data
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const query = `*[_type == "plan"]{
+          _id,
+          _type,
+          title,
+          price,
+          category,
+          slug,
+          exteriorGallery,
+          specs {
+            sqft,
+            beds,
+            baths,
+            width,
+            depth
+          },
+          "technicalPlansUrl": technicalPlans.asset->url,
+          floorPlanPreviews[] { "url": asset->url }
+        }`;
+        
+        const result = await client.fetch(query);
+        
+        if (result && result.length > 0) {
+          setPlans(result);
+        } else {
+          setPlans([]); // Empty array so we can fill with placeholders
+        }
+      } catch (error) {
+        console.error("Sanity Fetch Error:", error);
+        setPlans([]); 
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  // Filter Logic & Placeholder Padding
+  const filteredPlans = activeCategory === 'All' 
+    ? plans 
+    : plans.filter(p => p.category === activeCategory);
+
+  // Ensure we always have at least 6 items for layout
+  const displayPlans = [...filteredPlans];
+  const minimumCards = 6;
+  while (displayPlans.length < minimumCards) {
+    displayPlans.push({
+      ...PLACEHOLDER_PRODUCT,
+      _id: `placeholder-${displayPlans.length}`, // Ensure unique ID for map key
+    });
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,8 +97,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       setTimeout(() => {
         setCurrentTestimonialIndex((prev) => (prev + 1) % TESTIMONIALS.length);
         setIsTestimonialVisible(true);
-      }, 1125); // Wait for fade out (increased to 1125ms)
-    }, 9000); // Change every 9 seconds
+      }, 1125); 
+    }, 9000); 
 
     return () => clearInterval(interval);
   }, []);
@@ -110,7 +161,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
       {/* Dynamic Content Section */}
       <section id="dynamic-content" className="min-h-[600px] relative z-20 -mt-20 scroll-mt-28">
           
-            {/* Toggle Bar - Wrapper to keep it centered */}
+            {/* Toggle Bar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 mb-16">
                 <div className="flex justify-center animate-slide-up animation-delay-400 pointer-events-none">
                      <div className={`pointer-events-auto flex p-1 rounded-full backdrop-blur-md border shadow-2xl ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'}`}>
@@ -138,7 +189,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                 </div>
             </div>
 
-            {/* View Containers - Note: max-w-7xl is applied inside individual views where needed, or removed for full-width sections */}
             <div className="w-full">
 
                 {/* --- COLLECTION VIEW --- */}
@@ -177,22 +227,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         </div>
 
                         {/* Product Grid */}
-                        {filteredProducts.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
-                            {filteredProducts.map(product => (
-                                <ProductCard 
-                                key={product._id} 
-                                product={product} 
-                                isAdmin={isAdmin} 
-                                isDarkMode={isDarkMode}
-                                />
-                            ))}
-                            </div>
-                        ) : (
-                            <div className={`text-center py-20 font-display italic text-xl ${isDarkMode ? 'text-off-white/40' : 'text-deep-teal/40'}`}>
-                            No architectural plans found in this category.
-                            </div>
-                        )}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+                        {displayPlans.map(plan => (
+                            <ProductCard 
+                            key={plan._id} 
+                            plan={plan} 
+                            isAdmin={isAdmin} 
+                            isDarkMode={isDarkMode}
+                            />
+                        ))}
+                        </div>
                     </div>
                 </div>
 
@@ -286,7 +330,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                 {/* --- ABOUT VIEW (Full Width Sections) --- */}
                 <div className={`transition-all duration-500 ease-in-out ${activeView === 'about' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
                     
-                        {/* Who We Are Section - Light Stone/Off-White Background */}
+                        {/* Who We Are Section */}
                         <section id="about" className={`pb-20 pt-8 transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-slate-50 border-t border-slate-200/50'}`}>
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                 <div className="max-w-3xl mx-auto text-center">
@@ -298,7 +342,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                             </div>
                         </section>
 
-                        {/* Our Philosophy Section - Gravel/Concrete Grey Background */}
+                        {/* Our Philosophy Section */}
                         <section id="philosophy" className={`py-20 transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal-dark' : 'bg-slate-200'}`}>
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
