@@ -12,5 +12,4 @@ export const client = createClient({
 
 const builder = imageUrlBuilder(client);
 
-// Adding ': any' makes the red squiggly line go away
 export const urlFor = (source: any) => builder.image(source);

@@ -37,11 +37,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
   const borderColor = isDarkMode ? 'border-off-white/20' : 'border-deep-teal/20';
 
-  // Fetch Sanity Data
+  // Fetch Sanity Data with Category Filtering
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const query = `*[_type == "plan"]{
+        // We normalize 'All' from the UI state to 'ALL' for the query check
+        const queryCategory = activeCategory === 'All' ? 'ALL' : activeCategory;
+
+        // Query using the variable $category
+        const query = `*[_type == "plan" && ($category == "ALL" || category == $category)]{
           _id,
           _type,
           title,
@@ -60,12 +64,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
           floorPlanPreviews[] { "url": asset->url }
         }`;
         
-        const result = await client.fetch(query);
+        const params = { category: queryCategory };
+        const result = await client.fetch(query, params);
         
-        if (result && result.length > 0) {
+        if (result) {
           setPlans(result);
         } else {
-          setPlans([]); // Empty array so we can fill with placeholders
+          setPlans([]); 
         }
       } catch (error) {
         console.error("Sanity Fetch Error:", error);
@@ -74,20 +79,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
     };
 
     fetchPlans();
-  }, []);
-
-  // Filter Logic & Placeholder Padding
-  const filteredPlans = activeCategory === 'All' 
-    ? plans 
-    : plans.filter(p => p.category === activeCategory);
+  }, [activeCategory]); // Re-fetch when category changes
 
   // Ensure we always have at least 6 items for layout
-  const displayPlans = [...filteredPlans];
+  const displayPlans = [...plans];
   const minimumCards = 6;
   while (displayPlans.length < minimumCards) {
     displayPlans.push({
       ...PLACEHOLDER_PRODUCT,
       _id: `placeholder-${displayPlans.length}`, // Ensure unique ID for map key
+      category: activeCategory // Match the placeholder category to the current filter
     });
   }
 
@@ -205,7 +206,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                                 onClick={() => setActiveCategory(category)}
                                 className={`px-4 py-2 rounded-sm text-[10px] uppercase tracking-widest transition-all duration-300 border ${
                                     activeCategory === category
-                                    ? 'bg-deep-teal text-off-white border-deep-teal'
+                                    ? 'bg-muted-gold text-deep-teal border-muted-gold font-bold shadow-md'
                                     : `bg-transparent hover:border-muted-gold hover:text-muted-gold ${isDarkMode ? 'text-off-white/60 border-transparent' : 'text-deep-teal/60 border-transparent'}`
                                 }`}
                                 >
