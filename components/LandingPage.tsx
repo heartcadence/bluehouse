@@ -227,7 +227,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         </div>
 
                         {/* Product Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {displayPlans.map(plan => (
                             <ProductCard 
                             key={plan._id} 

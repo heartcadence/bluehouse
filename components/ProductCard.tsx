@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
   const hasFloorPlans = plan.floorPlanPreviews && plan.floorPlanPreviews.length > 0;
 
   return (
-    <div className={`group relative w-full h-[600px] perspective-1000 ${plan.isPlaceholder ? 'opacity-80' : ''}`}>
+    <div className={`group relative w-full h-[540px] perspective-1000 ${plan.isPlaceholder ? 'opacity-80' : ''}`}>
       {/* 3D Container */}
       <div 
         className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${
@@ -100,19 +100,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
           )}
 
           {/* Carousel Container */}
-          <div className={`relative h-3/4 w-full ${imageContainerBg}`}>
+          <div className={`relative w-full aspect-[4/3] ${imageContainerBg}`}>
             {images.map((img, index) => {
                 // Handle both Sanity object and string (dummy)
+                // Use 4:3 aspect ratio dimensions for crop (1200x900)
                 const imgSrc = typeof img === 'string' 
                   ? img 
-                  : urlFor(img).width(800).height(600).fit('max').auto('format').url();
+                  : urlFor(img).width(1200).height(900).fit('crop').auto('format').url();
 
                 return (
                   <img 
                     key={index}
                     src={imgSrc} 
                     alt={`${plan.title} view ${index + 1}`} 
-                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'} ${plan.isPlaceholder ? 'grayscale sepia-[.3]' : ''}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'} ${plan.isPlaceholder ? 'grayscale sepia-[.3]' : ''}`}
                   />
                 );
             })}
@@ -155,7 +156,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
           </div>
 
           {/* Content & Action */}
-          <div className="relative flex-1 p-6 flex flex-col justify-between">
+          <div className="relative flex-1 p-5 flex flex-col justify-between">
              <div>
                 <div className="flex justify-between items-start mb-2">
                     <span className="inline-block px-3 py-1 text-[10px] tracking-widest uppercase border border-muted-gold/50 text-muted-gold rounded-full backdrop-blur-sm">
@@ -228,7 +229,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
                     {hasFloorPlans ? (
                         plan.floorPlanPreviews?.map((preview, idx) => (
                             <div key={idx} className={`rounded-sm overflow-hidden border ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'} shadow-sm`}>
-                                <div className={`relative aspect-[3/4] w-full flex items-center justify-center ${imageContainerBg}`}>
+                                <div className={`relative aspect-[4/3] w-full flex items-center justify-center ${imageContainerBg}`}>
                                     <img 
                                         src={preview.url} 
                                         alt={`Floor Plan ${idx + 1}`} 
