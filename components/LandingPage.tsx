@@ -30,6 +30,7 @@ const TESTIMONIALS = [
 const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [plans, setPlans] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
 
@@ -39,10 +40,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
 
   // Fetch Sanity Data with Category Filtering
   useEffect(() => {
-    // Clear plans immediately on category switch so we don't show stale data 
-    setPlans([]);
+    let isMounted = true;
 
     const fetchPlans = async () => {
+      setIsLoading(true);
       try {
         // Use 'ALL' as the sentinel value for the "All" category to bypass filtering.
         // Otherwise pass the active category name.
@@ -73,18 +74,28 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
         const params = { category: queryCategory };
         const result = await client.fetch(query, params);
         
-        if (result) {
-          setPlans(result);
-        } else {
-          setPlans([]); 
+        if (isMounted) {
+          if (result) {
+            setPlans(result);
+          } else {
+            setPlans([]); 
+          }
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Sanity Fetch Error:", error);
-        setPlans([]); 
+        if (isMounted) {
+            setPlans([]); 
+            setIsLoading(false);
+        }
       }
     };
 
     fetchPlans();
+
+    return () => {
+      isMounted = false;
+    };
   }, [activeCategory]); // Re-fetch when category changes
 
   useEffect(() => {
@@ -224,7 +235,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
 
                         {/* Product Grid */}
                         {plans.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
                                 {plans.map(plan => (
                                     <ProductCard 
                                     key={plan._id} 
@@ -235,11 +246,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                                 ))}
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-20 text-center opacity-60">
-                                <div className={`text-xl font-display italic ${mutedColor}`}>
-                                    New designs coming soon to the {activeCategory} collection.
+                            !isLoading && (
+                                <div className="flex flex-col items-center justify-center py-20 text-center opacity-60">
+                                    <div className={`text-xl font-display italic ${mutedColor}`}>
+                                        New designs coming soon to the {activeCategory} collection.
+                                    </div>
                                 </div>
-                            </div>
+                            )
                         )}
                     </div>
                 </div>
