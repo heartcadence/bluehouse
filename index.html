@@ -4,11 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BLUEHOUSE Planning & Designs</title>
-    
-    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.sanity.io">
+    <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
+
+    <link 
+      rel="preload" 
+      as="image" 
+      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp" 
+      fetchpriority="high"
+    >
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS (CDN for simplicity, though PostCSS is recommended for prod) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -48,65 +58,46 @@
       }
     </script>
 
-    <!-- Custom CSS for 3D Transforms -->
     <style>
       body {
         transition: background-color 0.3s ease, color 0.3s ease;
+        /* Prevent layout shift before fonts load */
+        font-family: 'Lato', sans-serif; 
       }
       
-      /* Animation Delays */
       .animation-delay-200 { animation-delay: 200ms; }
       .animation-delay-400 { animation-delay: 400ms; }
       .animation-delay-600 { animation-delay: 600ms; }
       
-      /* 3D Flip Utilities */
-      .perspective-1000 {
-        perspective: 1000px;
-      }
-      
-      .transform-style-3d {
-        transform-style: preserve-3d;
-      }
-      
+      .perspective-1000 { perspective: 1000px; }
+      .transform-style-3d { transform-style: preserve-3d; }
       .backface-hidden {
         backface-visibility: hidden;
-        -webkit-backface-visibility: hidden; /* Safari support */
+        -webkit-backface-visibility: hidden;
       }
-      
-      .rotate-y-180 {
-        transform: rotateY(180deg);
-      }
+      .rotate-y-180 { transform: rotateY(180deg); }
 
-      /* Scrollbar styling for a premium feel */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #002147; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #A68562; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #8e7153; 
-      }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #002147; }
+      ::-webkit-scrollbar-thumb { background: #A68562; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8e7153; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "@sanity/image-url": "https://esm.sh/@sanity/image-url@^1.0.2",
-    "@sanity/client": "https://esm.sh/@sanity/client@^6.15.0"
-  }
-}
-</script>
-</head>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "vite": "https://esm.sh/vite@^7.3.1",
+        "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+        "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+        "react/": "https://esm.sh/react@^19.2.4/",
+        "react": "https://esm.sh/react@^19.2.4",
+        "@sanity/image-url": "https://esm.sh/@sanity/image-url@^1.0.2",
+        "@sanity/client": "https://esm.sh/@sanity/client@^6.15.0"
+      }
+    }
+    </script>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

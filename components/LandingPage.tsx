@@ -131,13 +131,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
   return (
     <div className="animate-fade-in w-full">
       {/* Hero */}
-      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp"
+            srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800 800w, https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920 1920w"
+            sizes="(max-width: 768px) 100vw, 1920px"
             alt="Modern Architectural House"
-            width={1920}
-            height={1080}
+            loading="eager"
             // @ts-ignore - React 18/19 compatibility for high priority LCP loading
             fetchPriority="high"
             className={`w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
