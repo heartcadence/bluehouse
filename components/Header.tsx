@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, X, ShoppingBag, User, Compass, Sun, Moon } from 'lucide-react';
+import { Menu, X, ShoppingBag, Compass, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
-  isAdmin: boolean;
-  onLoginClick: () => void;
-  onLogoutClick: () => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
   onContactClick: () => void;
@@ -13,9 +10,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ 
-  isAdmin, 
-  onLoginClick, 
-  onLogoutClick, 
   isDarkMode, 
   toggleTheme,
   onContactClick,
@@ -112,23 +106,6 @@ const Header: React.FC<HeaderProps> = ({
             >
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-
-            {isAdmin ? (
-               <button 
-               onClick={onLogoutClick} 
-               className="text-xs text-muted-gold uppercase tracking-widest border border-muted-gold px-3 py-1 rounded hover:bg-muted-gold hover:text-deep-teal transition-all"
-             >
-               Admin Active
-             </button>
-            ) : (
-              <button 
-                onClick={onLoginClick} 
-                className={`transition-colors ${isDarkMode ? 'text-off-white/70' : 'text-deep-teal/70'} ${navHover}`}
-                aria-label="Login"
-              >
-                <User size={20} />
-              </button>
-            )}
             
             <button className={`transition-colors relative ${isDarkMode ? 'text-off-white/70' : 'text-deep-teal/70'} ${navHover}`}>
                 <ShoppingBag size={20} />
@@ -215,14 +192,6 @@ const Header: React.FC<HeaderProps> = ({
                 </a>
               );
             })}
-            
-            <div className={`border-t pt-8 mt-auto mb-8 ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'}`}>
-               {isAdmin ? (
-                 <button onClick={onLogoutClick} className="text-muted-gold w-full text-left mb-4">Logout (Admin)</button>
-               ) : (
-                 <button onClick={() => { onLoginClick(); setIsMobileMenuOpen(false); }} className={`w-full text-left mb-4 ${textColor}`}>Login</button>
-               )}
-            </div>
         </div>
       </div>
     </header>

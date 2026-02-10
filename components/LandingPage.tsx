@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Facebook, Plus, CheckCircle, Quote, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight } from 'lucide-react';
 import { Product, Category } from '../types';
 import { CATEGORIES } from '../constants';
 import ProductCard from './ProductCard';
@@ -7,7 +7,6 @@ import { client } from '../lib/sanity.client';
 
 interface LandingPageProps {
   isDarkMode: boolean;
-  isAdmin: boolean;
   activeView: 'collection' | 'contact' | 'about';
   setActiveView: (view: 'collection' | 'contact' | 'about') => void;
 }
@@ -27,7 +26,7 @@ const TESTIMONIALS = [
   }
 ];
 
-const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeView, setActiveView }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setActiveView }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [plans, setPlans] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,10 +108,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
 
     return () => clearInterval(interval);
   }, []);
-
-  const handleAddNewPlan = () => {
-    alert("Admin Action: Opening 'Add New Product' form in CMS...");
-  };
 
   const scrollToContent = () => {
     const contentElement = document.getElementById('dynamic-content');
@@ -220,17 +215,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                                 </button>
                             ))}
                             </div>
-
-                            {/* Admin Add Button */}
-                            {isAdmin && (
-                            <button 
-                                onClick={handleAddNewPlan}
-                                className={`mt-4 md:mt-0 flex items-center space-x-2 px-5 py-2 rounded-sm border border-dashed border-muted-gold transition-all hover:bg-muted-gold hover:text-deep-teal text-muted-gold`}
-                            >
-                                <Plus size={16} />
-                                <span className="uppercase text-xs tracking-widest font-bold">Add New Plan</span>
-                            </button>
-                            )}
                         </div>
 
                         {/* Product Grid */}
@@ -240,7 +224,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                                     <ProductCard 
                                     key={plan._id} 
                                     plan={plan} 
-                                    isAdmin={isAdmin} 
                                     isDarkMode={isDarkMode}
                                     />
                                 ))}

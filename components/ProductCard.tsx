@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Pencil, ArrowRight, ShieldCheck, ChevronLeft, ChevronRight, RotateCw, X, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ShieldCheck, ChevronLeft, ChevronRight, RotateCw, X, ArrowLeft } from 'lucide-react';
 import { Product } from '../types';
 import { urlFor } from '../lib/sanity.client';
 
 interface ProductCardProps {
   plan: Product;
-  isAdmin: boolean;
   isDarkMode: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -52,12 +51,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
     alert(`Checking BCIN Compliance for ${plan.title}...\n\nStatus: VALID\nZone: ON, CA`);
   };
 
-  const handleEdit = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (plan.isPlaceholder) return;
-    alert(`Opening CMS editor for: ${plan.title}`);
-  };
-
   // Styling based on mode
   const cardBgColor = isDarkMode ? 'bg-deep-teal-dark' : 'bg-white shadow-xl';
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
@@ -87,16 +80,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isAdmin, isDarkMode }) 
             <div className="absolute top-4 left-4 z-20 bg-deep-teal/80 border border-muted-gold/50 backdrop-blur-md text-muted-gold text-[10px] uppercase tracking-widest px-3 py-1 rounded-sm shadow-lg">
                 Coming Soon
             </div>
-          )}
-
-          {/* Admin Edit Trigger */}
-          {isAdmin && !plan.isPlaceholder && (
-            <button 
-              onClick={handleEdit}
-              className="absolute top-4 right-4 z-20 bg-muted-gold text-deep-teal p-2 rounded-full hover:bg-off-white transition-colors shadow-lg"
-            >
-              <Pencil size={16} />
-            </button>
           )}
 
           {/* Carousel Container */}

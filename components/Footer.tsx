@@ -1,13 +1,12 @@
 import React from 'react';
 
 interface FooterProps {
-  onAdminClick: () => void;
   isDarkMode: boolean;
   onContactClick: () => void;
   onAboutClick: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClick, onAboutClick }) => {
+const Footer: React.FC<FooterProps> = ({ isDarkMode, onContactClick, onAboutClick }) => {
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const textColor = isDarkMode ? 'text-off-white/50' : 'text-dark-text/60';
@@ -58,13 +57,6 @@ const Footer: React.FC<FooterProps> = ({ onAdminClick, isDarkMode, onContactClic
           <p className={`text-xs tracking-wide ${isDarkMode ? 'text-off-white/30' : 'text-deep-teal/30'}`}>
             © {new Date().getFullYear()} Bluehouse Planning & Designs Inc. All rights reserved.
           </p>
-          
-          <button 
-            onClick={onAdminClick}
-            className={`mt-4 md:mt-0 text-[10px] uppercase tracking-widest transition-colors cursor-pointer ${isDarkMode ? 'text-off-white/10 hover:text-off-white/30' : 'text-deep-teal/10 hover:text-deep-teal/30'}`}
-          >
-            Admin Access
-          </button>
         </div>
       </div>
     </footer>
