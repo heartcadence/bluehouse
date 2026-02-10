@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Facebook, Plus, CheckCircle, Quote, ArrowRight } from 'lucide-react';
 import { Product, Category } from '../types';
-import { MOCK_PRODUCTS, CATEGORIES, PLACEHOLDER_PRODUCT } from '../constants';
+import { CATEGORIES } from '../constants';
 import ProductCard from './ProductCard';
 import { client } from '../lib/sanity.client';
 
@@ -39,13 +39,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
 
   // Fetch Sanity Data with Category Filtering
   useEffect(() => {
+    // Clear plans immediately on category switch so we don't show stale data 
+    setPlans([]);
+
     const fetchPlans = async () => {
       try {
-        // We normalize 'All' from the UI state to 'ALL' for the query check
+        // Use 'ALL' as the sentinel value for the "All" category to bypass filtering.
+        // Otherwise pass the active category name.
         const queryCategory = activeCategory === 'All' ? 'ALL' : activeCategory;
 
-        // Query using the variable $category
-        const query = `*[_type == "plan" && ($category == "ALL" || category == $category)]{
+        // Query using the variable $category.
+        // We use lower() for case-insensitive comparison to match Sanity data conventions.
+        const query = `*[_type == "plan" && ($category == "ALL" || lower(category) == lower($category))]{
           _id,
           _type,
           title,
@@ -64,6 +69,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
           floorPlanPreviews[] { "url": asset->url }
         }`;
         
+        // Pass the calculated queryCategory as the $category parameter
         const params = { category: queryCategory };
         const result = await client.fetch(query, params);
         
@@ -80,17 +86,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
 
     fetchPlans();
   }, [activeCategory]); // Re-fetch when category changes
-
-  // Ensure we always have at least 6 items for layout
-  const displayPlans = [...plans];
-  const minimumCards = 6;
-  while (displayPlans.length < minimumCards) {
-    displayPlans.push({
-      ...PLACEHOLDER_PRODUCT,
-      _id: `placeholder-${displayPlans.length}`, // Ensure unique ID for map key
-      category: activeCategory // Match the placeholder category to the current filter
-    });
-  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -228,16 +223,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, isAdmin, activeVi
                         </div>
 
                         {/* Product Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {displayPlans.map(plan => (
-                            <ProductCard 
-                            key={plan._id} 
-                            plan={plan} 
-                            isAdmin={isAdmin} 
-                            isDarkMode={isDarkMode}
-                            />
-                        ))}
-                        </div>
+                        {plans.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {plans.map(plan => (
+                                    <ProductCard 
+                                    key={plan._id} 
+                                    plan={plan} 
+                                    isAdmin={isAdmin} 
+                                    isDarkMode={isDarkMode}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-20 text-center opacity-60">
+                                <div className={`text-xl font-display italic ${mutedColor}`}>
+                                    New designs coming soon to the {activeCategory} collection.
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
