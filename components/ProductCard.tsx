@@ -82,20 +82,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
             </div>
           )}
 
-          {/* Carousel Container */}
+          {/* Carousel Container - 4:3 Aspect Ratio */}
           <div className={`relative w-full aspect-[4/3] ${imageContainerBg}`}>
             {images.map((img, index) => {
                 // Handle both Sanity object and string (dummy)
-                // Use 4:3 aspect ratio dimensions for crop (1200x900)
+                // Optimized: Resize to 800px width (plenty for card), Quality 75, Auto Format.
+                // Maintain 4:3 aspect ratio crop.
                 const imgSrc = typeof img === 'string' 
                   ? img 
-                  : urlFor(img).width(1200).height(900).fit('crop').auto('format').url();
+                  : urlFor(img).width(800).height(600).quality(75).fit('crop').auto('format').url();
 
                 return (
                   <img 
                     key={index}
                     src={imgSrc} 
                     alt={`${plan.title} view ${index + 1}`} 
+                    loading="lazy"
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'} ${plan.isPlaceholder ? 'grayscale sepia-[.3]' : ''}`}
                   />
                 );
@@ -219,20 +221,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
                 
                 <div className="space-y-4">
                     {hasFloorPlans ? (
-                        plan.floorPlanPreviews?.map((preview, idx) => (
-                            <div key={idx} className={`rounded-sm overflow-hidden border ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'} shadow-sm`}>
-                                <div className={`relative aspect-[4/3] w-full flex items-center justify-center ${imageContainerBg}`}>
-                                    <img 
-                                        src={preview.url} 
-                                        alt={`Floor Plan ${idx + 1}`} 
-                                        className="w-full h-full object-contain" 
-                                    />
+                        plan.floorPlanPreviews?.map((preview: any, idx) => {
+                            // Check if preview is a Sanity asset (object) or a string/url (mock/legacy)
+                            const previewSrc = (preview.asset || preview._type === 'image')
+                                ? urlFor(preview).width(800).quality(75).auto('format').url()
+                                : preview.url;
+
+                            return (
+                                <div key={idx} className={`rounded-sm overflow-hidden border ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'} shadow-sm`}>
+                                    <div className={`relative aspect-[4/3] w-full flex items-center justify-center ${imageContainerBg}`}>
+                                        <img 
+                                            src={previewSrc} 
+                                            alt={`Floor Plan ${idx + 1}`} 
+                                            loading="lazy"
+                                            className="w-full h-full object-contain" 
+                                        />
+                                    </div>
+                                    <div className={`px-3 py-2 text-[10px] uppercase tracking-widest text-center ${isDarkMode ? 'bg-deep-teal-dark' : 'bg-gray-100'} opacity-80`}>
+                                        Sheet {idx + 1}
+                                    </div>
                                 </div>
-                                <div className={`px-3 py-2 text-[10px] uppercase tracking-widest text-center ${isDarkMode ? 'bg-deep-teal-dark' : 'bg-gray-100'} opacity-80`}>
-                                    Sheet {idx + 1}
-                                </div>
-                            </div>
-                        ))
+                            );
+                        })
                     ) : (
                         // Empty State Placeholders
                         <>
