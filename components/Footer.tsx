@@ -57,6 +57,14 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode, onContactClick, onAboutClic
           <p className={`text-xs tracking-wide ${isDarkMode ? 'text-off-white/30' : 'text-deep-teal/30'}`}>
             © {new Date().getFullYear()} Bluehouse Planning & Designs Inc. All rights reserved.
           </p>
+          <a
+            href="https://bluehouse-planning.sanity.studio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`mt-4 md:mt-0 text-[10px] uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity duration-300 ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}
+          >
+            Studio Login
+          </a>
         </div>
       </div>
     </footer>
