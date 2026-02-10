@@ -58,7 +58,7 @@ const Footer: React.FC<FooterProps> = ({ isDarkMode, onContactClick, onAboutClic
             © {new Date().getFullYear()} Bluehouse Planning & Designs Inc. All rights reserved.
           </p>
           <a
-            href="https://bluehouse-planning.sanity.studio/"
+            href="https://bluehouse-portal.sanity.studio/"
             target="_blank"
             rel="noopener noreferrer"
             className={`mt-4 md:mt-0 text-[10px] uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity duration-300 ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}
