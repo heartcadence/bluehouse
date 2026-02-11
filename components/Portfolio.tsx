@@ -108,8 +108,12 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
             >
               {project.gallery?.[0] && (
                 <img 
-                  src={urlFor(project.gallery[0]).width(600).auto('format').url()} 
+                  src={urlFor(project.gallery[0]).width(600).height(450).quality(80).auto('format').url()} 
                   alt={project.projectName}
+                  width={600}
+                  height={450}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
               )}
@@ -137,7 +141,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                 <div className="relative w-full h-full flex items-center justify-center p-2 md:p-6">
                   <img 
                     key={currentImageIndex}
-                    src={urlFor(selectedProject.gallery[currentImageIndex]).width(1200).quality(90).auto('format').url()}
+                    src={urlFor(selectedProject.gallery[currentImageIndex]).width(1200).quality(80).auto('format').url()}
                     alt="Build Phase"
                     className="max-h-full max-w-full object-contain transition-opacity duration-500 animate-fade-in"
                   />

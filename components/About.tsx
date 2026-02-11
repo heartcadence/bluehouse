@@ -100,6 +100,9 @@ const About: React.FC<AboutProps> = ({ isDarkMode, onCtaClick }) => {
                   alt="Architecture Studio" 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
                   loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={500}
                 />
                 <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
               </div>

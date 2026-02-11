@@ -91,11 +91,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
           <div className={`relative w-full aspect-[4/3] ${imageContainerBg}`}>
             {images.map((img, index) => {
                 // Handle both Sanity object and string (dummy)
-                // Optimized: Resize to 800px width (plenty for card), Quality 75, Auto Format.
+                // Optimized: Resize to 800px width (plenty for card), Quality 80, Auto Format.
                 // Maintain 4:3 aspect ratio crop.
                 const imgSrc = typeof img === 'string' 
                   ? img 
-                  : urlFor(img).width(800).height(600).quality(75).fit('crop').auto('format').url();
+                  : urlFor(img).width(800).height(600).quality(80).fit('crop').auto('format').url();
 
                 return (
                   <img 
@@ -103,6 +103,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
                     src={imgSrc} 
                     alt={`${plan.title} view ${index + 1}`} 
                     loading="lazy"
+                    decoding="async"
+                    width={800}
+                    height={600}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'} ${plan.isPlaceholder ? 'grayscale sepia-[.3]' : ''}`}
                   />
                 );
@@ -229,7 +232,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
                         plan.floorPlanPreviews?.map((preview: any, idx) => {
                             // Check if preview is a Sanity asset (object) or a string/url (mock/legacy)
                             const previewSrc = (preview.asset || preview._type === 'image')
-                                ? urlFor(preview).width(800).quality(75).auto('format').url()
+                                ? urlFor(preview).width(800).quality(80).auto('format').url()
                                 : preview.url;
 
                             return (
@@ -239,6 +242,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
                                             src={previewSrc} 
                                             alt={`Floor Plan ${idx + 1}`} 
                                             loading="lazy"
+                                            decoding="async"
                                             className="w-full h-full object-contain" 
                                         />
                                     </div>

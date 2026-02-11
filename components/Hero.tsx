@@ -24,6 +24,10 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode, onCtaClick }) => {
             className={`w-full h-full object-cover transition-opacity duration-700 ${
               isDarkMode ? 'opacity-30' : 'opacity-90'
             }`}
+            loading="eager"
+            fetchPriority="high"
+            width="1920"
+            height="1080"
           />
         </picture>
         <div className={`absolute inset-0 bg-gradient-to-b ${
