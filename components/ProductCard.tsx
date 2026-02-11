@@ -6,9 +6,10 @@ import { urlFor } from '../lib/sanity.client';
 interface ProductCardProps {
   plan: Product;
   isDarkMode: boolean;
+  isHighlighted?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlighted }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [includeBCIN, setIncludeBCIN] = useState(false);
@@ -67,12 +68,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
     <div className={`group relative w-full h-[540px] perspective-1000 ${plan.isPlaceholder ? 'opacity-80' : ''}`}>
       {/* 3D Container */}
       <div 
-        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${
+        className={`relative w-full h-full transition-all duration-700 transform-style-3d ${
           isFlipped ? 'rotate-y-180' : ''
-        }`}
+        } ${isHighlighted ? 'scale-[1.02]' : ''}`}
       >
+        {/* Highlight Glow Effect */}
+        {isHighlighted && (
+           <div className="absolute -inset-2 rounded-lg bg-muted-gold opacity-50 blur-lg animate-pulse z-0"></div>
+        )}
+
         {/* --- FRONT SIDE (Carousel) --- */}
-        <div className={`absolute w-full h-full backface-hidden ${cardBgColor} rounded-sm overflow-hidden flex flex-col`}>
+        <div className={`absolute w-full h-full backface-hidden ${cardBgColor} rounded-sm overflow-hidden flex flex-col z-10 ${isHighlighted ? 'ring-2 ring-muted-gold' : ''}`}>
           
           {/* Badge for Placeholders */}
           {plan.isPlaceholder && (
@@ -184,7 +190,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
         </div>
 
         {/* --- BACK SIDE (Blueprints) --- */}
-        <div className={`absolute w-full h-full backface-hidden rotate-y-180 ${backBgColor} ${backTextColor} rounded-sm overflow-hidden flex flex-col`}>
+        <div className={`absolute w-full h-full backface-hidden rotate-y-180 ${backBgColor} ${backTextColor} rounded-sm overflow-hidden flex flex-col z-10`}>
           
           {/* Header */}
           <div className={`flex justify-between items-center p-4 border-b ${isDarkMode ? 'border-off-white/10' : 'border-deep-teal/10'} bg-opacity-50 backdrop-blur-sm z-10 relative`}>

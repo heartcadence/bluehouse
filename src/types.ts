@@ -24,6 +24,19 @@ export interface Product {
   isPlaceholder?: boolean;
 }
 
+export interface Project {
+  _id: string;
+  _type: 'project';
+  projectName: string;
+  gallery: any[];
+  shortDescription?: string;
+  linkedPlan?: {
+    _id: string;
+    category: string;
+    title: string;
+  };
+}
+
 export type Category = 'All' | 'Modern' | 'Family' | 'Cottage' | 'Estate';
 
 export interface AdminContextType {

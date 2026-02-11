@@ -3,12 +3,13 @@ import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCh
 import { Product, Category } from '../src/types';
 import { CATEGORIES } from '../src/constants';
 import ProductCard from './ProductCard';
+import Portfolio from './Portfolio';
 import { client } from '../lib/sanity.client';
 
 interface LandingPageProps {
   isDarkMode: boolean;
-  activeView: 'collection' | 'contact' | 'about';
-  setActiveView: (view: 'collection' | 'contact' | 'about') => void;
+  activeView: 'collection' | 'contact' | 'about' | 'portfolio';
+  setActiveView: (view: 'collection' | 'contact' | 'about' | 'portfolio') => void;
 }
 
 const TESTIMONIALS = [
@@ -32,6 +33,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
   const [isLoading, setIsLoading] = useState(false);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
+  const [highlightedPlanId, setHighlightedPlanId] = useState<string | null>(null);
   
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -155,6 +157,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
     }
   };
 
+  // Portfolio Callback
+  const handleViewLinkedPlan = (planId: string, category: string) => {
+    setActiveView('collection');
+    setActiveCategory(category as Category);
+    setHighlightedPlanId(planId);
+    
+    // Smooth scroll to top of collection
+    const gridTop = document.getElementById('dynamic-content');
+    if (gridTop) {
+        gridTop.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Remove highlight after animation duration
+    setTimeout(() => {
+        setHighlightedPlanId(null);
+    }, 4000);
+  };
+
   const currentTestimonial = TESTIMONIALS[currentTestimonialIndex];
   
   // Calculate displayed plans based on current page
@@ -238,26 +258,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
             {/* Toggle Bar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 mb-16">
                 <div className="flex justify-center animate-slide-up animation-delay-400 pointer-events-none">
-                     <div className={`pointer-events-auto flex p-1 rounded-full backdrop-blur-md border shadow-2xl ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'}`}>
+                     <div className={`pointer-events-auto flex flex-wrap justify-center p-1 rounded-full backdrop-blur-md border shadow-2xl ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'}`}>
                         <button
                             onClick={() => setActiveView('contact')}
-                            className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                            className={`px-6 md:px-8 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                                 activeView === 'contact'
                                 ? 'bg-muted-gold text-deep-teal shadow-lg'
                                 : `${textColor} hover:bg-white/10`
                             }`}
                         >
-                            Contact Us
+                            Contact
                         </button>
                         <button
                             onClick={() => setActiveView('collection')}
-                            className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                            className={`px-6 md:px-8 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
                                 activeView === 'collection'
                                 ? 'bg-muted-gold text-deep-teal shadow-lg'
                                 : `${textColor} hover:bg-white/10`
                             }`}
                         >
                             Collection
+                        </button>
+                        <button
+                            onClick={() => setActiveView('portfolio')}
+                            className={`px-6 md:px-8 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                                activeView === 'portfolio'
+                                ? 'bg-muted-gold text-deep-teal shadow-lg'
+                                : `${textColor} hover:bg-white/10`
+                            }`}
+                        >
+                            Portfolio
                         </button>
                     </div>
                 </div>
@@ -295,9 +325,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                 <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
                                     {displayedPlans.map(plan => (
                                         <ProductCard 
-                                        key={plan._id} 
-                                        plan={plan} 
-                                        isDarkMode={isDarkMode}
+                                            key={plan._id} 
+                                            plan={plan} 
+                                            isDarkMode={isDarkMode}
+                                            isHighlighted={highlightedPlanId === plan._id}
                                         />
                                     ))}
                                 </div>
@@ -347,6 +378,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                             )
                         )}
                     </div>
+                </div>
+
+                {/* --- PORTFOLIO VIEW --- */}
+                <div className={`transition-all duration-500 ease-in-out ${activeView === 'portfolio' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
+                    <Portfolio 
+                        isDarkMode={isDarkMode} 
+                        onViewPlan={handleViewLinkedPlan}
+                    />
                 </div>
 
                 {/* --- CONTACT VIEW --- */}

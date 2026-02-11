@@ -7,7 +7,7 @@ type ViewMode = 'landing'; // Simplified as LandingPage handles internal views n
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about'>('contact');
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
   
   // Toggle Body Background
   useEffect(() => {
