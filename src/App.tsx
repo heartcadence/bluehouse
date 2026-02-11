@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-// Standardized imports matching your file explorer casing
-import Header from './components/Header';
-import Footer from './components/Footer';
-import LandingPage from './components/LandingPage';
+// Adjusted paths to step out of 'src' and into root 'components'
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import LandingPage from '../components/LandingPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);

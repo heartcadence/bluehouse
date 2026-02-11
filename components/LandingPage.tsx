@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Product, Category } from '../types';
-import { CATEGORIES } from '../constants';
-import { client } from '../lib/sanity.client'; // Path verified based on explorer
+import { Product, Category } from '../src/types';
+import { CATEGORIES } from '../src/constants';
+import { client } from '../lib/sanity.client';
 
 // COMPONENT IMPORTS
-import Header from './Header';
 import Hero from './Hero';
 import Portfolio from './Portfolio';
 import Storefront from './Storefront';
@@ -15,14 +14,12 @@ interface LandingPageProps {
   isDarkMode: boolean;
   activeView: 'collection' | 'contact' | 'about' | 'portfolio';
   setActiveView: (view: 'collection' | 'contact' | 'about' | 'portfolio') => void;
-  toggleDarkMode: () => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ 
   isDarkMode, 
   activeView, 
-  setActiveView,
-  toggleDarkMode 
+  setActiveView
 }) => {
   // --- STATE MANAGEMENT ---
   const [activeCategory, setActiveCategory] = useState<Category>('All');
@@ -78,10 +75,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setActiveCategory(category as Category);
     setHighlightedPlanId(planId);
     
-    const storefrontElement = document.getElementById('storefront');
-    if (storefrontElement) {
-      storefrontElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // Add timeout to ensure the Storefront DOM element is mounted after state change
+    setTimeout(() => {
+        const storefrontElement = document.getElementById('storefront');
+        if (storefrontElement) {
+          storefrontElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
 
     setTimeout(() => setHighlightedPlanId(null), 4000);
   };
@@ -91,79 +91,71 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div className="animate-fade-in w-full min-h-screen">
-      <Header 
-        isDarkMode={isDarkMode} 
-        toggleDarkMode={toggleDarkMode} 
-        activeView={activeView}
-        setActiveView={setActiveView}
-      />
+      
+      <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
 
-      <main>
-        <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
+      <section className="relative z-20 -mt-20">
+        {/* Inner Toggle Bar: Contact vs Collection (Portfolio removed) */}
+        <div className="flex justify-center mb-16 px-4">
+          <div className={`flex flex-wrap justify-center p-1 rounded-full backdrop-blur-md border shadow-2xl ${
+            isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'
+          }`}>
+            {[
+              { id: 'contact', label: 'Contact Us' },
+              { id: 'collection', label: 'The Collection' }
+            ].map((view) => (
+              <button
+                key={view.id}
+                onClick={() => setActiveView(view.id as any)}
+                className={`px-8 md:px-12 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${
+                  activeView === view.id 
+                    ? 'bg-muted-gold text-deep-teal shadow-lg' 
+                    : `${isDarkMode ? 'text-off-white' : 'text-deep-teal'} opacity-60 hover:opacity-100`
+                }`}
+              >
+                {view.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <section className="relative z-20 -mt-20">
-          {/* Inner Toggle Bar: Contact vs Collection */}
-          <div className="flex justify-center mb-16 px-4">
-            <div className={`flex flex-wrap justify-center p-1 rounded-full backdrop-blur-md border shadow-2xl ${
-              isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'
-            }`}>
-              {[
-                { id: 'contact', label: 'Contact Us' },
-                { id: 'collection', label: 'The Collection' }
-              ].map((view) => (
-                <button
-                  key={view.id}
-                  onClick={() => setActiveView(view.id as any)}
-                  className={`px-8 md:px-12 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${
-                    activeView === view.id 
-                      ? 'bg-muted-gold text-deep-teal shadow-lg' 
-                      : `${isDarkMode ? 'text-off-white' : 'text-deep-teal'} opacity-60 hover:opacity-100`
-                  }`}
-                >
-                  {view.label}
-                </button>
-              ))}
+        <div className="w-full">
+          {activeView === 'contact' && (
+            <div className="animate-fade-in">
+              <Contact isDarkMode={isDarkMode} />
             </div>
-          </div>
+          )}
 
-          <div className="w-full">
-            {activeView === 'contact' && (
-              <div className="animate-fade-in">
-                <Contact isDarkMode={isDarkMode} />
-              </div>
-            )}
+          {activeView === 'collection' && (
+            <div id="storefront" className="scroll-mt-28 animate-fade-in">
+              <Storefront 
+                isDarkMode={isDarkMode}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+                plans={displayedPlans}
+                isLoading={isLoading}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPrevPage={() => setCurrentPage(p => p - 1)}
+                onNextPage={() => setCurrentPage(p => p + 1)}
+                highlightedPlanId={highlightedPlanId}
+              />
+            </div>
+          )}
 
-            {activeView === 'collection' && (
-              <div id="storefront" className="scroll-mt-28 animate-fade-in">
-                <Storefront 
-                  isDarkMode={isDarkMode}
-                  activeCategory={activeCategory}
-                  setActiveCategory={setActiveCategory}
-                  plans={displayedPlans}
-                  isLoading={isLoading}
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPrevPage={() => setCurrentPage(p => p - 1)}
-                  onNextPage={() => setCurrentPage(p => p + 1)}
-                  highlightedPlanId={highlightedPlanId}
-                />
-              </div>
-            )}
+          {activeView === 'portfolio' && (
+            <div className="animate-fade-in">
+              <Portfolio isDarkMode={isDarkMode} onViewPlan={handleViewLinkedPlan} />
+            </div>
+          )}
 
-            {activeView === 'portfolio' && (
-              <div className="animate-fade-in">
-                <Portfolio isDarkMode={isDarkMode} onViewPlan={handleViewLinkedPlan} />
-              </div>
-            )}
-
-            {activeView === 'about' && (
-              <div className="animate-fade-in">
-                <About isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
+          {activeView === 'about' && (
+            <div className="animate-fade-in">
+              <About isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
+            </div>
+          )}
+        </div>
+      </section>
 
       <style>{`
         @keyframes plan-pulse {
