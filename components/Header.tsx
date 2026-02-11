@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X, Home } from 'lucide-react';
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -50,12 +50,18 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center">
           
           <div 
-            className="cursor-pointer group"
-            onClick={() => handleNavClick('collection')}
+            className="cursor-pointer group flex items-center gap-3"
+            onClick={() => handleNavClick('contact')}
           >
-            <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors ${textColor} group-hover:text-muted-gold`}>
-              Bluehouse<span className="text-muted-gold font-light">.</span>
-            </h1>
+            <Home className="text-muted-gold w-6 h-6 transition-transform duration-500 group-hover:scale-110" />
+            <div className="flex flex-col">
+              <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors leading-none ${textColor} group-hover:text-muted-gold`}>
+                Bluehouse<span className="text-muted-gold font-light">.</span>
+              </h1>
+              <span className="text-muted-gold text-[10px] tracking-[0.2em] font-light uppercase mt-1">
+                Planning and Designs Inc.
+              </span>
+            </div>
           </div>
 
           <nav className="hidden md:flex items-center space-x-12">
