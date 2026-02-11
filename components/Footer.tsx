@@ -59,13 +59,6 @@ const Footer: React.FC<FooterProps> = ({
                   Portfolio
                 </button>
               </li>
-              <li>
-                <button 
-                  className="hover:text-muted-gold transition-colors text-left opacity-50 cursor-not-allowed"
-                >
-                  Architects
-                </button>
-              </li>
             </ul>
           </div>
 
