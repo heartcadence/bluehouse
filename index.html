@@ -10,10 +10,20 @@
     <link rel="preconnect" href="https://cdn.sanity.io">
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
 
+    <!-- Mobile Hero Preload -->
     <link 
       rel="preload" 
       as="image" 
-      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp" 
+      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800" 
+      media="(max-width: 768px)"
+      fetchpriority="high"
+    >
+    <!-- Desktop Hero Preload -->
+    <link 
+      rel="preload" 
+      as="image" 
+      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920" 
+      media="(min-width: 769px)"
       fetchpriority="high"
     >
 
