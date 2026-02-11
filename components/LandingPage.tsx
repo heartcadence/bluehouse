@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product, Category } from '../src/types';
 import { CATEGORIES } from '../src/constants';
 import ProductCard from './ProductCard';
@@ -34,8 +34,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
   const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
   
   // Pagination State
-  const [visibleCount, setVisibleCount] = useState(6);
-  const ITEMS_PER_LOAD = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const PLANS_PER_PAGE = 6;
 
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
@@ -48,7 +48,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
     const fetchPlans = async () => {
       setIsLoading(true);
       // Reset pagination when category changes
-      setVisibleCount(ITEMS_PER_LOAD);
+      setCurrentPage(1);
       
       try {
         // Use 'ALL' as the sentinel value for the "All" category to bypass filtering.
@@ -133,12 +133,33 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const handleLoadMore = () => {
-    setVisibleCount(prev => prev + ITEMS_PER_LOAD);
+  // Pagination Handlers
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+      const gridTop = document.getElementById('product-grid-top');
+      if (gridTop) {
+        gridTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(plans.length / PLANS_PER_PAGE);
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+      const gridTop = document.getElementById('product-grid-top');
+      if (gridTop) {
+        gridTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   };
 
   const currentTestimonial = TESTIMONIALS[currentTestimonialIndex];
-  const displayedPlans = plans.slice(0, visibleCount);
+  
+  // Calculate displayed plans based on current page
+  const totalPages = Math.ceil(plans.length / PLANS_PER_PAGE);
+  const displayedPlans = plans.slice((currentPage - 1) * PLANS_PER_PAGE, currentPage * PLANS_PER_PAGE);
 
   return (
     <div className="animate-fade-in w-full">
@@ -248,7 +269,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                 <div className={`transition-all duration-500 ease-in-out ${activeView === 'collection' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
                         {/* Controls Bar */}
-                        <div className={`flex flex-col md:flex-row justify-between items-center mb-12 p-6 rounded-sm backdrop-blur-md border ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10 shadow-lg'}`}>
+                        <div id="product-grid-top" className={`flex flex-col md:flex-row justify-between items-center mb-12 p-6 rounded-sm backdrop-blur-md border ${isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10 shadow-lg'}`}>
                             
                             {/* Filter Tabs */}
                             <div className="flex flex-wrap justify-center gap-2">
@@ -281,19 +302,37 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                     ))}
                                 </div>
 
-                                {/* Pagination Button */}
-                                {plans.length > displayedPlans.length && (
-                                    <div className="mt-16 flex justify-center">
+                                {/* Pagination Controls (Rule of 6) */}
+                                {plans.length > PLANS_PER_PAGE && (
+                                    <div className="mt-16 flex justify-center items-center gap-12">
                                         <button 
-                                            onClick={handleLoadMore}
-                                            className={`group flex items-center gap-3 px-8 py-3 rounded-sm border transition-all duration-300 ${
+                                            onClick={handlePrevPage}
+                                            disabled={currentPage === 1}
+                                            className={`group flex items-center gap-3 px-6 py-3 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed ${
                                                 isDarkMode 
-                                                ? 'border-muted-gold text-muted-gold hover:bg-muted-gold hover:text-deep-teal' 
-                                                : 'border-deep-teal text-deep-teal hover:bg-deep-teal hover:text-white'
+                                                ? 'text-muted-gold hover:text-off-white' 
+                                                : 'text-deep-teal hover:text-muted-gold'
                                             }`}
                                         >
-                                            <span className="text-xs font-bold uppercase tracking-widest">View More Designs</span>
-                                            <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-1" />
+                                            <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                                            <span className="text-xs font-bold uppercase tracking-widest">Previous</span>
+                                        </button>
+
+                                        <span className={`text-[10px] uppercase tracking-widest ${mutedColor}`}>
+                                            Page {currentPage} of {totalPages}
+                                        </span>
+
+                                        <button 
+                                            onClick={handleNextPage}
+                                            disabled={currentPage >= totalPages}
+                                            className={`group flex items-center gap-3 px-6 py-3 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed ${
+                                                isDarkMode 
+                                                ? 'text-muted-gold hover:text-off-white' 
+                                                : 'text-deep-teal hover:text-muted-gold'
+                                            }`}
+                                        >
+                                            <span className="text-xs font-bold uppercase tracking-widest">Next</span>
+                                            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                         </button>
                                     </div>
                                 )}
