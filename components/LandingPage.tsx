@@ -133,44 +133,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
       {/* Hero */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <picture>
-            {/* Mobile AVIF (Highest Priority) */}
-            <source 
-              media="(max-width: 768px)" 
-              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
-              type="image/avif"
-            />
-            {/* Mobile WebP (Fallback) */}
-            <source 
-              media="(max-width: 768px)" 
-              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800" 
-              type="image/webp"
-            />
-            
-            {/* Desktop AVIF (Highest Priority) */}
-            <source 
-              media="(min-width: 769px)" 
-              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=1920" 
-              type="image/avif"
-            />
-            {/* Desktop WebP (Fallback) */}
-            <source 
-              media="(min-width: 769px)" 
-              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920" 
-              type="image/webp"
-            />
-            
-            {/* Fallback Image */}
-            <img
-              src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
-              alt="Modern Architectural House"
-              loading="eager"
-              // @ts-ignore - React 18/19 compatibility for high priority LCP loading
-              fetchPriority="high"
-              className={`w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
-            />
-          </picture>
-           <div className={`absolute inset-0 bg-gradient-to-b ${isDarkMode ? 'from-deep-teal/90 via-deep-teal/50 to-deep-teal' : 'from-light-bg/80 via-light-bg/40 to-light-bg'}`}></div>
+          {/* Optimized Hero Image */}
+          <img
+            src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
+            srcSet="
+              https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800 800w,
+              https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920 1920w
+            "
+            sizes="100vw"
+            alt="Modern Architectural House"
+            loading="eager"
+            // @ts-ignore
+            fetchPriority="high"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
+          />
+          <div className={`absolute inset-0 bg-gradient-to-b ${isDarkMode ? 'from-deep-teal/90 via-deep-teal/50 to-deep-teal' : 'from-light-bg/80 via-light-bg/40 to-light-bg'}`}></div>
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-[-40px]">
