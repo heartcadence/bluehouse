@@ -1,6 +1,6 @@
 // lib/sanity.client.ts
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 
 export const client = createClient({
   projectId: 'cwjtbne7',
@@ -10,6 +10,7 @@ export const client = createClient({
   ignoreBrowserTokenWarning: true,
 });
 
-const builder = imageUrlBuilder(client);
+// Use the named export factory function
+const builder = createImageUrlBuilder(client);
 
 export const urlFor = (source: any) => builder.image(source);

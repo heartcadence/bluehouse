@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://cdn.sanity.io">
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
 
-    <!-- Mobile Hero Preload (AVIF) -->
+    <!-- Mobile Hero Preload (AVIF) - Keeping optimized width -->
     <link 
       rel="preload" 
       as="image" 
@@ -18,11 +18,11 @@
       media="(max-width: 768px)"
       fetchpriority="high"
     >
-    <!-- Desktop Hero Preload (AVIF) -->
+    <!-- Desktop Hero Preload (AVIF) - Exact match for LCP (no query params) -->
     <link 
       rel="preload" 
       as="image" 
-      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=1920" 
+      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
       media="(min-width: 769px)"
       fetchpriority="high"
     >

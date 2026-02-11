@@ -135,13 +135,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
         <div className="absolute inset-0 z-0">
           <picture>
              {/* AVIF Sources (Primary) */}
+             {/* Note: Desktop source uses exact URL to match index.html preload */}
              <source 
                 srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
                 media="(max-width: 768px)" 
                 type="image/avif" 
              />
              <source 
-                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=1920" 
+                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
                 media="(min-width: 769px)" 
                 type="image/avif" 
              />
@@ -368,7 +369,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                 <div className="max-w-3xl mx-auto text-center">
                                     <h2 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-8">Who We Are</h2>
                                     <p className={`text-lg md:text-xl font-light leading-relaxed ${mutedColor} italic`}>
-                                        "Bluehouse Planning & Designs is a premier architectural design firm rooted in Brantford, Ontario. With over a decade of local expertise, we bridge the gap between visionary aesthetics and practical construction. We pride ourselves on our intimate knowledge of local zoning bylaws and our seamless permit approval process, ensuring your dream home becomes a reality without the red tape."
+                                        "Bluehouse Planning & Designs Inc. provides BCIN Registered, Ontario-compliant architectural solutions with over a decade of local expertise. Rooted in Brantford, Ontario, we bridge the gap between visionary aesthetics and practical construction, ensuring your dream home becomes a reality without the red tape."
                                     </p>
                                 </div>
                             </div>
