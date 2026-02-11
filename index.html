@@ -5,15 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BLUEHOUSE Planning & Designs</title>
 
-    <!-- Preconnect Hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="preconnect" href="https://cdn.sanity.io">
-    <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
-
-    <!-- LCP Preload: Hero Image -->
+    <!-- LCP Preload: Hero Image (Highest Priority) -->
     <link 
       rel="preload" 
       as="image" 
@@ -21,6 +13,12 @@
       type="image/avif"
       fetchpriority="high"
     >
+
+    <!-- Preconnect Hints (Consolidated) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
+    <link rel="preconnect" href="https://cdn.sanity.io">
 
     <!-- Font Preloads: Lato Regular & Bold -->
     <link rel="preload" href="https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
@@ -46,6 +44,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
+    <script type="module" defer src="/src/index.tsx"></script>
   </body>
 </html>
