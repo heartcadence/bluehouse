@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Product, Category } from '../types';
 import { CATEGORIES } from '../constants';
 import ProductCard from './ProductCard';
@@ -133,20 +133,35 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
       {/* Hero */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          {/* Optimized Hero Image */}
-          <img
-            src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
-            srcSet="
-              https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800 800w,
-              https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920 1920w
-            "
-            sizes="100vw"
-            alt="Modern Architectural House"
-            loading="eager"
-            // @ts-ignore
-            fetchPriority="high"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
-          />
+          <picture>
+             {/* AVIF Sources (Primary) */}
+             <source 
+                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
+                media="(max-width: 768px)" 
+                type="image/avif" 
+             />
+             <source 
+                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=1920" 
+                media="(min-width: 769px)" 
+                type="image/avif" 
+             />
+             
+             {/* WebP Fallback */}
+             <img
+                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
+                srcSet="
+                https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800 800w,
+                https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920 1920w
+                "
+                sizes="100vw"
+                alt="Modern Architectural House"
+                loading="eager"
+                // @ts-ignore
+                fetchPriority="high"
+                decoding="async"
+                className={`w-full h-full object-cover transition-opacity duration-700 ${isDarkMode ? 'opacity-30' : 'opacity-90'}`}
+             />
+          </picture>
           <div className={`absolute inset-0 bg-gradient-to-b ${isDarkMode ? 'from-deep-teal/90 via-deep-teal/50 to-deep-teal' : 'from-light-bg/80 via-light-bg/40 to-light-bg'}`}></div>
         </div>
 
@@ -158,13 +173,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
             Visionary <br/> <span className="italic text-muted-gold">Architecture</span>
           </h1>
 
-          <div className="mt-8 animate-slide-up animation-delay-400">
+          <div className="mt-8 animate-slide-up animation-delay-400 flex flex-col items-center">
              <button 
                onClick={handleHeroCta}
                className="px-10 py-4 bg-muted-gold text-deep-teal font-bold tracking-[0.2em] uppercase text-xs rounded-sm hover:bg-off-white transition-all duration-300 shadow-[0_0_20px_rgba(166,133,98,0.3)] hover:shadow-[0_0_30px_rgba(166,133,98,0.5)]"
              >
                Find My Dream Home
              </button>
+             
+             {/* Trust Badge */}
+             <div className="mt-6 flex items-center justify-center space-x-2 opacity-80 animate-fade-in animation-delay-600">
+                <ShieldCheck className="w-4 h-4 text-muted-gold" />
+                <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
+                    BCIN Registered
+                </span>
+             </div>
           </div>
         </div>
       </section>
