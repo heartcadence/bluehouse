@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SEO from '../src/components/SEO';
 
 // Lazy load LandingPage for code splitting
 const LandingPage = lazy(() => import('../components/LandingPage'));
@@ -23,6 +24,7 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
+      <SEO />
       <Header 
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleTheme}
