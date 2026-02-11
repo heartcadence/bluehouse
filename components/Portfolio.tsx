@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ExternalLink, Loader2 } from 'lucide-react';
 import { client, urlFor } from '../lib/sanity.client';
 import { Project } from '../src/types';
 
@@ -13,6 +13,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
 
   // Styling Variables
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
@@ -20,7 +21,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
   const cardBg = isDarkMode ? 'bg-deep-teal-dark border-off-white/10' : 'bg-white border-deep-teal/10 shadow-lg';
   const overlayBg = isDarkMode ? 'bg-deep-teal/95' : 'bg-light-bg/95';
 
-  // Fetch Projects (Lazy Load: Only first image initially)
+  // 1. Initial Fetch: Lightweight
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -46,21 +47,23 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
     fetchProjects();
   }, []);
 
+  // 2. Second Fetch Logic
+  const fetchProjectDetails = async (id: string) => {
+    const query = `*[_type == "project" && _id == $id][0]{
+        gallery,
+        shortDescription
+    }`;
+    return await client.fetch(query, { id });
+  };
+
   const openProject = async (project: Project) => {
-    // 1. Open modal immediately with available partial data
     setSelectedProject(project);
     setCurrentImageIndex(0);
+    setIsDetailLoading(true);
     document.body.style.overflow = 'hidden';
 
-    // 2. Fetch full details (full gallery + description)
     try {
-        const query = `*[_type == "project" && _id == $id][0]{
-            gallery,
-            shortDescription
-        }`;
-        const fullDetails = await client.fetch(query, { id: project._id });
-        
-        // Update state if the modal is still open for this project
+        const fullDetails = await fetchProjectDetails(project._id);
         setSelectedProject((current) => {
             if (current && current._id === project._id && fullDetails) {
                 return { ...current, ...fullDetails };
@@ -69,22 +72,25 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
         });
     } catch (error) {
         console.error("Failed to load project details", error);
+    } finally {
+        setIsDetailLoading(false);
     }
   };
 
   const closeProject = () => {
     setSelectedProject(null);
+    setIsDetailLoading(false);
     document.body.style.overflow = 'unset';
   };
 
   const handleNextImage = () => {
-    if (selectedProject && selectedProject.gallery) {
+    if (selectedProject?.gallery) {
       setCurrentImageIndex((prev) => (prev + 1) % selectedProject.gallery.length);
     }
   };
 
   const handlePrevImage = () => {
-    if (selectedProject && selectedProject.gallery) {
+    if (selectedProject?.gallery) {
       setCurrentImageIndex((prev) => (prev - 1 + selectedProject.gallery.length) % selectedProject.gallery.length);
     }
   };
@@ -93,8 +99,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
     if (selectedProject?.linkedPlan) {
         const { _id, category } = selectedProject.linkedPlan;
         closeProject();
-        
-        // Slight delay to ensure modal close animation allows for smooth scroll transition
         setTimeout(() => {
             onViewPlan(_id, category);
         }, 300);
@@ -102,24 +106,20 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-10">
       
       {/* Intro */}
-      <div className="text-center mb-16 animate-slide-up">
+      <div className="text-center mb-16">
         <h2 className="text-muted-gold text-xs uppercase tracking-[0.2em] mb-4">Our Work</h2>
-        <h3 className={`font-display text-4xl md:text-5xl ${textColor}`}>
-          Executed Visions
-        </h3>
+        <h3 className={`font-display text-4xl md:text-5xl ${textColor}`}>Executed Visions</h3>
         <p className={`mt-4 max-w-2xl mx-auto text-sm font-light leading-relaxed ${mutedColor}`}>
-          A curated selection of completed builds, showcasing the transition from Bluehouse plans to reality.
+          Exploring the transition from architectural plans to finished Ontario builds.
         </p>
       </div>
 
       {/* Grid */}
       {isLoading ? (
-        <div className="text-center py-20 opacity-50 text-sm tracking-widest">LOADING PORTFOLIO...</div>
-      ) : projects.length === 0 ? (
-        <div className="text-center py-20 opacity-50 text-sm tracking-widest">NO PROJECTS FOUND</div>
+        <div className="flex justify-center py-20"><Loader2 className="animate-spin text-muted-gold" /></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project) => (
@@ -128,24 +128,17 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                     onClick={() => openProject(project)}
                     className={`group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border transition-all duration-500 hover:shadow-2xl ${cardBg}`}
                 >
-                    {/* The Rule of 1: Only render first image (which is the only one we have initially) */}
                     {project.gallery && project.gallery[0] && (
                         <img 
                             src={urlFor(project.gallery[0]).width(600).auto('format').url()} 
                             alt={project.projectName}
                             loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                         />
                     )}
-                    
-                    {/* Hover Overlay */}
-                    <div className={`absolute inset-0 bg-deep-teal/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center`}>
-                        <h4 className="font-display text-2xl text-off-white mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            {project.projectName}
-                        </h4>
-                        <span className="text-muted-gold text-[10px] uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                            View Build Journey
-                        </span>
+                    <div className="absolute inset-0 bg-deep-teal/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
+                        <h4 className="font-display text-2xl text-off-white mb-2">{project.projectName}</h4>
+                        <span className="text-muted-gold text-[10px] uppercase tracking-widest">View Build Journey</span>
                     </div>
                 </div>
             ))}
@@ -154,112 +147,96 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
 
       {/* Lightbox Modal */}
       {selectedProject && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            {/* Backdrop */}
-            <div className={`absolute inset-0 backdrop-blur-md ${overlayBg}`} onClick={closeProject}></div>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className={`absolute inset-0 backdrop-blur-xl ${overlayBg}`} onClick={closeProject}></div>
 
-            {/* Modal Content */}
-            <div className="relative w-full max-w-6xl h-full md:h-auto md:max-h-[90vh] flex flex-col md:flex-row shadow-2xl overflow-hidden animate-fade-in">
+            <div className="relative w-full max-w-6xl bg-black rounded-sm shadow-2xl overflow-hidden flex flex-col md:flex-row h-full md:h-auto md:max-h-[90vh]">
                 
                 {/* Close Button Mobile */}
-                <button 
-                    onClick={closeProject}
-                    className="absolute top-4 right-4 z-50 md:hidden p-2 bg-black/20 text-white rounded-full backdrop-blur-sm"
-                >
-                    <X size={24} />
-                </button>
+                <button onClick={closeProject} className="absolute top-4 right-4 z-50 md:hidden p-2 bg-black/40 text-white rounded-full"><X size={24} /></button>
 
                 {/* Left: Gallery (60-70%) */}
-                <div className="w-full md:w-2/3 bg-black flex items-center justify-center relative group h-[50vh] md:h-[80vh]">
-                    {selectedProject.gallery && selectedProject.gallery.length > 0 && (
+                <div className="w-full md:w-2/3 bg-black flex items-center justify-center relative min-h-[300px] md:min-h-[600px]">
+                    {selectedProject.gallery && (
                         <>
-                             <img 
+                            <img 
+                                key={currentImageIndex}
                                 src={urlFor(selectedProject.gallery[currentImageIndex]).width(1200).quality(90).auto('format').url()}
-                                alt={`${selectedProject.projectName} ${currentImageIndex + 1}`}
-                                className="w-full h-full object-contain"
+                                alt="Build Phase"
+                                className="w-full h-full object-contain animate-fade-in"
                             />
                             
-                            {/* Nav Buttons (Only show if we have more than 1 image, i.e. after fetch) */}
-                            {selectedProject.gallery.length > 1 && (
+                            {/* Nav Logic: Only show when detail is finished loading AND there's more than 1 image */}
+                            {!isDetailLoading && selectedProject.gallery.length > 1 && (
                                 <>
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
-                                        className="absolute left-4 p-3 bg-black/30 hover:bg-muted-gold text-white rounded-full transition-colors backdrop-blur-sm"
+                                        className="absolute left-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md"
                                     >
                                         <ChevronLeft size={24} />
                                     </button>
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
-                                        className="absolute right-4 p-3 bg-black/30 hover:bg-muted-gold text-white rounded-full transition-colors backdrop-blur-sm"
+                                        className="absolute right-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md"
                                     >
                                         <ChevronRight size={24} />
                                     </button>
                                 </>
                             )}
-                             {/* Counter */}
-                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-black/50 backdrop-blur-md rounded-full text-white text-xs tracking-widest">
-                                {currentImageIndex + 1} / {selectedProject.gallery.length}
-                             </div>
+                            
+                            {/* Counter / Loading Indicator */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-black/40 backdrop-blur-md rounded-full text-white text-[10px] tracking-widest flex items-center gap-2">
+                                {isDetailLoading && <Loader2 size={12} className="animate-spin text-muted-gold" />}
+                                <span>{currentImageIndex + 1} / {selectedProject.gallery.length}</span>
+                            </div>
                         </>
                     )}
                 </div>
 
                 {/* Right: Details (30-40%) */}
                 <div className={`w-full md:w-1/3 p-8 md:p-12 flex flex-col justify-between overflow-y-auto ${isDarkMode ? 'bg-deep-teal text-off-white' : 'bg-white text-deep-teal'}`}>
-                    
                     <div>
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <h2 className="font-display text-3xl md:text-4xl mb-2">{selectedProject.projectName}</h2>
-                                {selectedProject.linkedPlan && (
-                                    <span className="text-muted-gold text-xs uppercase tracking-widest">
-                                        Based on: {selectedProject.linkedPlan.title}
-                                    </span>
-                                )}
-                            </div>
-                            <button 
-                                onClick={closeProject}
-                                className={`hidden md:block transition-colors ${isDarkMode ? 'text-off-white/50 hover:text-white' : 'text-deep-teal/50 hover:text-deep-teal'}`}
-                            >
-                                <X size={24} />
-                            </button>
+                        <div className="flex justify-between items-start mb-6">
+                            <h2 className="font-display text-3xl">{selectedProject.projectName}</h2>
+                            <button onClick={closeProject} className="hidden md:block opacity-40 hover:opacity-100 transition-opacity"><X size={24} /></button>
                         </div>
+                        
+                        {selectedProject.linkedPlan && (
+                            <div className="text-muted-gold text-[10px] uppercase tracking-widest mb-6 pb-2 border-b border-muted-gold/20">
+                                Plan Reference: {selectedProject.linkedPlan.title}
+                            </div>
+                        )}
 
-                        <div className={`mt-8 text-sm md:text-base font-light leading-relaxed ${mutedColor}`}>
-                            {selectedProject.shortDescription ? (
-                                selectedProject.shortDescription
+                        <div className="text-sm font-light leading-relaxed mb-8">
+                            {isDetailLoading ? (
+                                <div className="flex items-center gap-2 opacity-40">
+                                    <Loader2 size={14} className="animate-spin" />
+                                    <span className="text-[10px] uppercase tracking-tighter">Syncing Journey Details...</span>
+                                </div>
                             ) : (
-                                <span className="opacity-50 animate-pulse">Loading story...</span>
+                                selectedProject.shortDescription
                             )}
                         </div>
                     </div>
 
-                    {/* Action Hook */}
-                    <div className="mt-12 pt-8 border-t border-current border-opacity-10">
-                         {selectedProject.linkedPlan ? (
-                             <button
+                    <div className="mt-auto space-y-4">
+                        {selectedProject.linkedPlan && (
+                            <button
                                 onClick={handleLinkClick}
-                                className={`w-full py-4 flex items-center justify-center gap-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 shadow-lg ${
-                                    isDarkMode 
-                                    ? 'bg-off-white text-deep-teal hover:bg-muted-gold' 
-                                    : 'bg-deep-teal text-off-white hover:bg-muted-gold'
+                                className={`w-full py-4 flex items-center justify-center gap-3 uppercase tracking-widest text-[10px] font-bold transition-all ${
+                                    isDarkMode ? 'bg-off-white text-deep-teal hover:bg-muted-gold' : 'bg-deep-teal text-off-white hover:bg-muted-gold'
                                 }`}
-                             >
-                                <span>View Plans for this Home</span>
-                                <ExternalLink size={16} />
-                             </button>
-                         ) : (
-                             <div className="text-center opacity-50 text-xs uppercase tracking-widest">
-                                 Custom Build - Plan Not in Catalog
-                             </div>
-                         )}
+                            >
+                                <span>Get These Plans</span>
+                                <ExternalLink size={14} />
+                            </button>
+                        )}
+                        <button onClick={closeProject} className="w-full text-center text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity">Return to Portfolio</button>
                     </div>
-
                 </div>
             </div>
         </div>
       )}
-
     </div>
   );
 };
