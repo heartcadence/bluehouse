@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Handle header background change on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -26,14 +25,14 @@ const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // UPDATED ORDER: Contact > Collection > Portfolio > About
   const navItems = [
+    { id: 'contact', label: 'Contact' },
     { id: 'collection', label: 'The Collection' },
     { id: 'portfolio', label: 'Portfolio' },
     { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Contact' },
   ];
 
-  // Combined handler for navigation
   const handleNavClick = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
     setActiveView(view);
     setIsMobileMenuOpen(false);
@@ -50,7 +49,6 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          {/* Logo / Brand */}
           <div 
             className="cursor-pointer group"
             onClick={() => handleNavClick('collection')}
@@ -60,7 +58,6 @@ const Header: React.FC<HeaderProps> = ({
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
               <button
@@ -79,7 +76,6 @@ const Header: React.FC<HeaderProps> = ({
               </button>
             ))}
 
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleDarkMode}
               className={`p-2 rounded-full transition-all duration-500 ${
@@ -87,13 +83,11 @@ const Header: React.FC<HeaderProps> = ({
                   ? 'bg-white/5 text-muted-gold hover:bg-white/10' 
                   : 'bg-deep-teal/5 text-deep-teal hover:bg-deep-teal/10'
               }`}
-              aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
           </nav>
 
-          {/* Mobile UI Buttons */}
           <div className="md:hidden flex items-center space-x-4">
              <button onClick={toggleDarkMode} className={textColor}>
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -108,7 +102,6 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 z-[-1] transition-all duration-500 ease-in-out flex flex-col items-center justify-center space-y-8 ${
         isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
       } ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
