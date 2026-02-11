@@ -11,6 +11,11 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [includeBCIN, setIncludeBCIN] = useState(false);
+
+  const BCIN_PRICE = 150;
+  const basePrice = plan.price || 0;
+  const totalPrice = basePrice + (includeBCIN ? BCIN_PRICE : 0);
 
   // Use exteriorGallery if available, otherwise fallback to images (Dummy data)
   const images = plan.exteriorGallery || plan.images || [];
@@ -42,13 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
   const handleBuyNow = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (plan.isPlaceholder) return;
-    alert(`Initiating Stripe Checkout for: ${plan.title}. Price: $${plan.price}`);
-  };
-
-  const handleComplianceCheck = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (plan.isPlaceholder) return;
-    alert(`Checking BCIN Compliance for ${plan.title}...\n\nStatus: VALID\nZone: ON, CA`);
+    alert(`Initiating Stripe Checkout for: ${plan.title}.\nIncludes BCIN Designation: ${includeBCIN ? 'Yes' : 'No'}\nTotal Price: $${totalPrice.toLocaleString()}`);
   };
 
   // Styling based on mode
@@ -148,7 +147,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
                         {plan.category || 'All'}
                     </span>
                     <span className={`font-display text-xl ${textColor}`}>
-                       {plan.isPlaceholder ? '---' : `$${plan.price ? plan.price.toLocaleString() : '0'}`}
+                       {plan.isPlaceholder ? '---' : `$${basePrice.toLocaleString()}`}
                     </span>
                 </div>
                 
@@ -249,23 +248,39 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
                            <div className={`h-40 rounded-sm border-2 border-dashed flex items-center justify-center ${isDarkMode ? 'border-off-white/10 bg-white/5' : 'border-deep-teal/10 bg-deep-teal/5'}`}>
                                 <span className="text-[10px] uppercase tracking-widest opacity-40">Preview Coming Soon</span>
                            </div>
-                           <div className={`h-40 rounded-sm border-2 border-dashed flex items-center justify-center ${isDarkMode ? 'border-off-white/10 bg-white/5' : 'border-deep-teal/10 bg-deep-teal/5'}`}>
-                                <span className="text-[10px] uppercase tracking-widest opacity-40">Preview Coming Soon</span>
-                           </div>
                         </>
                     )}
                 </div>
              </div>
 
              <div className="pt-4 pb-2">
-                 <button 
-                    onClick={handleComplianceCheck}
-                    disabled={!!plan.isPlaceholder}
-                    className={`w-full flex items-center justify-center gap-2 py-3 border border-dashed rounded transition-colors text-xs uppercase tracking-widest ${isDarkMode ? 'border-off-white/30 text-off-white/70' : 'border-deep-teal/30 text-deep-teal/70'} ${plan.isPlaceholder ? 'opacity-50 cursor-not-allowed' : 'hover:bg-muted-gold/10'}`}
+                 {/* BCIN Toggle Switch */}
+                 <div 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (!plan.isPlaceholder) setIncludeBCIN(!includeBCIN);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 border border-dashed rounded transition-colors cursor-pointer select-none ${isDarkMode ? 'border-off-white/30 hover:bg-white/5' : 'border-deep-teal/30 hover:bg-deep-teal/5'} ${plan.isPlaceholder ? 'opacity-50 pointer-events-none' : ''}`}
                  >
-                    <ShieldCheck size={14} />
-                    <span>Check Zoning Compliance</span>
-                 </button>
+                    <div className="flex items-center gap-3">
+                        <div className={`p-1.5 rounded-full transition-colors ${includeBCIN ? 'bg-muted-gold text-deep-teal' : (isDarkMode ? 'bg-white/10 text-off-white/50' : 'bg-deep-teal/10 text-deep-teal/50')}`}>
+                            <ShieldCheck size={14} />
+                        </div>
+                        <div className="flex flex-col text-left">
+                            <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
+                                Add BCIN Designation
+                            </span>
+                            <span className={`text-[9px] uppercase tracking-wide opacity-70 ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
+                                Ontario Compliant +${BCIN_PRICE}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {/* Toggle Switch UI */}
+                    <div className={`relative w-8 h-4 rounded-full transition-colors duration-300 ${includeBCIN ? 'bg-muted-gold' : 'bg-gray-400/50'}`}>
+                        <div className={`absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${includeBCIN ? 'translate-x-4' : 'translate-x-0'}`}></div>
+                    </div>
+                 </div>
              </div>
           </div>
 
@@ -276,7 +291,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode }) => {
                 disabled={!!plan.isPlaceholder}
                 className={`w-full py-3 rounded-sm transition-colors duration-300 uppercase tracking-widest text-xs font-bold shadow-lg ${plan.isPlaceholder ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed' : 'bg-deep-teal text-off-white hover:bg-muted-gold'}`}
              >
-                {plan.isPlaceholder ? 'Not Available' : `Purchase Complete Set - $${plan.price ? plan.price.toLocaleString() : '0'}`}
+                {plan.isPlaceholder ? 'Not Available' : `Purchase Complete Set - $${totalPrice.toLocaleString()}`}
              </button>
           </div>
 
