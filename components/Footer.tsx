@@ -4,14 +4,16 @@ interface FooterProps {
   isDarkMode: boolean;
   onContactClick: () => void;
   onAboutClick: () => void;
-  onCollectionClick: () => void; // Added for completeness
+  onCollectionClick: () => void;
+  onPortfolioClick: () => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ 
   isDarkMode, 
   onContactClick, 
   onAboutClick,
-  onCollectionClick 
+  onCollectionClick,
+  onPortfolioClick
 }) => {
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
@@ -47,6 +49,14 @@ const Footer: React.FC<FooterProps> = ({
                   className="hover:text-muted-gold transition-colors text-left"
                 >
                   Collection
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleLinkClick(onPortfolioClick)} 
+                  className="hover:text-muted-gold transition-colors text-left"
+                >
+                  Portfolio
                 </button>
               </li>
               <li>

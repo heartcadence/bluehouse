@@ -34,9 +34,9 @@ const Header: React.FC<HeaderProps> = ({
   ];
 
   const handleNavClick = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
+    // Calling the parent's setActiveView (handleViewChange) triggers the scroll-to-top logic defined in App.tsx
     setActiveView(view);
     setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';

@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   const handleViewChange = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
     setActiveView(view);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   return (
@@ -32,7 +32,6 @@ const App: React.FC = () => {
           isDarkMode={isDarkMode} 
           activeView={activeView}
           setActiveView={handleViewChange}
-          toggleDarkMode={toggleTheme}
         />
       </main>
 
