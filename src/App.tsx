@@ -5,7 +5,7 @@ import LandingPage from '../components/LandingPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('collection');
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
   
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
