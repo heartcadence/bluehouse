@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-// Adjusted paths to step out of 'src' and into root 'components'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LandingPage from '../components/LandingPage';
@@ -11,12 +9,10 @@ const App: React.FC = () => {
   
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
-  // Apply theme-specific body styles for a seamless experience
   useEffect(() => {
     document.body.className = isDarkMode ? 'bg-deep-teal text-off-white' : 'bg-light-bg text-deep-teal';
   }, [isDarkMode]);
 
-  // Unified handler to ensure every view change resets scroll to the top
   const handleViewChange = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
     setActiveView(view);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -45,6 +41,7 @@ const App: React.FC = () => {
         onContactClick={() => handleViewChange('contact')}
         onAboutClick={() => handleViewChange('about')}
         onCollectionClick={() => handleViewChange('collection')}
+        onPortfolioClick={() => handleViewChange('portfolio')}
       />
     </div>
   );
