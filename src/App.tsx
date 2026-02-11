@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-// Lazy load components for code splitting
-const Header = lazy(() => import('../components/Header'));
-const Footer = lazy(() => import('../components/Footer'));
+// Lazy load LandingPage for code splitting
 const LandingPage = lazy(() => import('../components/LandingPage'));
 
 const App: React.FC = () => {
@@ -22,32 +22,32 @@ const App: React.FC = () => {
   };
 
   return (
-    <Suspense fallback={<div className="min-h-screen bg-deep-teal" />}>
-      <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
-        <Header 
-          isDarkMode={isDarkMode}
-          toggleDarkMode={toggleTheme}
-          activeView={activeView}
-          setActiveView={handleViewChange}
-        />
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
+      <Header 
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleTheme}
+        activeView={activeView}
+        setActiveView={handleViewChange}
+      />
 
-        <main>
+      <main>
+        <Suspense fallback={<div className="min-h-screen bg-deep-teal" />}>
           <LandingPage 
             isDarkMode={isDarkMode} 
             activeView={activeView}
             setActiveView={handleViewChange}
           />
-        </main>
+        </Suspense>
+      </main>
 
-        <Footer 
-          isDarkMode={isDarkMode} 
-          onContactClick={() => handleViewChange('contact')}
-          onAboutClick={() => handleViewChange('about')}
-          onCollectionClick={() => handleViewChange('collection')}
-          onPortfolioClick={() => handleViewChange('portfolio')}
-        />
-      </div>
-    </Suspense>
+      <Footer 
+        isDarkMode={isDarkMode} 
+        onContactClick={() => handleViewChange('contact')}
+        onAboutClick={() => handleViewChange('about')}
+        onCollectionClick={() => handleViewChange('collection')}
+        onPortfolioClick={() => handleViewChange('portfolio')}
+      />
+    </div>
   );
 };
 
