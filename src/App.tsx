@@ -1,85 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import LandingPage from '../components/LandingPage';
-
-type ViewMode = 'landing';
+// Corrected paths for src/App.tsx
+import Header from './components/Header';
+import Footer from './components/Footer';
+import LandingPage from './components/LandingPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('collection');
   
-  // Toggle Body Background
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  // Apply theme-specific body styles for seamless transitions
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.style.backgroundColor = '#002147';
-      document.body.style.color = '#F2F2F2';
-    } else {
-      document.body.style.backgroundColor = '#F9FAFB';
-      document.body.style.color = '#4A5568';
-    }
+    document.body.className = isDarkMode ? 'bg-deep-teal text-off-white' : 'bg-light-bg text-deep-teal';
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const scrollToContent = () => {
-    const element = document.getElementById('dynamic-content');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleNavigateToContact = () => {
-    setActiveView('contact');
-    scrollToContent();
-  };
-
-  const handleNavigateToCollection = () => {
-    setActiveView('collection');
-    scrollToContent();
-  };
-
-  const handleNavigateToPortfolio = () => {
-    setActiveView('portfolio');
-    scrollToContent();
-  };
-
-  const handleNavigateToAbout = () => {
-    setActiveView('about');
-    scrollToContent();
-  };
-
-  // Theme Helpers for App container
-  const appContainerClass = isDarkMode ? 'bg-deep-teal' : 'bg-light-bg';
-
   return (
-    <div className={`min-h-screen font-body transition-colors duration-300 selection:bg-muted-gold selection:text-deep-teal ${appContainerClass}`}>
-      
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
       <Header 
         isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        onContactClick={handleNavigateToContact}
-        onCollectionClick={handleNavigateToCollection}
-        onPortfolioClick={handleNavigateToPortfolio}
-        onAboutClick={handleNavigateToAbout}
+        toggleDarkMode={toggleTheme} // The prop name Header expects
+        activeView={activeView}
+        setActiveView={setActiveView}
       />
 
-      <main className="pt-20">
+      <main>
         <LandingPage 
           isDarkMode={isDarkMode} 
           activeView={activeView}
           setActiveView={setActiveView}
+          toggleDarkMode={toggleTheme} // The prop name LandingPage expects
         />
       </main>
 
       <Footer 
         isDarkMode={isDarkMode} 
-        onContactClick={handleNavigateToContact}
-        onAboutClick={handleNavigateToAbout}
+        onContactClick={() => setActiveView('contact')}
+        onAboutClick={() => setActiveView('about')}
       />
-      
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Handle scroll effect for header background
+  // Handle header background change on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -33,7 +33,8 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'contact', label: 'Contact' },
   ];
 
-  const handleNavClick = (view: any) => {
+  // Combined handler for navigation
+  const handleNavClick = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
     setActiveView(view);
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -49,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          {/* LOGO */}
+          {/* Logo / Brand */}
           <div 
             className="cursor-pointer group"
             onClick={() => handleNavClick('collection')}
@@ -59,12 +60,12 @@ const Header: React.FC<HeaderProps> = ({
             </h1>
           </div>
 
-          {/* DESKTOP NAV */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => handleNavClick(item.id)}
+                onClick={() => handleNavClick(item.id as any)}
                 className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 relative py-2 ${
                   activeView === item.id 
                     ? 'text-muted-gold' 
@@ -73,21 +74,26 @@ const Header: React.FC<HeaderProps> = ({
               >
                 {item.label}
                 {activeView === item.id && (
-                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-muted-gold animate-scale-x" />
+                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-muted-gold" />
                 )}
               </button>
             ))}
 
-            {/* THEME TOGGLE */}
+            {/* Theme Toggle Button */}
             <button
               onClick={toggleDarkMode}
-              className={`p-2 rounded-full transition-all duration-500 ${isDarkMode ? 'bg-white/5 text-muted-gold hover:bg-white/10' : 'bg-deep-teal/5 text-deep-teal hover:bg-deep-teal/10'}`}
+              className={`p-2 rounded-full transition-all duration-500 ${
+                isDarkMode 
+                  ? 'bg-white/5 text-muted-gold hover:bg-white/10' 
+                  : 'bg-deep-teal/5 text-deep-teal hover:bg-deep-teal/10'
+              }`}
+              aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
           </nav>
 
-          {/* MOBILE TOGGLE */}
+          {/* Mobile UI Buttons */}
           <div className="md:hidden flex items-center space-x-4">
              <button onClick={toggleDarkMode} className={textColor}>
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -102,14 +108,19 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* MOBILE MENU OVERLAY */}
-      
-      <div className={`fixed inset-0 z-[-1] bg-deep-teal transition-transform duration-500 ease-in-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'} md:hidden flex flex-col items-center justify-center space-y-8`}>
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 z-[-1] transition-all duration-500 ease-in-out flex flex-col items-center justify-center space-y-8 ${
+        isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
+      } ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
         {navItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => handleNavClick(item.id)}
-            className={`text-lg uppercase tracking-[0.4em] font-display ${activeView === item.id ? 'text-muted-gold' : 'text-off-white'}`}
+            onClick={() => handleNavClick(item.id as any)}
+            className={`text-lg uppercase tracking-[0.4em] font-display ${
+              activeView === item.id 
+                ? 'text-muted-gold' 
+                : (isDarkMode ? 'text-off-white' : 'text-deep-teal')
+            }`}
           >
             {item.label}
           </button>
