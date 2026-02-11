@@ -10,24 +10,15 @@
     <link rel="preconnect" href="https://cdn.sanity.io">
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
 
-    <!-- Mobile Hero Preload (AVIF) -->
-    <link 
-      rel="preload" 
-      as="image" 
-      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
-      media="(max-width: 768px)"
-      fetchpriority="high"
-    >
-    <!-- Desktop Hero Preload (AVIF) - Exact match for LCP (no query params) -->
+    <!-- LCP Preload: Exact match for Hero Image to prevent double download -->
     <link 
       rel="preload" 
       as="image" 
       href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
-      media="(min-width: 769px)"
       fetchpriority="high"
     >
 
-    <!-- Optimized Fonts -->
+    <!-- Optimized Fonts: Subset 'VisionaryArchitecture' for LCP text -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&text=VisionaryArchitecture&display=swap" rel="stylesheet">
     

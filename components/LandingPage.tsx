@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck, ChevronDown } from 'lucide-react';
 import { Product, Category } from '../src/types';
 import { CATEGORIES } from '../src/constants';
 import ProductCard from './ProductCard';
@@ -32,6 +32,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
   const [isLoading, setIsLoading] = useState(false);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [isTestimonialVisible, setIsTestimonialVisible] = useState(true);
+  
+  // Pagination State
+  const [visibleCount, setVisibleCount] = useState(6);
+  const ITEMS_PER_LOAD = 6;
 
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   const mutedColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/70';
@@ -43,6 +47,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
 
     const fetchPlans = async () => {
       setIsLoading(true);
+      // Reset pagination when category changes
+      setVisibleCount(ITEMS_PER_LOAD);
+      
       try {
         // Use 'ALL' as the sentinel value for the "All" category to bypass filtering.
         // Otherwise pass the active category name.
@@ -95,7 +102,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
     return () => {
       isMounted = false;
     };
-  }, [activeCategory]); // Re-fetch when category changes
+  }, [activeCategory]); 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -125,8 +132,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
     setActiveView('collection');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + ITEMS_PER_LOAD);
+  };
 
   const currentTestimonial = TESTIMONIALS[currentTestimonialIndex];
+  const displayedPlans = plans.slice(0, visibleCount);
 
   return (
     <div className="animate-fade-in w-full">
@@ -136,24 +148,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
           <picture>
              {/* AVIF Sources (Primary) */}
              <source 
-                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
-                media="(max-width: 768px)" 
-                type="image/avif" 
-             />
-             <source 
                 srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
                 media="(min-width: 769px)" 
                 type="image/avif" 
              />
+             <source 
+                srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
+                media="(max-width: 768px)" 
+                type="image/avif" 
+             />
              
-             {/* WebP Fallback */}
+             {/* Fallback */}
              <img
-                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
-                srcSet="
-                https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800 800w,
-                https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920 1920w
-                "
-                sizes="100vw"
+                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif"
                 alt="Modern Architectural House"
                 loading="eager"
                 // @ts-ignore
@@ -181,14 +188,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                Find My Dream Home
              </button>
              
-             <div className="mt-4 flex flex-col items-center animate-fade-in animation-delay-600">
-                <span className={`text-[9px] uppercase tracking-widest font-bold mb-1 ${isDarkMode ? 'text-muted-gold' : 'text-deep-teal'}`}>
-                    BCIN Registered • Ontario Building Code Compliant
-                </span>
-                {/* Trust Badge Icon */}
-                <div className="flex items-center space-x-2 opacity-80">
-                    <ShieldCheck className="w-4 h-4 text-muted-gold" />
-                    <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
+             {/* Trust & Legal Indicators */}
+             <div className="mt-8 flex flex-col items-center animate-fade-in animation-delay-600 space-y-2">
+                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                    <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-muted-gold' : 'text-deep-teal'}`}>
+                        BCIN Registered
+                    </span>
+                    <span className={`hidden md:block w-1 h-1 rounded-full ${isDarkMode ? 'bg-white/20' : 'bg-deep-teal/20'}`}></span>
+                    <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-muted-gold' : 'text-deep-teal'}`}>
+                        Ontario Building Code Compliant
+                    </span>
+                </div>
+                
+                <div className="flex items-center space-x-2 opacity-70">
+                    <ShieldCheck className="w-3 h-3 text-muted-gold" />
+                    <span className={`text-[9px] uppercase tracking-widest font-light ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
                         Verified Local Expertise
                     </span>
                 </div>
@@ -256,15 +270,34 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
 
                         {/* Product Grid */}
                         {plans.length > 0 ? (
-                            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-                                {plans.map(plan => (
-                                    <ProductCard 
-                                    key={plan._id} 
-                                    plan={plan} 
-                                    isDarkMode={isDarkMode}
-                                    />
-                                ))}
-                            </div>
+                            <>
+                                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 ${isLoading ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+                                    {displayedPlans.map(plan => (
+                                        <ProductCard 
+                                        key={plan._id} 
+                                        plan={plan} 
+                                        isDarkMode={isDarkMode}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Pagination Button */}
+                                {plans.length > displayedPlans.length && (
+                                    <div className="mt-16 flex justify-center">
+                                        <button 
+                                            onClick={handleLoadMore}
+                                            className={`group flex items-center gap-3 px-8 py-3 rounded-sm border transition-all duration-300 ${
+                                                isDarkMode 
+                                                ? 'border-muted-gold text-muted-gold hover:bg-muted-gold hover:text-deep-teal' 
+                                                : 'border-deep-teal text-deep-teal hover:bg-deep-teal hover:text-white'
+                                            }`}
+                                        >
+                                            <span className="text-xs font-bold uppercase tracking-widest">View More Designs</span>
+                                            <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-1" />
+                                        </button>
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             !isLoading && (
                                 <div className="flex flex-col items-center justify-center py-20 text-center opacity-60">
@@ -373,7 +406,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                 <div className="max-w-3xl mx-auto text-center">
                                     <h2 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-8">Who We Are</h2>
                                     <p className={`text-lg md:text-xl font-light leading-relaxed ${mutedColor} italic`}>
-                                        "Bluehouse Planning & Designs Inc. is led by a dedicated, local expert with over a decade of hands-on architectural experience. We bridge the gap between visionary aesthetics and practical construction, offering BCIN Registered, Ontario-compliant solutions that ensure your dream home becomes a reality without the red tape."
+                                        "Bluehouse Planning & Designs Inc. is led by a dedicated, <span className={isDarkMode ? 'text-off-white' : 'text-deep-teal'}>real person</span> with over a decade of hands-on, local architectural expertise. We bridge the gap between visionary aesthetics and practical construction, offering BCIN Registered, Ontario-compliant solutions that ensure your dream home becomes a reality without the red tape."
                                     </p>
                                 </div>
                             </div>
