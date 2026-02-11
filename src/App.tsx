@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import LandingPage from '../components/LandingPage';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+
+// Lazy load components for code splitting
+const Header = lazy(() => import('../components/Header'));
+const Footer = lazy(() => import('../components/Footer'));
+const LandingPage = lazy(() => import('../components/LandingPage'));
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
+  // Default activeView set to 'about' per client requirement
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('about');
   
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
@@ -19,30 +22,32 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
-      <Header 
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleTheme}
-        activeView={activeView}
-        setActiveView={handleViewChange}
-      />
-
-      <main>
-        <LandingPage 
-          isDarkMode={isDarkMode} 
+    <Suspense fallback={<div className="min-h-screen bg-deep-teal" />}>
+      <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
+        <Header 
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleTheme}
           activeView={activeView}
           setActiveView={handleViewChange}
         />
-      </main>
 
-      <Footer 
-        isDarkMode={isDarkMode} 
-        onContactClick={() => handleViewChange('contact')}
-        onAboutClick={() => handleViewChange('about')}
-        onCollectionClick={() => handleViewChange('collection')}
-        onPortfolioClick={() => handleViewChange('portfolio')}
-      />
-    </div>
+        <main>
+          <LandingPage 
+            isDarkMode={isDarkMode} 
+            activeView={activeView}
+            setActiveView={handleViewChange}
+          />
+        </main>
+
+        <Footer 
+          isDarkMode={isDarkMode} 
+          onContactClick={() => handleViewChange('contact')}
+          onAboutClick={() => handleViewChange('about')}
+          onCollectionClick={() => handleViewChange('collection')}
+          onPortfolioClick={() => handleViewChange('portfolio')}
+        />
+      </div>
+    </Suspense>
   );
 };
 
