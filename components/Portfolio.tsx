@@ -20,15 +20,14 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
   const cardBg = isDarkMode ? 'bg-deep-teal-dark border-off-white/10' : 'bg-white border-deep-teal/10 shadow-lg';
   const overlayBg = isDarkMode ? 'bg-deep-teal/95' : 'bg-light-bg/95';
 
-  // Fetch Projects
+  // Fetch Projects (Lazy Load: Only first image initially)
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const query = `*[_type == "project"]{
           _id,
           projectName,
-          gallery,
-          shortDescription,
+          "gallery": [gallery[0]], 
           linkedPlan->{
             _id,
             category,
@@ -47,11 +46,30 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
     fetchProjects();
   }, []);
 
-  const openProject = (project: Project) => {
+  const openProject = async (project: Project) => {
+    // 1. Open modal immediately with available partial data
     setSelectedProject(project);
     setCurrentImageIndex(0);
-    // Prevent background scrolling
     document.body.style.overflow = 'hidden';
+
+    // 2. Fetch full details (full gallery + description)
+    try {
+        const query = `*[_type == "project" && _id == $id][0]{
+            gallery,
+            shortDescription
+        }`;
+        const fullDetails = await client.fetch(query, { id: project._id });
+        
+        // Update state if the modal is still open for this project
+        setSelectedProject((current) => {
+            if (current && current._id === project._id && fullDetails) {
+                return { ...current, ...fullDetails };
+            }
+            return current;
+        });
+    } catch (error) {
+        console.error("Failed to load project details", error);
+    }
   };
 
   const closeProject = () => {
@@ -73,8 +91,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
 
   const handleLinkClick = () => {
     if (selectedProject?.linkedPlan) {
+        const { _id, category } = selectedProject.linkedPlan;
         closeProject();
-        onViewPlan(selectedProject.linkedPlan._id, selectedProject.linkedPlan.category);
+        
+        // Slight delay to ensure modal close animation allows for smooth scroll transition
+        setTimeout(() => {
+            onViewPlan(_id, category);
+        }, 300);
     }
   };
 
@@ -105,7 +128,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                     onClick={() => openProject(project)}
                     className={`group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-sm border transition-all duration-500 hover:shadow-2xl ${cardBg}`}
                 >
-                    {/* The Rule of 1: Only render first image */}
+                    {/* The Rule of 1: Only render first image (which is the only one we have initially) */}
                     {project.gallery && project.gallery[0] && (
                         <img 
                             src={urlFor(project.gallery[0]).width(600).auto('format').url()} 
@@ -156,7 +179,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                                 className="w-full h-full object-contain"
                             />
                             
-                            {/* Nav Buttons */}
+                            {/* Nav Buttons (Only show if we have more than 1 image, i.e. after fetch) */}
                             {selectedProject.gallery.length > 1 && (
                                 <>
                                     <button 
@@ -203,7 +226,11 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                         </div>
 
                         <div className={`mt-8 text-sm md:text-base font-light leading-relaxed ${mutedColor}`}>
-                            {selectedProject.shortDescription}
+                            {selectedProject.shortDescription ? (
+                                selectedProject.shortDescription
+                            ) : (
+                                <span className="opacity-50 animate-pulse">Loading story...</span>
+                            )}
                         </div>
                     </div>
 
