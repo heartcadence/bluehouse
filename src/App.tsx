@@ -7,8 +7,8 @@ const LandingPage = lazy(() => import('../components/LandingPage'));
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  // Default activeView set to 'about' per client requirement
-  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('about');
+  // Default activeView set to 'contact' per client requirement
+  const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
   
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
