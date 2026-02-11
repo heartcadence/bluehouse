@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Product, Category } from '../types';
-import { CATEGORIES } from '../constants';
-import { client } from '../../lib/sanity.client';
+import { Product, Category } from '../src/types';
+import { CATEGORIES } from '../src/constants';
+import { client } from '../lib/sanity.client'; // FIXED PATH
 
 // COMPONENT IMPORTS
 import Header from './Header';
@@ -9,7 +9,7 @@ import Hero from './Hero';
 import Portfolio from './Portfolio';
 import Storefront from './Storefront';
 import About from './About';
-import Contact from './Contact'; // Restored Contact Component
+import Contact from './Contact';
 
 interface LandingPageProps {
   isDarkMode: boolean;
@@ -24,17 +24,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
   setActiveView,
   toggleDarkMode 
 }) => {
-  // --- STATE MANAGEMENT ---
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [plans, setPlans] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [highlightedPlanId, setHighlightedPlanId] = useState<string | null>(null);
   
-  // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const PLANS_PER_PAGE = 6;
 
-  // --- DATA FETCHING (SANITY) ---
   useEffect(() => {
     let isMounted = true;
     const fetchPlans = async () => {
@@ -73,7 +70,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
     return () => { isMounted = false; };
   }, [activeCategory]);
 
-  // --- THE PORTFOLIO HOOK ---
   const handleViewLinkedPlan = (planId: string, category: string) => {
     setActiveView('collection');
     setActiveCategory(category as Category);
@@ -87,7 +83,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setTimeout(() => setHighlightedPlanId(null), 4000);
   };
 
-  // --- PAGINATION HELPERS ---
   const totalPages = Math.ceil(plans.length / PLANS_PER_PAGE);
   const displayedPlans = plans.slice((currentPage - 1) * PLANS_PER_PAGE, currentPage * PLANS_PER_PAGE);
 
@@ -107,7 +102,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div className="animate-fade-in w-full min-h-screen">
-      {/* 0. NAVIGATION / HEADER */}
       <Header 
         isDarkMode={isDarkMode} 
         toggleDarkMode={toggleDarkMode} 
@@ -116,16 +110,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
       />
 
       <main>
-        {/* 1. HERO SECTION */}
         <Hero 
           isDarkMode={isDarkMode} 
           onCtaClick={() => setActiveView('collection')} 
         />
 
-        {/* 2. DYNAMIC CONTENT AREA */}
         <section className="relative z-20 -mt-20">
-          
-          {/* Navigation Toggle Bar - Portfolio removed (moved to Header) */}
           <div className="flex justify-center mb-16 px-4">
             <div className={`flex flex-wrap justify-center p-1 rounded-full backdrop-blur-md border shadow-2xl ${
               isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'
@@ -147,14 +137,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="w-full">
-            {/* --- CONTACT VIEW --- */}
             {activeView === 'contact' && (
               <div className="animate-fade-in">
                 <Contact isDarkMode={isDarkMode} />
               </div>
             )}
 
-            {/* --- COLLECTION / STOREFRONT VIEW --- */}
             {activeView === 'collection' && (
               <div id="storefront" className="scroll-mt-28 animate-fade-in">
                 <Storefront 
@@ -172,7 +160,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             )}
 
-            {/* --- PORTFOLIO VIEW (Triggered from Main Nav) --- */}
             {activeView === 'portfolio' && (
               <div className="animate-fade-in">
                 <Portfolio 
@@ -182,7 +169,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             )}
 
-            {/* --- ABOUT VIEW (Triggered from Main Nav) --- */}
             {activeView === 'about' && (
               <div className="animate-fade-in">
                 <About 
@@ -195,7 +181,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </section>
       </main>
       
-      {/* GLOBAL CSS FOR PULSE HOOK */}
       <style>{`
         @keyframes plan-pulse {
           0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.7); transform: scale(1); }
