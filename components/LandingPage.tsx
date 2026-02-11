@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
 import { Product, Category } from '../src/types';
-import { CATEGORIES } from '../src/constants';
 import { client } from '../lib/sanity.client';
 
-// COMPONENT IMPORTS
-import Hero from './Hero';
-import Portfolio from './Portfolio';
-import Storefront from './Storefront';
-import About from './About';
-import Contact from './Contact';
+// LAZY LOAD COMPONENT IMPORTS
+const Hero = lazy(() => import('./Hero'));
+const Portfolio = lazy(() => import('./Portfolio'));
+const Storefront = lazy(() => import('./Storefront'));
+const About = lazy(() => import('./About'));
+const Contact = lazy(() => import('./Contact'));
 
 interface LandingPageProps {
   isDarkMode: boolean;
@@ -89,10 +89,19 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const totalPages = Math.ceil(plans.length / PLANS_PER_PAGE);
   const displayedPlans = plans.slice((currentPage - 1) * PLANS_PER_PAGE, currentPage * PLANS_PER_PAGE);
 
+  // Common loading fallback for sections
+  const SectionLoader = () => (
+    <div className="w-full h-96 flex items-center justify-center opacity-50">
+      <Loader2 className="w-8 h-8 animate-spin text-muted-gold" />
+    </div>
+  );
+
   return (
     <div className="animate-fade-in w-full min-h-screen">
       
-      <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
+      <Suspense fallback={<div className="h-[85vh] w-full bg-deep-teal/10 animate-pulse" />}>
+        <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
+      </Suspense>
 
       <section className="relative z-20 -mt-20">
         {/* Inner Toggle Bar: Contact vs Collection (Portfolio removed) */}
@@ -119,40 +128,48 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-full min-h-[50vh]">
           {activeView === 'contact' && (
-            <div className="animate-fade-in">
-              <Contact isDarkMode={isDarkMode} />
-            </div>
+            <Suspense fallback={<SectionLoader />}>
+              <div className="animate-fade-in">
+                <Contact isDarkMode={isDarkMode} />
+              </div>
+            </Suspense>
           )}
 
           {activeView === 'collection' && (
-            <div id="storefront" className="scroll-mt-28 animate-fade-in">
-              <Storefront 
-                isDarkMode={isDarkMode}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-                plans={displayedPlans}
-                isLoading={isLoading}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPrevPage={() => setCurrentPage(p => p - 1)}
-                onNextPage={() => setCurrentPage(p => p + 1)}
-                highlightedPlanId={highlightedPlanId}
-              />
-            </div>
+            <Suspense fallback={<SectionLoader />}>
+              <div id="storefront" className="scroll-mt-28 animate-fade-in">
+                <Storefront 
+                  isDarkMode={isDarkMode}
+                  activeCategory={activeCategory}
+                  setActiveCategory={setActiveCategory}
+                  plans={displayedPlans}
+                  isLoading={isLoading}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPrevPage={() => setCurrentPage(p => p - 1)}
+                  onNextPage={() => setCurrentPage(p => p + 1)}
+                  highlightedPlanId={highlightedPlanId}
+                />
+              </div>
+            </Suspense>
           )}
 
           {activeView === 'portfolio' && (
-            <div className="animate-fade-in">
-              <Portfolio isDarkMode={isDarkMode} onViewPlan={handleViewLinkedPlan} />
-            </div>
+            <Suspense fallback={<SectionLoader />}>
+              <div className="animate-fade-in">
+                <Portfolio isDarkMode={isDarkMode} onViewPlan={handleViewLinkedPlan} />
+              </div>
+            </Suspense>
           )}
 
           {activeView === 'about' && (
-            <div className="animate-fade-in">
-              <About isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
-            </div>
+            <Suspense fallback={<SectionLoader />}>
+              <div className="animate-fade-in">
+                <About isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
+              </div>
+            </Suspense>
           )}
         </div>
       </section>
