@@ -429,13 +429,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
 
                                     {/* Right Visuals */}
                                     <div className="space-y-8 lg:sticky lg:top-32">
-                                        {/* Image */}
+                                        {/* Image - Optimized with AVIF & Lazy Loading */}
                                         <div className={`relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border ${borderColor}`}>
-                                            <img 
-                                                src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
-                                                alt="Interior Design" 
-                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
-                                            />
+                                            <picture>
+                                                <source srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.avif" type="image/avif" />
+                                                <img 
+                                                    src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
+                                                    alt="Interior Design" 
+                                                    width="800"
+                                                    height="1000"
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
+                                                />
+                                            </picture>
                                             <div className={`absolute inset-0 mix-blend-multiply ${isDarkMode ? 'bg-deep-teal/20' : 'bg-deep-teal/5'}`}></div>
                                         </div>
 
