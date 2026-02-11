@@ -27,6 +27,8 @@ export interface Product {
 export interface Project {
   _id: string;
   _type: 'project';
+  
+  // Fields used in existing components
   projectName: string;
   gallery: any[];
   shortDescription?: string;
@@ -35,6 +37,12 @@ export interface Project {
     category: string;
     title: string;
   };
+
+  // Fields requested for build fix / future compatibility
+  title?: string;
+  slug?: { current: string };
+  mainImage?: any; // We can use 'any' for the Sanity image object to prevent errors
+  categories?: { title: string }[];
 }
 
 export type Category = 'All' | 'Modern' | 'Family' | 'Cottage' | 'Estate';

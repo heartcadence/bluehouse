@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, ExternalLink, Loader2 } from 'lucide-react';
 import { client, urlFor } from '../lib/sanity.client';
-import { Project } from '../types';
+import { Project } from '../src/types';
 
 interface PortfolioProps {
   isDarkMode: boolean;
@@ -52,7 +52,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
     try {
       const query = `*[_type == "project" && _id == $id][0]{ gallery, shortDescription }`;
       const fullDetails = await client.fetch(query, { id: project._id });
-      setSelectedProject((current) => 
+      
+      // Explicitly type 'current' to fix build error
+      setSelectedProject((current: Project | null) => 
         current && current._id === project._id ? { ...current, ...fullDetails } : current
       );
     } catch (error) {
