@@ -12,13 +12,18 @@
     <link rel="preconnect" href="https://cdn.sanity.io">
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
 
-    <!-- LCP Preload: Exact match for Hero Image to prevent double download -->
+    <!-- LCP Preload: Hero Image -->
     <link 
       rel="preload" 
       as="image" 
       href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
+      type="image/avif"
       fetchpriority="high"
     >
+
+    <!-- Font Preloads: Lato Regular & Bold -->
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPHA.woff2" type="font/woff2" crossorigin>
 
     <!-- Optimized Fonts: Combined Lato and Playfair Display -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
