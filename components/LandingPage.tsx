@@ -134,14 +134,33 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
       <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <picture>
+            {/* Mobile AVIF (Highest Priority) */}
+            <source 
+              media="(max-width: 768px)" 
+              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
+              type="image/avif"
+            />
+            {/* Mobile WebP (Fallback) */}
             <source 
               media="(max-width: 768px)" 
               srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=800" 
+              type="image/webp"
             />
+            
+            {/* Desktop AVIF (Highest Priority) */}
+            <source 
+              media="(min-width: 769px)" 
+              srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=1920" 
+              type="image/avif"
+            />
+            {/* Desktop WebP (Fallback) */}
             <source 
               media="(min-width: 769px)" 
               srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920" 
+              type="image/webp"
             />
+            
+            {/* Fallback Image */}
             <img
               src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.webp?w=1920"
               alt="Modern Architectural House"
