@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Product, Category } from '../src/types';
-import { CATEGORIES } from '../src/constants';
-import { client } from '../lib/sanity.client';
+import { Product, Category } from '../types';
+import { CATEGORIES } from '../constants';
+import { client } from '../../lib/sanity.client';
 
 // COMPONENT IMPORTS
-// These look for "neighbor" files in the same src/components folder
 import Header from './Header';
 import Hero from './Hero';
 import Portfolio from './Portfolio';
 import Storefront from './Storefront';
 import About from './About';
+import Contact from './Contact'; // Restored Contact Component
 
 interface LandingPageProps {
   isDarkMode: boolean;
@@ -39,7 +39,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     let isMounted = true;
     const fetchPlans = async () => {
       setIsLoading(true);
-      setCurrentPage(1); // Reset pagination on category change
+      setCurrentPage(1); 
       
       try {
         const queryCategory = activeCategory === 'All' ? 'ALL' : activeCategory;
@@ -74,7 +74,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
   }, [activeCategory]);
 
   // --- THE PORTFOLIO HOOK ---
-  // This scrolls the user and filters the shop when clicking "View Plans" in a project
   const handleViewLinkedPlan = (planId: string, category: string) => {
     setActiveView('collection');
     setActiveCategory(category as Category);
@@ -85,7 +84,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
       storefrontElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Remove pulse highlight after animation duration
     setTimeout(() => setHighlightedPlanId(null), 4000);
   };
 
@@ -96,14 +94,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(prev => prev + 1);
-      document.getElementById('storefront')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('product-grid-top')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(prev => prev - 1);
-      document.getElementById('storefront')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('product-grid-top')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -126,31 +124,39 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* 2. DYNAMIC CONTENT AREA */}
         <section className="relative z-20 -mt-20">
-          {/* Navigation Toggle Bar */}
+          
+          {/* Navigation Toggle Bar - Portfolio removed (moved to Header) */}
           <div className="flex justify-center mb-16 px-4">
             <div className={`flex flex-wrap justify-center p-1 rounded-full backdrop-blur-md border shadow-2xl ${
               isDarkMode ? 'bg-deep-teal/80 border-white/10' : 'bg-light-bg/80 border-deep-teal/10'
             }`}>
-              {['contact', 'collection', 'portfolio'].map((view) => (
+              {['contact', 'collection'].map((view) => (
                 <button
                   key={view}
                   onClick={() => setActiveView(view as any)}
-                  className={`px-6 md:px-8 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${
+                  className={`px-8 md:px-12 py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${
                     activeView === view 
                       ? 'bg-muted-gold text-deep-teal shadow-lg' 
                       : `${isDarkMode ? 'text-off-white' : 'text-deep-teal'} opacity-60 hover:opacity-100`
                   }`}
                 >
-                  {view}
+                  {view === 'collection' ? 'The Collection' : 'Contact Us'}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="w-full">
+            {/* --- CONTACT VIEW --- */}
+            {activeView === 'contact' && (
+              <div className="animate-fade-in">
+                <Contact isDarkMode={isDarkMode} />
+              </div>
+            )}
+
             {/* --- COLLECTION / STOREFRONT VIEW --- */}
             {activeView === 'collection' && (
-              <div id="storefront" className="scroll-mt-28">
+              <div id="storefront" className="scroll-mt-28 animate-fade-in">
                 <Storefront 
                   isDarkMode={isDarkMode}
                   activeCategory={activeCategory}
@@ -166,23 +172,25 @@ const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             )}
 
-            {/* --- PORTFOLIO VIEW --- */}
+            {/* --- PORTFOLIO VIEW (Triggered from Main Nav) --- */}
             {activeView === 'portfolio' && (
-              <Portfolio 
-                isDarkMode={isDarkMode} 
-                onViewPlan={handleViewLinkedPlan}
-              />
+              <div className="animate-fade-in">
+                <Portfolio 
+                  isDarkMode={isDarkMode} 
+                  onViewPlan={handleViewLinkedPlan}
+                />
+              </div>
             )}
 
-            {/* --- ABOUT VIEW --- */}
+            {/* --- ABOUT VIEW (Triggered from Main Nav) --- */}
             {activeView === 'about' && (
-              <About 
-                isDarkMode={isDarkMode} 
-                onCtaClick={() => setActiveView('collection')} 
-              />
+              <div className="animate-fade-in">
+                <About 
+                  isDarkMode={isDarkMode} 
+                  onCtaClick={() => setActiveView('collection')} 
+                />
+              </div>
             )}
-            
-            {/* Note: Contact view logic is usually handled inside Header or a separate section */}
           </div>
         </section>
       </main>
@@ -191,12 +199,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
       <style>{`
         @keyframes plan-pulse {
           0% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0.7); transform: scale(1); }
-          50% { box-shadow: 0 0 20px 10px rgba(184, 134, 11, 0.4); transform: scale(1.02); }
+          50% { box-shadow: 0 0 25px 10px rgba(184, 134, 11, 0.4); transform: scale(1.02); }
           100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); transform: scale(1); }
         }
         .highlight-pulse {
           animation: plan-pulse 2s infinite;
-          border-color: #B8860B !important;
+          border: 2px solid #B8860B !important;
         }
       `}</style>
     </div>

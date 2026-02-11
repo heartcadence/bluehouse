@@ -41,6 +41,11 @@ const App: React.FC = () => {
     scrollToContent();
   };
 
+  const handleNavigateToPortfolio = () => {
+    setActiveView('portfolio');
+    scrollToContent();
+  };
+
   const handleNavigateToAbout = () => {
     setActiveView('about');
     scrollToContent();
@@ -57,6 +62,7 @@ const App: React.FC = () => {
         toggleTheme={toggleTheme}
         onContactClick={handleNavigateToContact}
         onCollectionClick={handleNavigateToCollection}
+        onPortfolioClick={handleNavigateToPortfolio}
         onAboutClick={handleNavigateToAbout}
       />
 

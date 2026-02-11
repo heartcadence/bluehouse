@@ -6,6 +6,7 @@ interface HeaderProps {
   toggleTheme: () => void;
   onContactClick: () => void;
   onCollectionClick: () => void;
+  onPortfolioClick: () => void;
   onAboutClick: () => void;
 }
 
@@ -14,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({
   toggleTheme,
   onContactClick,
   onCollectionClick,
+  onPortfolioClick,
   onAboutClick
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   const logoTextMain = isDarkMode ? 'text-off-white' : 'text-deep-teal';
 
   // Navigation Items
-  const navItems = ['Contact', 'Collection', 'About'];
+  const navItems = ['Contact', 'Collection', 'Portfolio', 'About'];
 
   return (
     <header className={`fixed w-full top-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${headerBg}`}>
@@ -50,45 +52,22 @@ const Header: React.FC<HeaderProps> = ({
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-12 items-center">
             {navItems.map((item) => {
+               const commonClasses = `text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`;
+               
                if (item === 'Contact') {
-                  return (
-                    <button 
-                        key={item} 
-                        onClick={onContactClick}
-                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
-                    >
-                        {item}
-                    </button>
-                  );
+                  return <button key={item} onClick={onContactClick} className={commonClasses}>{item}</button>;
                }
                if (item === 'Collection') {
-                  return (
-                    <button 
-                        key={item} 
-                        onClick={onCollectionClick}
-                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
-                    >
-                        {item}
-                    </button>
-                  );
+                  return <button key={item} onClick={onCollectionClick} className={commonClasses}>{item}</button>;
+               }
+               if (item === 'Portfolio') {
+                  return <button key={item} onClick={onPortfolioClick} className={commonClasses}>{item}</button>;
                }
                if (item === 'About') {
-                  return (
-                    <button 
-                        key={item} 
-                        onClick={onAboutClick}
-                        className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
-                    >
-                        {item}
-                    </button>
-                  );
+                  return <button key={item} onClick={onAboutClick} className={commonClasses}>{item}</button>;
                }
                return (
-                <a 
-                    key={item} 
-                    href={`#${item.toLowerCase()}`} 
-                    className={`text-sm uppercase tracking-widest transition-colors duration-300 ${isDarkMode ? 'text-off-white/70' : 'text-dark-text/70'} ${navHover}`}
-                >
+                <a key={item} href={`#${item.toLowerCase()}`} className={commonClasses}>
                     {item}
                 </a>
                );
@@ -139,55 +118,22 @@ const Header: React.FC<HeaderProps> = ({
       >
         <div className="flex flex-col h-full pt-20 px-8 space-y-8">
            {navItems.map((item) => {
+              const commonClasses = `font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`;
+
               if (item === 'Contact') {
-                 return (
-                    <button 
-                        key={item} 
-                        onClick={() => {
-                            onContactClick();
-                            setIsMobileMenuOpen(false);
-                        }}
-                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
-                    >
-                        {item}
-                    </button>
-                 );
+                 return <button key={item} onClick={() => { onContactClick(); setIsMobileMenuOpen(false); }} className={commonClasses}>{item}</button>;
               }
               if (item === 'Collection') {
-                 return (
-                    <button 
-                        key={item} 
-                        onClick={() => {
-                            onCollectionClick();
-                            setIsMobileMenuOpen(false);
-                        }}
-                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
-                    >
-                        {item}
-                    </button>
-                 );
+                 return <button key={item} onClick={() => { onCollectionClick(); setIsMobileMenuOpen(false); }} className={commonClasses}>{item}</button>;
+              }
+              if (item === 'Portfolio') {
+                 return <button key={item} onClick={() => { onPortfolioClick(); setIsMobileMenuOpen(false); }} className={commonClasses}>{item}</button>;
               }
               if (item === 'About') {
-                 return (
-                    <button 
-                        key={item} 
-                        onClick={() => {
-                            onAboutClick();
-                            setIsMobileMenuOpen(false);
-                        }}
-                        className={`font-display text-2xl hover:text-muted-gold transition-colors text-left ${textColor}`}
-                    >
-                        {item}
-                    </button>
-                 );
+                 return <button key={item} onClick={() => { onAboutClick(); setIsMobileMenuOpen(false); }} className={commonClasses}>{item}</button>;
               }
               return (
-                <a 
-                    key={item} 
-                    href={`#${item.toLowerCase()}`} 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`font-display text-2xl hover:text-muted-gold transition-colors ${textColor}`}
-                >
+                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsMobileMenuOpen(false)} className={commonClasses}>
                     {item}
                 </a>
               );
