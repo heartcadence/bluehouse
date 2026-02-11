@@ -158,7 +158,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                 type="image/avif" 
              />
              
-             {/* Fallback */}
+             {/* Fallback to AVIF since WebP is removed */}
              <img
                 src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif"
                 alt="Modern Architectural House"
@@ -472,7 +472,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                             <picture>
                                                 <source srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.avif" type="image/avif" />
                                                 <img 
-                                                    src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.webp" 
+                                                    src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.avif" 
                                                     alt="Interior Design" 
                                                     width="800"
                                                     height="1000"
