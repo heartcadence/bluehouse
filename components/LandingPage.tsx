@@ -406,7 +406,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                 <div className="max-w-3xl mx-auto text-center">
                                     <h2 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-8">Who We Are</h2>
                                     <p className={`text-lg md:text-xl font-light leading-relaxed ${mutedColor} italic`}>
-                                        "Bluehouse Planning & Designs Inc. is led by a dedicated, <span className={isDarkMode ? 'text-off-white' : 'text-deep-teal'}>real person</span> with over a decade of hands-on, local architectural expertise. We bridge the gap between visionary aesthetics and practical construction, offering BCIN Registered, Ontario-compliant solutions that ensure your dream home becomes a reality without the red tape."
+                                        "Bluehouse Planning & Designs Inc. is led by a designer with over a decade of <span className={isDarkMode ? 'text-off-white' : 'text-deep-teal'}>Ontario-specific architectural expertise</span>, ensuring your vision meets permit-ready reality."
                                     </p>
                                 </div>
                             </div>
