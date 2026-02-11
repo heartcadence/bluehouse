@@ -20,14 +20,15 @@
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
     <link rel="preconnect" href="https://cdn.sanity.io">
 
-    <!-- Font Preloads: Only Lato Regular -->
+    <!-- Font Preloads: Lato Regular & Bold -->
     <link rel="preload" href="https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UvWSfp.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Critical CSS (Inline) -->
     <style>
       :root {
-        --deep-teal: #002b2b;
-        --muted-gold: #c5a059;
+        --deep-teal: #002147;
+        --muted-gold: #A68562;
         --off-white: #F2F2F2;
       }
       body {
@@ -36,8 +37,8 @@
         font-family: 'Lato', sans-serif;
         margin: 0;
       }
-      .bg-deep-teal { background-color: #002b2b; }
-      .text-muted-gold { color: #c5a059; }
+      .bg-deep-teal { background-color: var(--deep-teal); }
+      .text-muted-gold { color: var(--muted-gold); }
       
       /* Critical Layout: Contact Grid */
       .grid { display: grid; }
@@ -49,8 +50,8 @@
       }
     </style>
 
-    <!-- Main Stylesheet (Non-blocking) -->
-    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'">
+    <!-- Main Stylesheet (Deferred) -->
+    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
 
     <!-- Optimized Fonts: Combined Lato and Playfair Display -->

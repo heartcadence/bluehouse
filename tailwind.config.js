@@ -10,8 +10,8 @@ export default {
     extend: {
       colors: {
         'off-white': '#F2F2F2',
-        'deep-teal': '#002b2b',
-        'muted-gold': '#c5a059',
+        'deep-teal': '#002147',
+        'muted-gold': '#A68562',
         'deep-teal-dark': '#00152e',
         'light-bg': '#F9FAFB',
         'dark-text': '#4A5568'
