@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, ShieldCheck, ChevronLeft, ChevronRight, RotateCw, X, ArrowLeft } from 'lucide-react';
-import { Product } from '../types';
+import { Product } from '../src/types';
 import { urlFor } from '../lib/sanity.client';
 
 interface ProductCardProps {

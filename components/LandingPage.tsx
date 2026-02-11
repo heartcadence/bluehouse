@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Facebook, CheckCircle, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
-import { Product, Category } from '../types';
-import { CATEGORIES } from '../constants';
+import { Product, Category } from '../src/types';
+import { CATEGORIES } from '../src/constants';
 import ProductCard from './ProductCard';
 import { client } from '../lib/sanity.client';
 
@@ -135,7 +135,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
         <div className="absolute inset-0 z-0">
           <picture>
              {/* AVIF Sources (Primary) */}
-             {/* Note: Desktop source uses exact URL to match index.html preload */}
              <source 
                 srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif?w=800" 
                 media="(max-width: 768px)" 
@@ -182,12 +181,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                Find My Dream Home
              </button>
              
-             {/* Trust Badge */}
-             <div className="mt-6 flex items-center justify-center space-x-2 opacity-80 animate-fade-in animation-delay-600">
-                <ShieldCheck className="w-4 h-4 text-muted-gold" />
-                <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
-                    BCIN Registered
+             <div className="mt-4 flex flex-col items-center animate-fade-in animation-delay-600">
+                <span className={`text-[9px] uppercase tracking-widest font-bold mb-1 ${isDarkMode ? 'text-muted-gold' : 'text-deep-teal'}`}>
+                    BCIN Registered • Ontario Building Code Compliant
                 </span>
+                {/* Trust Badge Icon */}
+                <div className="flex items-center space-x-2 opacity-80">
+                    <ShieldCheck className="w-4 h-4 text-muted-gold" />
+                    <span className={`text-[10px] uppercase tracking-widest font-bold ${isDarkMode ? 'text-off-white' : 'text-deep-teal'}`}>
+                        Verified Local Expertise
+                    </span>
+                </div>
              </div>
           </div>
         </div>
@@ -369,7 +373,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isDarkMode, activeView, setAc
                                 <div className="max-w-3xl mx-auto text-center">
                                     <h2 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-8">Who We Are</h2>
                                     <p className={`text-lg md:text-xl font-light leading-relaxed ${mutedColor} italic`}>
-                                        "Bluehouse Planning & Designs Inc. provides BCIN Registered, Ontario-compliant architectural solutions with over a decade of local expertise. Rooted in Brantford, Ontario, we bridge the gap between visionary aesthetics and practical construction, ensuring your dream home becomes a reality without the red tape."
+                                        "Bluehouse Planning & Designs Inc. is led by a dedicated, local expert with over a decade of hands-on architectural experience. We bridge the gap between visionary aesthetics and practical construction, offering BCIN Registered, Ontario-compliant solutions that ensure your dream home becomes a reality without the red tape."
                                     </p>
                                 </div>
                             </div>
