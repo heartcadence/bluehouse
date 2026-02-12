@@ -15,11 +15,11 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode, onCtaClick }) => {
       <div className="absolute inset-0 z-0">
         <picture>
           <source 
-            srcSet="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
+            srcSet="https://bluehouseplanning.ca/hero2.avif" 
             type="image/avif" 
           />
           <img
-            src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif"
+            src="https://bluehouseplanning.ca/hero2.avif"
             alt="Modern Architectural House"
             className={`w-full h-full object-cover transition-opacity duration-700 ${
               isDarkMode ? 'opacity-30' : 'opacity-90'

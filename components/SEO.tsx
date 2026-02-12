@@ -16,8 +16,8 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
   const defaultTitle = 'Bluehouse Planning | Architectural Drafting & Design';
   const defaultDescription = 'Professional architectural drafting and design services in Ontario. Specializing in custom homes, renovations, and permit drawings.';
-  // Using the absolute R2 URL to ensure social preview images load correctly
-  const defaultImage = 'https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif';
+  // Using the absolute URL to ensure social preview images load correctly
+  const defaultImage = 'https://bluehouseplanning.ca/hero2.avif';
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://bluehouseplanning.ca';
 
   const finalTitle = title ? `${title} | Bluehouse Planning` : defaultTitle;
