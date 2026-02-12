@@ -33,10 +33,31 @@ const Footer: React.FC<FooterProps> = ({
           
           {/* Brand Info */}
           <div className="space-y-4">
-            <h3 className={`font-display text-xl tracking-wider ${headingColor}`}>BLUEHOUSE<span className="text-muted-gold">.</span></h3>
+            <div className="flex flex-col">
+              <h3 className={`font-display text-xl tracking-wider leading-none ${headingColor}`}>
+                BLUEHOUSE<span className="text-muted-gold">.</span>
+              </h3>
+              <span className="text-muted-gold text-[10px] tracking-[0.2em] font-bold uppercase mt-1">
+                Planning and Designs Inc.
+              </span>
+            </div>
             <p className={`text-sm leading-relaxed max-w-xs ${textColor}`}>
               Curating the world's most exceptional architectural plans for the discerning individual.
             </p>
+            
+            {/* Studio Address Link */}
+            <div className="pt-2">
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=Chestnut+Ave+Brantford+ON+N3T+Canada"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-xs leading-relaxed block hover:text-muted-gold transition-colors ${textColor}`}
+                  aria-label="View our Brantford studio on Google Maps"
+                >
+                  <span className="font-bold uppercase tracking-widest text-[10px] block mb-1 opacity-70">Studio</span>
+                  Chestnut Ave, Brantford<br/>ON N3T, Canada
+                </a>
+            </div>
           </div>
 
           {/* Navigation Links */}
