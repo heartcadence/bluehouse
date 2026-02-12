@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import SEO from '../src/components/SEO';
+import SEO from './components/SEO';
 
 // Lazy load LandingPage for code splitting
 const LandingPage = lazy(() => import('../components/LandingPage'));
@@ -22,9 +22,37 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
+  // Generate dynamic SEO properties based on the active view
+  const getSeoProps = () => {
+    switch(activeView) {
+      case 'collection': 
+        return { 
+          title: 'The Collection', 
+          description: 'Explore our curated collection of architectural plans and designs.' 
+        };
+      case 'portfolio': 
+        return { 
+          title: 'Portfolio', 
+          description: 'View our portfolio of executed visions and completed projects in Ontario.' 
+        };
+      case 'about': 
+        return { 
+          title: 'About Us', 
+          description: 'Learn about our philosophy and 10+ years of architectural expertise.' 
+        };
+      case 'contact': 
+        return { 
+          title: 'Contact Us', 
+          description: 'Get in touch to start your custom home or renovation journey.' 
+        };
+      default: 
+        return {}; // Uses defaults defined in SEO.tsx
+    }
+  };
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
-      <SEO />
+      <SEO {...getSeoProps()} />
       <Header 
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleTheme}
