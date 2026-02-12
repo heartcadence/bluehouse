@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
           <button 
             className="cursor-pointer group flex items-center gap-3 bg-transparent border-none p-0 text-left focus:outline-none"
             onClick={() => handleNavClick('contact')}
-            aria-label="Bluehouse Planning and Design Home"
+            aria-label="Bluehouse Planning Home"
           >
             <Home className="text-muted-gold w-6 h-6 transition-transform duration-500 group-hover:scale-110" />
             <div className="flex flex-col">
