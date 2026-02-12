@@ -49,20 +49,21 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          <div 
-            className="cursor-pointer group flex items-center gap-3"
+          <button 
+            className="cursor-pointer group flex items-center gap-3 bg-transparent border-none p-0 text-left focus:outline-none"
             onClick={() => handleNavClick('contact')}
+            aria-label="Bluehouse Planning Home"
           >
             <Home className="text-muted-gold w-6 h-6 transition-transform duration-500 group-hover:scale-110" />
             <div className="flex flex-col">
               <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors leading-none ${textColor} group-hover:text-muted-gold`}>
-                Bluehouse<span className="text-muted-gold font-light">.</span>
+                Bluehouse<span className="text-muted-gold font-bold">.</span>
               </h1>
-              <span className="text-muted-gold text-[10px] tracking-[0.2em] font-light uppercase mt-1">
+              <span className="text-muted-gold text-[10px] tracking-[0.2em] font-bold uppercase mt-1">
                 Planning and Designs Inc.
               </span>
             </div>
-          </div>
+          </button>
 
           <nav className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
@@ -84,6 +85,7 @@ const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={toggleDarkMode}
+              aria-label="Toggle theme"
               className={`p-2 rounded-full transition-all duration-500 ${
                 isDarkMode 
                   ? 'bg-white/5 text-muted-gold hover:bg-white/10' 
@@ -95,12 +97,17 @@ const Header: React.FC<HeaderProps> = ({
           </nav>
 
           <div className="md:hidden flex items-center space-x-4">
-             <button onClick={toggleDarkMode} className={textColor}>
+             <button 
+                onClick={toggleDarkMode} 
+                className={textColor}
+                aria-label="Toggle theme"
+             >
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
              </button>
              <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={textColor}
+                aria-label="Main menu"
              >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
              </button>
