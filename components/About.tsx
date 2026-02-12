@@ -92,7 +92,7 @@ const About: React.FC<AboutProps> = ({ isDarkMode, onCtaClick }) => {
             <div className="space-y-8 lg:sticky lg:top-32">
               <div className="relative h-[500px] w-full group overflow-hidden shadow-2xl rounded-sm border border-white/5">
                 <img 
-                  src="https://bluehouseplanning.ca/about1.avif" 
+                  src="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/about1.avif" 
                   alt="Architecture Studio" 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80"
                   loading="lazy"
