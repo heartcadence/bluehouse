@@ -52,7 +52,15 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
               <div>
                 <h4 className={`text-xs font-bold uppercase tracking-widest mb-1 ${textColor}`}>Studio</h4>
                 <p className={mutedColor}>
-                  Chestnut Ave, Brantford<br/>ON N3T, Canada
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Chestnut+Ave+Brantford+ON+N3T+Canada"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-muted-gold transition-colors"
+                    aria-label="View our Brantford studio on Google Maps"
+                  >
+                    Chestnut Ave, Brantford<br/>ON N3T, Canada
+                  </a>
                 </p>
               </div>
             </div>
