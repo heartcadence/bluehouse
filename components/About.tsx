@@ -55,19 +55,15 @@ const About: React.FC<AboutProps> = ({ isDarkMode, onCtaClick }) => {
             <div className="space-y-8">
               <div>
                 <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                <h4 className={`font-display text-4xl md:text-5xl leading-tight ${textColor} mb-6`}>
-                  Great Homes Start with <br/> Great Planning.
+                <h4 className="font-display text-4xl md:text-5xl leading-tight text-muted-gold mb-6">
+                  Great Homes Start with <br className="hidden md:block" /> Great Planning.
                 </h4>
-                <p className={`font-display text-xl leading-relaxed italic ${mutedColor}`}>
-                  We turn your ideas into clear, high-quality plans, so you can build with confidence.
+                <p className={`text-lg font-light leading-relaxed max-w-xl ${mutedColor}`}>
+                  At Bluehouse Planning and Designs Inc., we turn your ideas into high-quality architectural plans and permit-ready drawings. We specialize in navigating Ontario's building codes and municipal permit requirements in Brantford and the surrounding areas. We handle the technical headaches so you can build with confidence and focus on your future home.
                 </p>
               </div>
               
-              <div className={`space-y-6 text-lg font-light leading-relaxed ${mutedColor}`}>
-                <p>
-                  At Bluehouse, we know that building a home is a big deal. We handle the technical headaches and paperwork so you can focus on the excitement of finally moving into a home that fits your life perfectly.
-                </p>
-                
+              <div className="space-y-6">
                 <div className={`pt-6 border-t ${borderColor}`}>
                   <h4 className={`text-xs font-bold uppercase tracking-widest mb-4 ${textColor}`}>Technical Assurance</h4>
                   <ul className="space-y-3">
