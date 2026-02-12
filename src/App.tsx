@@ -1,10 +1,8 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from './components/SEO';
-
-// Lazy load LandingPage for code splitting
-const LandingPage = lazy(() => import('../components/LandingPage'));
+import LandingPage from '../components/LandingPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -61,13 +59,11 @@ const App: React.FC = () => {
       />
 
       <main>
-        <Suspense fallback={<div className="min-h-screen bg-deep-teal" />}>
-          <LandingPage 
-            isDarkMode={isDarkMode} 
-            activeView={activeView}
-            setActiveView={handleViewChange}
-          />
-        </Suspense>
+        <LandingPage 
+          isDarkMode={isDarkMode} 
+          activeView={activeView}
+          setActiveView={handleViewChange}
+        />
       </main>
 
       <Footer 

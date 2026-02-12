@@ -2,9 +2,10 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Product, Category } from '../src/types';
 import { client } from '../lib/sanity.client';
+import Hero from './Hero';
 
 // LAZY LOAD COMPONENT IMPORTS
-const Hero = lazy(() => import('./Hero'));
+// Hero is now static for performance (LCP)
 const Portfolio = lazy(() => import('./Portfolio'));
 const Storefront = lazy(() => import('./Storefront'));
 const About = lazy(() => import('./About'));
@@ -99,9 +100,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className="animate-fade-in w-full min-h-screen">
       
-      <Suspense fallback={<div className="h-[85vh] w-full bg-deep-teal/10 animate-pulse" />}>
-        <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
-      </Suspense>
+      {/* Static Hero Render (No Suspense) */}
+      <Hero isDarkMode={isDarkMode} onCtaClick={() => setActiveView('collection')} />
 
       <section className="relative z-20 -mt-20">
         {/* Inner Toggle Bar: Contact vs Collection (Portfolio removed) */}
