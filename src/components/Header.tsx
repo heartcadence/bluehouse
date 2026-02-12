@@ -101,14 +101,14 @@ const Header: React.FC<HeaderProps> = ({
              <button 
                 onClick={toggleDarkMode} 
                 className={textColor}
-                aria-label="Toggle dark mode"
+                aria-label="Toggle color theme"
              >
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
              </button>
              <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={textColor}
-                aria-label={isMobileMenuOpen ? "Close main menu" : "Open main menu"}
+                aria-label={isMobileMenuOpen ? "Close main navigation menu" : "Open main navigation menu"}
              >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
              </button>
