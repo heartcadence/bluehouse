@@ -18,12 +18,19 @@ const SEO: React.FC<SEOProps> = ({
   const defaultDescription = 'Professional architectural drafting and design services in Ontario. Specializing in custom homes, renovations, and permit drawings.';
   // Using the absolute URL to ensure social preview images load correctly
   const defaultImage = 'https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif';
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://bluehouseplanning.ca';
+  
+  // FORCE ROOT DOMAIN for SEO canonicalization to consolidate 'www' and 'non-www' traffic
+  const siteUrl = 'https://bluehouseplanning.ca';
 
   const finalTitle = title ? `${title} | Bluehouse Planning` : defaultTitle;
   const finalDescription = description || defaultDescription;
   const finalImage = image || defaultImage;
-  const finalUrl = url || (typeof window !== 'undefined' ? window.location.href : siteUrl);
+  
+  // Construct canonical URL: Use provided prop OR construct from current path + root domain
+  // We explicitly ignore window.location.origin to prevent 'www' from appearing in canonical tags
+  const finalUrl = url || (typeof window !== 'undefined' 
+    ? `${siteUrl}${window.location.pathname}${window.location.search}`
+    : siteUrl);
 
   return (
     <Helmet>
