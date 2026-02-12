@@ -80,20 +80,33 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
         </div>
 
         {/* Right Side: Rebuilt Original Form */}
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form 
+          className="space-y-6" 
+          action="https://formsubmit.co/sales@bluehouseplanning.ca" 
+          method="POST"
+        >
+          {/* Hidden FormSubmit Configuration */}
+          <input type="hidden" name="_subject" value="New Project Inquiry from Bluehouse Website" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input 
               type="text" 
+              name="First Name"
               placeholder="FIRST NAME" 
               aria-label="First Name"
+              required
               className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
                 isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
               }`} 
             />
             <input 
               type="text" 
+              name="Last Name"
               placeholder="LAST NAME" 
               aria-label="Last Name"
+              required
               className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
                 isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
               }`} 
@@ -101,22 +114,29 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
           </div>
           <input 
             type="email" 
+            name="Email"
             placeholder="EMAIL ADDRESS" 
             aria-label="Email Address"
+            required
             className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
               isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
             }`} 
           />
           <textarea 
             rows={4} 
+            name="Project Details"
             placeholder="TELL US ABOUT YOUR PROJECT" 
             aria-label="Tell us about your project"
+            required
             className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
               isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
             }`}
           ></textarea>
           
-          <button className="w-full bg-deep-teal text-off-white py-4 font-bold tracking-widest uppercase hover:bg-muted-gold transition-colors shadow-lg mt-4 rounded-sm">
+          <button 
+            type="submit"
+            className="w-full bg-deep-teal text-off-white py-4 font-bold tracking-widest uppercase hover:bg-muted-gold transition-colors shadow-lg mt-4 rounded-sm"
+          >
             Send Message
           </button>
         </form>
