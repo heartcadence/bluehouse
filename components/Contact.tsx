@@ -82,19 +82,39 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
         {/* Right Side: Rebuilt Original Form */}
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" placeholder="FIRST NAME" className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
-              isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
-            }`} />
-            <input type="text" placeholder="LAST NAME" className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
-              isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
-            }`} />
+            <input 
+              type="text" 
+              placeholder="FIRST NAME" 
+              aria-label="First Name"
+              className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
+                isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
+              }`} 
+            />
+            <input 
+              type="text" 
+              placeholder="LAST NAME" 
+              aria-label="Last Name"
+              className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
+                isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
+              }`} 
+            />
           </div>
-          <input type="email" placeholder="EMAIL ADDRESS" className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
-            isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
-          }`} />
-          <textarea rows={4} placeholder="TELL US ABOUT YOUR PROJECT" className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
-            isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
-          }`}></textarea>
+          <input 
+            type="email" 
+            placeholder="EMAIL ADDRESS" 
+            aria-label="Email Address"
+            className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
+              isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
+            }`} 
+          />
+          <textarea 
+            rows={4} 
+            placeholder="TELL US ABOUT YOUR PROJECT" 
+            aria-label="Tell us about your project"
+            className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-muted-gold transition-colors ${
+              isDarkMode ? 'border-off-white/20 text-off-white placeholder-off-white/40' : 'border-deep-teal/20 text-deep-teal placeholder-deep-teal/40'
+            }`}
+          ></textarea>
           
           <button className="w-full bg-deep-teal text-off-white py-4 font-bold tracking-widest uppercase hover:bg-muted-gold transition-colors shadow-lg mt-4 rounded-sm">
             Send Message
