@@ -17,7 +17,8 @@ const Footer: React.FC<FooterProps> = ({
 }) => {
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
-  const textColor = isDarkMode ? 'text-off-white/50' : 'text-dark-text/60';
+  // Increased opacity for better contrast/accessibility
+  const textColor = isDarkMode ? 'text-off-white/80' : 'text-dark-text/80';
   const linkColor = isDarkMode ? 'text-off-white/70' : 'text-dark-text/80';
   const inputBorder = isDarkMode ? 'border-off-white/20 placeholder-off-white/30 text-off-white' : 'border-deep-teal/20 placeholder-deep-teal/30 text-deep-teal';
 
@@ -42,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({
               </span>
             </div>
             <p className={`text-sm leading-relaxed max-w-xs ${textColor}`}>
-              Curating the world's most exceptional architectural plans for the discerning individual.
+              Expert architectural design and permit-ready plans for custom homes and renovations across Brantford and Ontario.
             </p>
             
             {/* Studio Address Link */}
@@ -114,6 +115,7 @@ const Footer: React.FC<FooterProps> = ({
                   type="email" 
                   placeholder="EMAIL ADDRESS" 
                   className="bg-transparent border-none focus:outline-none text-sm w-full placeholder:text-inherit"
+                  aria-label="Email Address for Newsletter"
                 />
                <button className="text-muted-gold hover:text-muted-gold/70 uppercase text-xs tracking-widest font-bold">Join</button>
              </div>
