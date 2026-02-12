@@ -89,6 +89,7 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
           <input type="hidden" name="_subject" value="New Project Inquiry from Bluehouse Website" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://bluehouseplanning.ca/thanks" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input 
