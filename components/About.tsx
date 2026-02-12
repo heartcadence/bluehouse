@@ -55,7 +55,7 @@ const About: React.FC<AboutProps> = ({ isDarkMode, onCtaClick }) => {
             <div className="space-y-8">
               <div>
                 <h3 className="text-muted-gold text-sm tracking-[0.2em] uppercase mb-4">Our Philosophy</h3>
-                <h4 className="font-display text-4xl md:text-5xl leading-tight text-muted-gold mb-6">
+                <h4 className={`font-display text-4xl md:text-5xl leading-tight italic font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-deep-teal'}`}>
                   Great Homes Start with <br className="hidden md:block" /> Great Planning.
                 </h4>
                 <p className={`text-lg font-light leading-relaxed max-w-xl ${mutedColor}`}>
