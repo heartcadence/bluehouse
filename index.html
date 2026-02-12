@@ -5,23 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BLUEHOUSE Planning & Designs</title>
 
-    <!-- LCP Preload: Hero Image (Highest Priority) -->
-    <link 
-      rel="preload" 
-      as="image" 
-      href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" 
-      type="image/avif"
-      fetchpriority="high"
-    >
+    <!-- High-Priority Preloads (Restored to fix LCP & Cache warnings) -->
+    <link rel="preload" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif" as="image" fetchpriority="high" type="image/avif" />
+    <link rel="preload" href="/fonts/Lato-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
-    <!-- Preconnect Hints (Consolidated) -->
+    <!-- Preconnect Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev">
     <link rel="preconnect" href="https://cdn.sanity.io">
-
-    <!-- Font Preloads: Only Lato Regular -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHjx4wXg.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Critical CSS (Inline) -->
     <style>
@@ -35,10 +27,10 @@
     <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
 
-    <!-- Optimized Fonts: Combined Lato and Playfair Display -->
+    <!-- Optimized Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@18.3.1",
