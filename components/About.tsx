@@ -59,7 +59,7 @@ const About: React.FC<AboutProps> = ({ isDarkMode, onCtaClick }) => {
                   Great Homes Start with <br className="hidden md:block" /> Great Planning.
                 </h4>
                 <p className={`text-lg font-light leading-relaxed max-w-xl ${mutedColor}`}>
-                  At Bluehouse Planning and Designs Inc., we turn your ideas into high-quality architectural plans and permit-ready drawings. We specialize in navigating Ontario's building codes and municipal permit requirements in Brantford and the surrounding areas. We handle the technical headaches so you can build with confidence and focus on your future home.
+                  At Bluehouse Planning & Designs Inc., we turn your ideas into high-quality architectural plans and permit-ready drawings. We specialize in navigating Ontario's building codes and municipal permit requirements in Brantford and the surrounding areas. We handle the technical headaches so you can build with confidence and focus on your future home.
                 </p>
               </div>
               
