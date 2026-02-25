@@ -39,9 +39,7 @@ const Hero: React.FC<HeroProps> = ({ isDarkMode, onCtaClick }) => {
 
       {/* Content Layer */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-[-40px]">
-        <h2 className="text-muted-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6 animate-slide-up">
-          Bluehouse Planning & Designs
-        </h2>
+      
         <h1 className={`font-display text-6xl md:text-8xl lg:text-9xl mb-10 leading-none ${textColor} animate-slide-up animation-delay-200`}>
           Visionary <br/> <span className="italic text-muted-gold">Architecture</span>
         </h1>

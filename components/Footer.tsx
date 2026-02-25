@@ -36,10 +36,10 @@ const Footer: React.FC<FooterProps> = ({
           <div className="space-y-4">
             <div className="flex flex-col">
               <h3 className={`font-display text-xl tracking-wider leading-none ${headingColor}`}>
-                BLUEHOUSE<span className="text-muted-gold">.</span>
+                BLUEHOUSE<span className="text-muted-gold"></span>
               </h3>
               <span className="text-muted-gold text-[10px] tracking-[0.2em] font-bold uppercase mt-1">
-                Planning and Designs Inc.
+                Planning & Designs Inc.
               </span>
             </div>
             <p className={`text-sm leading-relaxed max-w-xs ${textColor}`}>

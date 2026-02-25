@@ -57,10 +57,10 @@ const Header: React.FC<HeaderProps> = ({
             <Home className="text-muted-gold w-6 h-6 transition-transform duration-500 group-hover:scale-110" />
             <div className="flex flex-col">
               <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors leading-none ${textColor} group-hover:text-muted-gold`}>
-                Bluehouse<span className="text-muted-gold font-bold">.</span>
+                Bluehouse<span className="text-muted-gold font-bold"></span>
               </h1>
               <span className="text-muted-gold text-[10px] tracking-[0.2em] font-bold uppercase mt-1">
-                Planning and Designs Inc.
+                Planning & Designs Inc.
               </span>
             </div>
           </button>
