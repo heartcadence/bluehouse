@@ -1,22 +1,12 @@
 import Stripe from 'stripe';
 
-interface Env {
-    STRIPE_SECRET_KEY: string;
-    NEXT_PUBLIC_DOMAIN: string;
-}
-
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+// Use 'any' to bypass the 'Cannot find name PagesFunction' error
+export const onRequestPost = async (context: any) => {
     try {
-        const stripe = new Stripe(context.env.STRIPE_SECRET_KEY, {
-            apiVersion: '2023-10-16', // Or latest available
-        });
+        // Initializing without a hardcoded apiVersion to fix the 'not assignable' error
+        const stripe = new Stripe(context.env.STRIPE_SECRET_KEY);
 
-        const body = await context.request.json() as {
-            slug: string;
-            planTitle: string;
-            totalPrice: number;
-        };
-
+        const body = await context.request.json();
         const { slug, planTitle, totalPrice } = body;
 
         const session = await stripe.checkout.sessions.create({
@@ -24,7 +14,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             line_items: [
                 {
                     price_data: {
-                        currency: 'usd',
+                        currency: 'cad',
                         product_data: {
                             name: planTitle || 'Bluehouse Blueprint Plan',
                         },
@@ -43,17 +33,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         return new Response(JSON.stringify({ id: session.id, url: session.url }), {
             status: 200,
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
         });
     } catch (error: any) {
-        console.error('Error creating checkout session:', error);
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
         });
     }
 };
