@@ -33,8 +33,14 @@ export const onRequestPost = async (context: any) => {
             if (result?.fileUrl && customerEmail) {
                 // 3. Send the Blueprint via MailChannels
                 const emailPayload = {
-                    personalizations: [{ to: [{ email: customerEmail, name: customerName }] }],
-                    from: { email: 'plans@bluehouseplanning.ca', name: 'Bluehouse Planning' },
+                    personalizations: [{
+                        to: [{ email: customerEmail, name: customerName }]
+                    }],
+                    // Using your verified .ca domain for high deliverability
+                    from: {
+                        email: 'plans@bluehouseplanning.ca',
+                        name: 'Bluehouse Planning'
+                    },
                     subject: `Your ${result.title} Blueprints are Ready!`,
                     content: [{
                         type: 'text/html',
@@ -44,7 +50,7 @@ export const onRequestPost = async (context: any) => {
                                 <p>Your purchase of the <strong>${result.title}</strong> plan set is complete.</p>
                                 <p>You can access your high-resolution architectural blueprints at the secure link below:</p>
                                 <div style="margin: 30px 0;">
-                                    <a href="${result.fileUrl}" style="background-color: #C4A484; color: white; padding: 15px 25px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                                    <a href="${result.fileUrl}" style="background-color: #C4A484; color: white; padding: 15px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
                                         Download Complete Plan Set (PDF)
                                     </a>
                                 </div>
