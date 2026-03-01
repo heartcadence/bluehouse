@@ -34,7 +34,7 @@ export const onRequestPost = async (context: any) => {
                 // 3. Send the Blueprint via MailChannels
                 const emailPayload = {
                     personalizations: [{ to: [{ email: customerEmail, name: customerName }] }],
-                    from: { email: 'plans@bluehouse-e2e.pages.dev', name: 'Bluehouse Planning' },
+                    from: { email: 'plans@bluehouseplanning.ca', name: 'Bluehouse Planning' },
                     subject: `Your ${result.title} Blueprints are Ready!`,
                     content: [{
                         type: 'text/html',
