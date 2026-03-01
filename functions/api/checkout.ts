@@ -1,0 +1,59 @@
+import Stripe from 'stripe';
+
+interface Env {
+    STRIPE_SECRET_KEY: string;
+    NEXT_PUBLIC_DOMAIN: string;
+}
+
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+    try {
+        const stripe = new Stripe(context.env.STRIPE_SECRET_KEY, {
+            apiVersion: '2023-10-16', // Or latest available
+        });
+
+        const body = await context.request.json() as {
+            slug: string;
+            planTitle: string;
+            totalPrice: number;
+        };
+
+        const { slug, planTitle, totalPrice } = body;
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: planTitle || 'Bluehouse Blueprint Plan',
+                        },
+                        unit_amount: Math.round(totalPrice * 100),
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: `${context.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${context.env.NEXT_PUBLIC_DOMAIN}/`,
+            metadata: {
+                planSlug: slug,
+            },
+        });
+
+        return new Response(JSON.stringify({ id: session.id, url: session.url }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error: any) {
+        console.error('Error creating checkout session:', error);
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+};
