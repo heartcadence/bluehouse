@@ -7,7 +7,6 @@ export const onRequestPost = async (context: any) => {
 
     try {
         // 1. Verify the request came from Stripe
-        // We use constructEventAsync because Cloudflare requires asynchronous crypto operations
         const body = await request.text();
         const event = await stripe.webhooks.constructEventAsync(
             body,
@@ -17,45 +16,53 @@ export const onRequestPost = async (context: any) => {
 
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object as Stripe.Checkout.Session;
-            const planSlug = session.metadata?.planSlug; // Retrieved from Stripe metadata
+            const planSlug = session.metadata?.planSlug;
             const customerEmail = session.customer_details?.email;
             const customerName = session.customer_details?.name || 'Valued Customer';
 
             console.log(`🚀 Payment Success! Unlocking vault for: ${planSlug}`);
 
-            // 2. Query Sanity for the private PDF link using your Viewer Token
-            const sanityQuery = encodeURIComponent(`*[_type == "plan" && slug.current == "${planSlug}"][0]{ title, "fileUrl": blueprintFile.asset->url }`);
+            // 2. Query Sanity using corrected types from your screenshot
+            // Updated to "digitalProduct" type and specific blueprint field keys
+            const sanityQuery = encodeURIComponent(`*[_type == "digitalProduct" && slug.current == "${planSlug}"][0]{ 
+                planTitle, 
+                "fileUrl": architecturalBlueprintPdf.asset->url 
+            }`);
+
             const sanityRes = await fetch(
                 `https://${env.VITE_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${env.VITE_SANITY_DATASET}?query=${sanityQuery}`,
                 { headers: { Authorization: `Bearer ${env.SANITY_API_TOKEN}` } }
             );
             const { result } = await sanityRes.json();
 
+            // Debug log to confirm what Sanity returned to the function
+            console.log(`🔍 Sanity Debug: Found Title [${result?.planTitle}] | URL [${result?.fileUrl ? 'YES' : 'NO'}]`);
+
             if (result?.fileUrl && customerEmail) {
-                // 3. Send the Blueprint via MailChannels
+                // 3. Send via MailChannels with Debug BCC
                 const emailPayload = {
                     personalizations: [{
-                        to: [{ email: customerEmail, name: customerName }]
+                        to: [{ email: customerEmail, name: customerName }],
+                        bcc: [{ email: 'logs@heartcadence.com', name: 'System Debug' }]
                     }],
-                    // Using your verified .ca domain for deliverability
                     from: {
                         email: 'plans@bluehouseplanning.ca',
                         name: 'Bluehouse Planning'
                     },
-                    subject: `Your ${result.title} Blueprints are Ready!`,
+                    subject: `Your ${result.planTitle} Blueprints are Ready!`,
                     content: [{
                         type: 'text/html',
                         value: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
                                 <h2 style="color: #1a3a3a;">Thank you, ${customerName}!</h2>
-                                <p>Your purchase of the <strong>${result.title}</strong> plan set is complete.</p>
-                                <p>You can access your high-resolution architectural blueprints at the secure link below:</p>
+                                <p>Your purchase of the <strong>${result.planTitle}</strong> plan set is complete.</p>
+                                <p>Access your architectural blueprints at the secure link below:</p>
                                 <div style="margin: 30px 0;">
                                     <a href="${result.fileUrl}" style="background-color: #C4A484; color: white; padding: 15px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">
-                                        Download Complete Plan Set (PDF)
+                                        Download Plan Set (PDF)
                                     </a>
                                 </div>
-                                <p style="font-size: 12px; color: #666;">If you have any questions regarding your order, simply reply to this email.</p>
+                                <p style="font-size: 12px; color: #666;">If you have any questions, reply to this email.</p>
                             </div>
                         `
                     }]
@@ -68,17 +75,18 @@ export const onRequestPost = async (context: any) => {
                 });
 
                 if (mailRes.ok) {
-                    console.log(`✅ Email sent successfully to ${customerEmail}`);
+                    console.log(`✅ Email sent successfully to ${customerEmail} (BCC logs@heartcadence.com)`);
                 } else {
                     const mailError = await mailRes.text();
                     console.error(`❌ MailChannels Error: ${mailError}`);
                 }
+            } else {
+                console.error(`⚠️ Delivery Skipped: Sanity data missing for slug: ${planSlug}`);
             }
         }
 
         return new Response(JSON.stringify({ received: true }), { status: 200 });
     } catch (err: any) {
-        // Detailed logging to help catch any remaining environmental issues
         console.error(`⚠️ Webhook Error: ${err.message}`);
         return new Response(`Webhook Error: ${err.message}`, { status: 400 });
     }
