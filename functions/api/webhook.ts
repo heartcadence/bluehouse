@@ -6,7 +6,6 @@ export const onRequestPost = async (context: any) => {
     const signature = request.headers.get('stripe-signature');
 
     try {
-        // 1. Verify the request came from Stripe
         const body = await request.text();
         const event = await stripe.webhooks.constructEventAsync(
             body,
@@ -20,27 +19,39 @@ export const onRequestPost = async (context: any) => {
             const customerEmail = session.customer_details?.email;
             const customerName = session.customer_details?.name || 'Valued Customer';
 
-            console.log(`🚀 Payment Success! Unlocking vault for: ${planSlug}`);
+            // 1. Claude's Variable Fix: Use non-VITE versions
+            const projectId = env.SANITY_PROJECT_ID || env.VITE_SANITY_PROJECT_ID;
+            const dataset = env.SANITY_DATASET || env.VITE_SANITY_DATASET;
+            const token = env.SANITY_API_TOKEN;
 
-            // 2. Corrected Query based on Vision Output (image_5f3ce1.png)
-            // Using internal keys: blueprintFile and title
-            const sanityQuery = encodeURIComponent(`*[_type == "digitalProduct" && slug.current == "${planSlug}"][0]{ 
-                title, 
-                "fileUrl": blueprintFile.asset->url 
-            }`);
+            console.log(`🔧 Config: project=${projectId} | dataset=${dataset} | token=${!!token}`);
+            console.log(`🚀 Payment Success! Unlocking: ${planSlug}`);
 
-            const sanityRes = await fetch(
-                `https://${env.VITE_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${env.VITE_SANITY_DATASET}?query=${sanityQuery}`,
-                { headers: { Authorization: `Bearer ${env.SANITY_API_TOKEN}` } }
-            );
-            const { result } = await sanityRes.json();
+            // 2. Hardened GROQ Query
+            const groqQuery = `*[_type == "digitalProduct" && slug.current == '${planSlug}'][0]{ title, "fileUrl": blueprintFile.asset->url }`;
+            const sanityUrl = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${encodeURIComponent(groqQuery)}`;
 
-            // Debug logs for Cloudflare Console
-            console.log(`🔍 Sanity Match: ${result ? 'YES' : 'NO'}`);
-            console.log(`📂 File URL Found: ${result?.fileUrl ? 'YES' : 'NO'}`);
+            console.log(`📡 Fetching: ${sanityUrl}`);
+
+            const sanityRes = await fetch(sanityUrl, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            // 3. Raw Response Logging
+            console.log(`📊 Sanity HTTP Status: ${sanityRes.status} ${sanityRes.statusText}`);
+            const rawBody = await sanityRes.text();
+            console.log(`📦 Sanity Raw Response: ${rawBody}`);
+
+            let result = null;
+            try {
+                const parsed = JSON.parse(rawBody);
+                result = parsed.result;
+            } catch (e) {
+                console.error(`❌ JSON Parse Error: ${rawBody}`);
+            }
 
             if (result?.fileUrl && customerEmail) {
-                // 3. Send via MailChannels
+                // 4. Send via MailChannels
                 const emailPayload = {
                     personalizations: [{
                         to: [{ email: customerEmail, name: customerName }],
@@ -76,19 +87,18 @@ export const onRequestPost = async (context: any) => {
                 });
 
                 if (mailRes.ok) {
-                    console.log(`✅ Email sent successfully to ${customerEmail}`);
+                    console.log(`✅ Email sent to ${customerEmail}`);
                 } else {
-                    const mailError = await mailRes.text();
-                    console.error(`❌ MailChannels Error: ${mailError}`);
+                    const mailErr = await mailRes.text();
+                    console.error(`❌ MailChannels Error: ${mailErr}`);
                 }
             } else {
-                console.error(`⚠️ Delivery Skipped: Sanity data missing for slug: ${planSlug}`);
+                console.error(`⚠️ Missing Data: Result: ${!!result} | File: ${!!result?.fileUrl}`);
             }
         }
-
         return new Response(JSON.stringify({ received: true }), { status: 200 });
     } catch (err: any) {
         console.error(`⚠️ Webhook Error: ${err.message}`);
-        return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+        return new Response(`Error: ${err.message}`, { status: 400 });
     }
 };
