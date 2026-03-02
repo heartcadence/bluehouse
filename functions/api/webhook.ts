@@ -7,8 +7,9 @@ export const onRequestPost = async (context: any) => {
 
     try {
         // 1. Verify the request came from Stripe
+        // We use constructEventAsync because Cloudflare requires asynchronous crypto operations
         const body = await request.text();
-        const event = stripe.webhooks.constructEvent(
+        const event = await stripe.webhooks.constructEventAsync(
             body,
             signature,
             env.STRIPE_WEBHOOK_SECRET
@@ -16,7 +17,7 @@ export const onRequestPost = async (context: any) => {
 
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object as Stripe.Checkout.Session;
-            const planSlug = session.metadata?.planSlug; // Retreived from Stripe metadata
+            const planSlug = session.metadata?.planSlug; // Retrieved from Stripe metadata
             const customerEmail = session.customer_details?.email;
             const customerName = session.customer_details?.name || 'Valued Customer';
 
@@ -36,7 +37,7 @@ export const onRequestPost = async (context: any) => {
                     personalizations: [{
                         to: [{ email: customerEmail, name: customerName }]
                     }],
-                    // Using your verified .ca domain for high deliverability
+                    // Using your verified .ca domain for deliverability
                     from: {
                         email: 'plans@bluehouseplanning.ca',
                         name: 'Bluehouse Planning'
@@ -77,6 +78,7 @@ export const onRequestPost = async (context: any) => {
 
         return new Response(JSON.stringify({ received: true }), { status: 200 });
     } catch (err: any) {
+        // Detailed logging to help catch any remaining environmental issues
         console.error(`⚠️ Webhook Error: ${err.message}`);
         return new Response(`Webhook Error: ${err.message}`, { status: 400 });
     }
