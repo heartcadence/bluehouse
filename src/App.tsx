@@ -3,12 +3,32 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import LandingPage from '../components/LandingPage';
+import ThankYou from '../components/ThankYou';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   // Default activeView set to 'contact' per client requirement
   const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
-  
+  const [isThankYouPage, setIsThankYouPage] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
+    return path === '/thank-you';
+  });
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.replace(/\/$/, '');
+      const isThankYou = path === '/thank-you';
+      console.log('Bluehouse Routing - Path:', window.location.pathname, 'isThankYou:', isThankYou);
+      setIsThankYouPage(isThankYou);
+    };
+
+    handleLocationChange();
+    // Listen for popstate for back/forward navigation
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   useEffect(() => {
@@ -22,28 +42,35 @@ const App: React.FC = () => {
 
   // Generate dynamic SEO properties based on the active view
   const getSeoProps = () => {
-    switch(activeView) {
-      case 'collection': 
-        return { 
-          title: 'The Collection', 
-          description: 'Explore our curated collection of architectural plans and designs.' 
+    switch (activeView) {
+      case 'collection':
+        return {
+          title: 'The Collection',
+          description: 'Explore our curated collection of architectural plans and designs.'
         };
-      case 'portfolio': 
-        return { 
-          title: 'Portfolio', 
-          description: 'View our portfolio of executed visions and completed projects in Ontario.' 
+      case 'portfolio':
+        return {
+          title: 'Portfolio',
+          description: 'View our portfolio of executed visions and completed projects in Ontario.'
         };
-      case 'about': 
-        return { 
-          title: 'About Us', 
-          description: 'Learn about our philosophy and 10+ years of architectural expertise.' 
+      case 'about':
+        return {
+          title: 'About Us',
+          description: 'Learn about our philosophy and 10+ years of architectural expertise.'
         };
-      case 'contact': 
-        return { 
-          title: 'Contact Us', 
-          description: 'Get in touch to start your custom home or renovation journey.' 
+      case 'contact':
+        return {
+          title: 'Contact Us',
+          description: 'Get in touch to start your custom home or renovation journey.'
         };
-      default: 
+      default:
+        if (isThankYouPage) {
+          return {
+            title: 'Thank you for your purchase!',
+            description: 'Your architectural blueprints are being prepared.',
+            noindex: true
+          };
+        }
         return {}; // Uses defaults defined in SEO.tsx
     }
   };
@@ -51,7 +78,7 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
       <SEO {...getSeoProps()} />
-      <Header 
+      <Header
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleTheme}
         activeView={activeView}
@@ -59,15 +86,19 @@ const App: React.FC = () => {
       />
 
       <main>
-        <LandingPage 
-          isDarkMode={isDarkMode} 
-          activeView={activeView}
-          setActiveView={handleViewChange}
-        />
+        {isThankYouPage ? (
+          <ThankYou />
+        ) : (
+          <LandingPage
+            isDarkMode={isDarkMode}
+            activeView={activeView}
+            setActiveView={handleViewChange}
+          />
+        )}
       </main>
 
-      <Footer 
-        isDarkMode={isDarkMode} 
+      <Footer
+        isDarkMode={isDarkMode}
         onContactClick={() => handleViewChange('contact')}
         onAboutClick={() => handleViewChange('about')}
         onCollectionClick={() => handleViewChange('collection')}

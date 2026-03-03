@@ -6,29 +6,31 @@ interface SEOProps {
   description?: string;
   image?: string;
   url?: string;
+  noindex?: boolean;
 }
 
-const SEO: React.FC<SEOProps> = ({ 
-  title, 
-  description, 
-  image, 
-  url 
+const SEO: React.FC<SEOProps> = ({
+  title,
+  description,
+  image,
+  url,
+  noindex
 }) => {
   const defaultTitle = 'Bluehouse Planning | Architectural Drafting & Design';
   const defaultDescription = 'Professional architectural drafting and design services in Ontario. Specializing in custom homes, renovations, and permit drawings.';
   // Using the absolute URL to ensure social preview images load correctly
   const defaultImage = 'https://pub-698e84d3fce74dc6b4b08c5f5d041da0.r2.dev/hero2.avif';
-  
+
   // FORCE ROOT DOMAIN for SEO canonicalization to consolidate 'www' and 'non-www' traffic
   const siteUrl = 'https://bluehouseplanning.ca';
 
   const finalTitle = title ? `${title} | Bluehouse Planning` : defaultTitle;
   const finalDescription = description || defaultDescription;
   const finalImage = image || defaultImage;
-  
+
   // Construct canonical URL: Use provided prop OR construct from current path + root domain
   // We explicitly ignore window.location.origin to prevent 'www' from appearing in canonical tags
-  const finalUrl = url || (typeof window !== 'undefined' 
+  const finalUrl = url || (typeof window !== 'undefined'
     ? `${siteUrl}${window.location.pathname}${window.location.search}`
     : siteUrl);
 
@@ -38,6 +40,7 @@ const SEO: React.FC<SEOProps> = ({
       <title>{finalTitle}</title>
       <meta name="description" content={finalDescription} />
       <link rel="canonical" href={finalUrl} />
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
