@@ -7,7 +7,11 @@ export const onRequestPost = async (context: any) => {
 
     try {
         const body = await request.text();
-        const event = await stripe.webhooks.constructEventAsync(body, signature, env.STRIPE_WEBHOOK_SECRET);
+        const event = await stripe.webhooks.constructEventAsync(
+            body,
+            signature,
+            env.STRIPE_WEBHOOK_SECRET
+        );
 
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object as Stripe.Checkout.Session;
@@ -15,15 +19,20 @@ export const onRequestPost = async (context: any) => {
             const customerEmail = session.customer_details?.email;
             const customerName = session.customer_details?.name || 'Valued Customer';
 
-            // Sanity variables (verified working)
+            // Sanity Config (Using plain variables first, falling back to VITE_ versions)
             const projectId = env.SANITY_PROJECT_ID || env.VITE_SANITY_PROJECT_ID;
             const dataset = env.SANITY_DATASET || env.VITE_SANITY_DATASET;
             const token = env.SANITY_API_TOKEN;
 
+            console.log(`🚀 Payment Success! Unlocking: ${planSlug}`);
+
+            // Query Sanity for the private file URL
             const groqQuery = `*[_type == "digitalProduct" && slug.current == '${planSlug}'][0]{ title, "fileUrl": blueprintFile.asset->url }`;
             const sanityUrl = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${encodeURIComponent(groqQuery)}`;
 
-            const sanityRes = await fetch(sanityUrl, { headers: { Authorization: `Bearer ${token}` } });
+            const sanityRes = await fetch(sanityUrl, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             const { result } = await sanityRes.json();
 
             if (result?.fileUrl && customerEmail) {
@@ -32,7 +41,7 @@ export const onRequestPost = async (context: any) => {
                     personalizations: [{
                         to: [{ email: customerEmail, name: customerName }],
                         bcc: [{ email: 'logs@heartcadence.com', name: 'System Debug' }],
-                        // Explicitly declaring the domain here can help bypass 521 filters
+                        // These lines authorize the specific domain in the transaction
                         dkim_domain: 'bluehouseplanning.ca',
                         dkim_selector: 'mailchannels',
                     }],
@@ -71,8 +80,11 @@ export const onRequestPost = async (context: any) => {
                     const mailErr = await mailRes.text();
                     console.error(`❌ MailChannels Error: ${mailErr}`);
                 }
+            } else {
+                console.error("❌ Sanity result or customer email missing.");
             }
         }
+
         return new Response(JSON.stringify({ received: true }), { status: 200 });
     } catch (err: any) {
         console.error(`⚠️ Webhook Error: ${err.message}`);
