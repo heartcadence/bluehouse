@@ -24,7 +24,8 @@ export const onRequestPost = async (context: any) => {
                 },
             ],
             mode: 'payment',
-            success_url: `${context.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+            // UPDATED: Points to your new Thank You route
+            success_url: `${context.env.NEXT_PUBLIC_DOMAIN}/thank-you`,
             cancel_url: `${context.env.NEXT_PUBLIC_DOMAIN}/`,
             metadata: {
                 planSlug: slug,
