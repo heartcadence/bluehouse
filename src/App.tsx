@@ -9,6 +9,8 @@ const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   // Default activeView set to 'contact' per client requirement
   const [activeView, setActiveView] = useState<'collection' | 'contact' | 'about' | 'portfolio'>('contact');
+
+  // Custom Routing Logic for the Thank You page
   const [isThankYouPage, setIsThankYouPage] = useState(() => {
     if (typeof window === 'undefined') return false;
     const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash
@@ -36,12 +38,26 @@ const App: React.FC = () => {
   }, [isDarkMode]);
 
   const handleViewChange = (view: 'collection' | 'contact' | 'about' | 'portfolio') => {
+    // If navigating away from Thank You page, reset URL
+    if (isThankYouPage) {
+      window.history.pushState({}, '', '/');
+      setIsThankYouPage(false);
+    }
     setActiveView(view);
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   // Generate dynamic SEO properties based on the active view
   const getSeoProps = () => {
+    // Priorities the Thank You page SEO if active
+    if (isThankYouPage) {
+      return {
+        title: 'Thank you for your purchase!',
+        description: 'Your architectural blueprints are being prepared.',
+        noindex: true
+      };
+    }
+
     switch (activeView) {
       case 'collection':
         return {
@@ -64,13 +80,6 @@ const App: React.FC = () => {
           description: 'Get in touch to start your custom home or renovation journey.'
         };
       default:
-        if (isThankYouPage) {
-          return {
-            title: 'Thank you for your purchase!',
-            description: 'Your architectural blueprints are being prepared.',
-            noindex: true
-          };
-        }
         return {}; // Uses defaults defined in SEO.tsx
     }
   };
