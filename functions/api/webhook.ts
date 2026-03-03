@@ -19,14 +19,12 @@ export const onRequestPost = async (context: any) => {
             const customerEmail = session.customer_details?.email;
             const customerName = session.customer_details?.name || 'Valued Customer';
 
-            // Sanity Config (Using plain variables first, falling back to VITE_ versions)
             const projectId = env.SANITY_PROJECT_ID || env.VITE_SANITY_PROJECT_ID;
             const dataset = env.SANITY_DATASET || env.VITE_SANITY_DATASET;
             const token = env.SANITY_API_TOKEN;
 
             console.log(`🚀 Payment Success! Unlocking: ${planSlug}`);
 
-            // Query Sanity for the private file URL
             const groqQuery = `*[_type == "digitalProduct" && slug.current == '${planSlug}'][0]{ title, "fileUrl": blueprintFile.asset->url }`;
             const sanityUrl = `https://${projectId}.api.sanity.io/v2021-10-21/data/query/${dataset}?query=${encodeURIComponent(groqQuery)}`;
 
@@ -36,23 +34,19 @@ export const onRequestPost = async (context: any) => {
             const { result } = await sanityRes.json();
 
             if (result?.fileUrl && customerEmail) {
-                // Hardened MailChannels Payload to clear Error 521
-                const emailPayload = {
-                    personalizations: [{
-                        to: [{ email: customerEmail, name: customerName }],
-                        bcc: [{ email: 'logs@heartcadence.com', name: 'System Debug' }],
-                        // These lines authorize the specific domain in the transaction
-                        dkim_domain: 'bluehouseplanning.ca',
-                        dkim_selector: 'mailchannels',
-                    }],
-                    from: {
-                        email: 'plans@bluehouseplanning.ca',
-                        name: 'Bluehouse Planning'
+                // Configured for Resend API
+                const resendRes = await fetch('https://api.resend.com/emails', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+                        'Content-Type': 'application/json'
                     },
-                    subject: `Your ${result.title} Blueprints are Ready!`,
-                    content: [{
-                        type: 'text/html',
-                        value: `
+                    body: JSON.stringify({
+                        from: 'Bluehouse Planning <plans@bluehouseplanning.ca>',
+                        to: [customerEmail],
+                        bcc: ['logs@heartcadence.com'],
+                        subject: `Your ${result.title} Blueprints are Ready!`,
+                        html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
                                 <h2 style="color: #1a3a3a;">Thank you, ${customerName}!</h2>
                                 <p>Your purchase of the <strong>${result.title}</strong> plan set is complete.</p>
@@ -65,20 +59,14 @@ export const onRequestPost = async (context: any) => {
                                 <p style="font-size: 12px; color: #666;">If you have any questions, reply to this email.</p>
                             </div>
                         `
-                    }]
-                };
-
-                const mailRes = await fetch('https://relay.mailchannels.net/tx/v1', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(emailPayload)
+                    })
                 });
 
-                if (mailRes.ok) {
-                    console.log(`✅ SUCCESS: Email sent to ${customerEmail}`);
+                if (resendRes.ok) {
+                    console.log(`✅ SUCCESS: Resend email sent to ${customerEmail}`);
                 } else {
-                    const mailErr = await mailRes.text();
-                    console.error(`❌ MailChannels Error: ${mailErr}`);
+                    const resendErr = await resendRes.text();
+                    console.error(`❌ Resend API Error: ${resendErr}`);
                 }
             } else {
                 console.error("❌ Sanity result or customer email missing.");
