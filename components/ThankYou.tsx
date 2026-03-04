@@ -44,6 +44,27 @@ const ThankYou: React.FC = () => {
                         <p className="text-off-white/70 text-lg leading-relaxed max-w-lg mx-auto">
                             Your architectural blueprints are being prepared. You will receive an email from <span className="text-muted-gold font-bold">plans@bluehouseplanning.ca</span> with your download link in the next few minutes.
                         </p>
+                        <p className="text-off-white/50 text-sm leading-relaxed max-w-lg mx-auto italic">
+                            Please check your Spam/Junk folder if you don't see the email within 5 minutes.
+                        </p>
+                    </div>
+
+                    {/* Support & Legal Section */}
+                    <div className="w-full pt-8 space-y-8 text-center border-t border-white/10">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                            <div className="space-y-2">
+                                <h3 className="text-muted-gold font-bold uppercase tracking-wider text-xs">Customer Support</h3>
+                                <p className="text-off-white/70 text-sm leading-relaxed">
+                                    If you encounter any issues with your download or did not receive your confirmation email, please contact our team at <a href="mailto:sales@bluehouseplanning.ca" className="text-muted-gold hover:underline transition-all">sales@bluehouseplanning.ca</a>.
+                                </p>
+                            </div>
+                            <div className="space-y-2">
+                                <h3 className="text-muted-gold font-bold uppercase tracking-wider text-xs">Legal Disclaimer</h3>
+                                <p className="text-off-white/70 text-sm leading-relaxed font-body">
+                                    All sales are final. Due to the digital nature of our architectural products, we do not offer refunds or exchanges once the plan set has been delivered.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Interactive Section */}
