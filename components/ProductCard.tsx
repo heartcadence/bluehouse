@@ -13,7 +13,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [includeBCIN, setIncludeBCIN] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false); // New loading state
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const BCIN_PRICE = 150;
   const basePrice = plan.price || 0;
@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
   };
 
   /**
-   * REPLACED: Initiates real Stripe Checkout
+   * UPDATED: Securely initiates Stripe Checkout
    */
   const handleBuyNow = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,19 +55,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
     setIsProcessing(true);
 
     try {
-      // 1. Call your backend API to create a checkout session
+      // 1. Call backend API with ONLY the slug and BCIN preference
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           slug: plan.slug?.current,
           includeBCIN: includeBCIN,
-          totalPrice: totalPrice,
-          planTitle: plan.title,
         }),
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Network response was not ok');
+      }
 
       const session = await response.json();
 
@@ -77,9 +78,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
       } else {
         throw new Error('No checkout URL received');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Checkout error:", error);
-      alert("Something went wrong with the checkout process. Please try again.");
+      alert(error.message || "Something went wrong. Please try again.");
       setIsProcessing(false);
     }
   };
