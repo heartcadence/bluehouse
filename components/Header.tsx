@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
             <img
               src="/logo.png"
               alt="Bluehouse Planning & Designs Inc."
-              className="h-14 w-auto transition-transform duration-500 group-hover:scale-105"
+              className="h-20 w-auto transition-transform duration-500 group-hover:scale-105"
             />
             <div className="flex flex-col">
               <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors leading-none ${textColor} group-hover:text-muted-gold`}>
