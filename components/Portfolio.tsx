@@ -33,8 +33,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
         }`;
         const result = await client.fetch(query);
         setProjects(result || []);
-      } catch (error) {
-        console.error('Failed to fetch projects', error);
+      } catch {
+        // silently handle fetch failure — grid will remain empty
       } finally {
         setIsLoading(false);
       }
@@ -57,8 +57,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
       setSelectedProject((current: Project | null) => 
         current && current._id === project._id ? { ...current, ...fullDetails } : current
       );
-    } catch (error) {
-      console.error("Failed to load project details", error);
+    } catch {
+      // silently handle detail fetch failure
     } finally {
       setIsDetailLoading(false);
     }
@@ -68,6 +68,14 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
     setSelectedProject(null);
     document.body.style.overflow = 'unset';
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeProject();
+    };
+    if (selectedProject) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject]);
 
   const handleNextImage = () => {
     if (selectedProject?.gallery) {
@@ -127,7 +135,12 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
       )}
 
       {selectedProject && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedProject.projectName}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        >
           <div className={`absolute inset-0 backdrop-blur-xl ${overlayBg}`} onClick={closeProject}></div>
 
           <div className="relative w-full max-w-6xl bg-black rounded-sm shadow-2xl overflow-hidden flex flex-col md:flex-row h-full md:h-auto md:max-h-[90vh]">
@@ -148,10 +161,10 @@ const Portfolio: React.FC<PortfolioProps> = ({ isDarkMode, onViewPlan }) => {
                   
                   {!isDetailLoading && selectedProject.gallery.length > 1 && (
                     <>
-                      <button onClick={(e) => { e.stopPropagation(); handlePrevImage(); }} className="absolute left-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md">
+                      <button onClick={(e) => { e.stopPropagation(); handlePrevImage(); }} aria-label="Previous image" className="absolute left-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md">
                         <ChevronLeft size={24} />
                       </button>
-                      <button onClick={(e) => { e.stopPropagation(); handleNextImage(); }} className="absolute right-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md">
+                      <button onClick={(e) => { e.stopPropagation(); handleNextImage(); }} aria-label="Next image" className="absolute right-4 p-3 bg-black/20 hover:bg-muted-gold text-white rounded-full transition-all backdrop-blur-md">
                         <ChevronRight size={24} />
                       </button>
                     </>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface FooterProps {
   isDarkMode: boolean;
@@ -8,13 +8,36 @@ interface FooterProps {
   onPortfolioClick: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ 
-  isDarkMode, 
-  onContactClick, 
+const Footer: React.FC<FooterProps> = ({
+  isDarkMode,
+  onContactClick,
   onAboutClick,
   onCollectionClick,
   onPortfolioClick
 }) => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    try {
+      const formData = new FormData();
+      formData.append('email', newsletterEmail);
+      formData.append('_subject', 'New Newsletter Signup – Bluehouse');
+      formData.append('_captcha', 'false');
+      await fetch('https://formsubmit.co/ajax/sales@bluehouseplanning.ca', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+      setNewsletterStatus('success');
+      setNewsletterEmail('');
+    } catch {
+      setNewsletterStatus('error');
+    }
+  };
+
   const bgClass = isDarkMode ? 'bg-deep-teal-dark border-white/5' : 'bg-white border-deep-teal/10';
   const headingColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
   // Increased opacity for better contrast/accessibility
@@ -109,16 +132,28 @@ const Footer: React.FC<FooterProps> = ({
 
           {/* Newsletter */}
           <div>
-             <h4 className="text-muted-gold text-xs uppercase tracking-widest mb-6">Newsletter</h4>
-             <div className={`flex border-b pb-2 ${inputBorder}`}>
-               <input 
-                  type="email" 
-                  placeholder="EMAIL ADDRESS" 
-                  className="bg-transparent border-none focus:outline-none text-sm w-full placeholder:text-inherit"
-                  aria-label="Email Address for Newsletter"
-                />
-               <button className="text-muted-gold hover:text-muted-gold/70 uppercase text-xs tracking-widest font-bold">Join</button>
-             </div>
+            <h4 className="text-muted-gold text-xs uppercase tracking-widest mb-6">Newsletter</h4>
+            {newsletterStatus === 'success' ? (
+              <p className="text-muted-gold text-xs tracking-widest uppercase">You're in. Thanks!</p>
+            ) : (
+              <form onSubmit={handleNewsletterSubmit}>
+                <div className={`flex border-b pb-2 ${inputBorder}`}>
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="EMAIL ADDRESS"
+                    required
+                    className="bg-transparent border-none focus:outline-none text-sm w-full placeholder:text-inherit"
+                    aria-label="Email Address for Newsletter"
+                  />
+                  <button type="submit" className="text-muted-gold hover:text-muted-gold/70 uppercase text-xs tracking-widest font-bold">Join</button>
+                </div>
+                {newsletterStatus === 'error' && (
+                  <p className="text-red-400 text-xs mt-2">Something went wrong. Please try again.</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
 

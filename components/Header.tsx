@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Home } from 'lucide-react';
+import { Sun, Moon, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -25,6 +25,14 @@ const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileMenuOpen]);
+
   // UPDATED ORDER: Contact > Collection > Portfolio > About
   const navItems = [
     { id: 'contact', label: 'Contact' },
@@ -49,15 +57,19 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          <button 
+          <button
             className="cursor-pointer group flex items-center gap-3 bg-transparent border-none p-0 text-left focus:outline-none"
             onClick={() => handleNavClick('contact')}
             aria-label="Bluehouse Planning and Designs Inc. Logo"
           >
-            <Home className="text-muted-gold w-6 h-6 transition-transform duration-500 group-hover:scale-110" />
+            <img
+              src="/logo.png"
+              alt="Bluehouse Planning & Designs Inc."
+              className="h-14 w-auto transition-transform duration-500 group-hover:scale-105"
+            />
             <div className="flex flex-col">
               <h1 className={`font-display text-2xl tracking-[0.2em] uppercase transition-colors leading-none ${textColor} group-hover:text-muted-gold`}>
-                Bluehouse<span className="text-muted-gold font-bold"></span>
+                Bluehouse
               </h1>
               <span className="text-muted-gold text-[10px] tracking-[0.2em] font-bold uppercase mt-1">
                 Planning & Designs Inc.
@@ -115,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      <div className={`fixed inset-0 z-[-1] transition-all duration-500 ease-in-out flex flex-col items-center justify-center space-y-8 ${
+      <div className={`fixed inset-0 z-[200] transition-all duration-500 ease-in-out flex flex-col items-center justify-center space-y-8 ${
         isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
       } ${isDarkMode ? 'bg-deep-teal' : 'bg-light-bg'}`}>
         {navItems.map((item) => (

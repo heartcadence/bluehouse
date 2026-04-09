@@ -21,7 +21,6 @@ const App: React.FC = () => {
     const handleLocationChange = () => {
       const path = window.location.pathname.replace(/\/$/, '');
       const isThankYou = path === '/thank-you';
-      console.log('Bluehouse Routing - Path:', window.location.pathname, 'isThankYou:', isThankYou);
       setIsThankYouPage(isThankYou);
     };
 

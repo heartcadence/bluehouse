@@ -10,6 +10,7 @@ interface StorefrontProps {
   setActiveCategory: (cat: Category) => void;
   plans: Product[];
   isLoading: boolean;
+  fetchError?: boolean;
   currentPage: number;
   totalPages: number;
   onPrevPage: () => void;
@@ -18,7 +19,7 @@ interface StorefrontProps {
 }
 
 const Storefront: React.FC<StorefrontProps> = ({
-  isDarkMode, activeCategory, setActiveCategory, plans, isLoading,
+  isDarkMode, activeCategory, setActiveCategory, plans, isLoading, fetchError,
   currentPage, totalPages, onPrevPage, onNextPage, highlightedPlanId
 }) => {
   const textColor = isDarkMode ? 'text-off-white' : 'text-deep-teal';
@@ -33,6 +34,7 @@ const Storefront: React.FC<StorefrontProps> = ({
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
+              aria-pressed={activeCategory === category}
               className={`px-4 py-2 rounded-sm text-[10px] uppercase tracking-widest transition-all duration-300 border ${
                 activeCategory === category
                   ? 'bg-muted-gold text-deep-teal border-muted-gold font-bold shadow-md'
@@ -85,7 +87,11 @@ const Storefront: React.FC<StorefrontProps> = ({
           )}
         </>
       ) : (
-        <div className="text-center py-20 opacity-50 italic">No plans found in this category.</div>
+        <div className="text-center py-20 opacity-50 italic">
+          {fetchError
+            ? 'Unable to load plans right now. Please refresh or contact us directly.'
+            : 'No plans found in this category.'}
+        </div>
       )}
     </div>
   );

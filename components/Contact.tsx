@@ -37,8 +37,7 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
 
       setIsSuccess(true);
       form.reset();
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("Something went wrong. Please try contacting us directly via email.");
     } finally {
       setIsSubmitting(false);

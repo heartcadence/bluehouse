@@ -74,7 +74,7 @@ const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, onLogin, isDar
               autoFocus
             />
             {error && (
-              <p className="text-red-400 text-xs mt-2 pl-1">Incorrect password. Try 'bluehouse'.</p>
+              <p className="text-red-400 text-xs mt-2 pl-1">Incorrect password. Please try again.</p>
             )}
           </div>
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bluehouse-e2e.pages.dev/sitemap.xml
+Sitemap: https://bluehouseplanning.ca/sitemap.xml

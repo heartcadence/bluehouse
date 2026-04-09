@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bluehouse-e2e.pages.dev/</loc>
+    <loc>https://bluehouseplanning.ca/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bluehouse-e2e.pages.dev/projects</loc>
+    <loc>https://bluehouseplanning.ca/#collection</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bluehouseplanning.ca/#portfolio</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bluehouse-e2e.pages.dev/services</loc>
-    <priority>0.8</priority>
+    <loc>https://bluehouseplanning.ca/#about</loc>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://bluehouse-e2e.pages.dev/contact</loc>
-    <priority>0.5</priority>
+    <loc>https://bluehouseplanning.ca/#contact</loc>
+    <priority>0.6</priority>
   </url>
 </urlset>

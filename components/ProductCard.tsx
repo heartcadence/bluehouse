@@ -70,8 +70,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
             ))}
             {images.length > 1 && (
               <>
-                <button onClick={handlePrevImage} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-muted-gold text-white rounded-full z-10"><ChevronLeft size={20} /></button>
-                <button onClick={handleNextImage} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-muted-gold text-white rounded-full z-10"><ChevronRight size={20} /></button>
+                <button onClick={handlePrevImage} aria-label="Previous image" className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-muted-gold text-white rounded-full z-10"><ChevronLeft size={20} /></button>
+                <button onClick={handleNextImage} aria-label="Next image" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-muted-gold text-white rounded-full z-10"><ChevronRight size={20} /></button>
               </>
             )}
           </div>
@@ -129,7 +129,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
               )}
             </div>
 
-            <div onClick={() => setIncludeBCIN(!includeBCIN)} className="flex items-center justify-between p-3 border border-dashed border-white/30 rounded cursor-pointer">
+            <button type="button" onClick={() => setIncludeBCIN(!includeBCIN)} aria-pressed={includeBCIN} className="flex items-center justify-between w-full p-3 border border-dashed border-white/30 rounded cursor-pointer text-left">
               <div className="flex items-center gap-3">
                 <ShieldCheck size={18} className={includeBCIN ? 'text-muted-gold' : 'text-white/30'} />
                 <div className="text-left text-[10px] uppercase">
@@ -140,7 +140,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ plan, isDarkMode, isHighlight
               <div className={`w-8 h-4 rounded-full relative ${includeBCIN ? 'bg-muted-gold' : 'bg-gray-500'}`}>
                 <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${includeBCIN ? 'left-4' : 'left-0.5'}`} />
               </div>
-            </div>
+            </button>
 
             <div className="flex items-start gap-3 p-3 bg-black/10 rounded-sm">
               <input type="checkbox" checked={agreedToTerms} onChange={() => setAgreedToTerms(!agreedToTerms)} className="mt-1 h-4 w-4 accent-muted-gold cursor-pointer" />

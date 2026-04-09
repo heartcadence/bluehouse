@@ -28,6 +28,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [highlightedPlanId, setHighlightedPlanId] = useState<string | null>(null);
   
+  const [fetchError, setFetchError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const PLANS_PER_PAGE = 6;
 
@@ -36,8 +37,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
     let isMounted = true;
     const fetchPlans = async () => {
       setIsLoading(true);
-      setCurrentPage(1); 
-      
+      setFetchError(false);
+      setCurrentPage(1);
+
       try {
         const queryCategory = activeCategory === 'All' ? 'ALL' : activeCategory;
         const query = `*[_type == "plan" && ($category == "ALL" || lower(category) == lower($category))]{
@@ -60,9 +62,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
           setPlans(result || []);
           setIsLoading(false);
         }
-      } catch (error) {
-        console.error("Sanity Fetch Error:", error);
-        if (isMounted) setIsLoading(false);
+      } catch {
+        if (isMounted) {
+          setFetchError(true);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -140,16 +144,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
           {activeView === 'collection' && (
             <Suspense fallback={<SectionLoader />}>
               <div id="storefront" className="scroll-mt-28 animate-fade-in">
-                <Storefront 
+                <Storefront
                   isDarkMode={isDarkMode}
                   activeCategory={activeCategory}
                   setActiveCategory={setActiveCategory}
                   plans={displayedPlans}
                   isLoading={isLoading}
+                  fetchError={fetchError}
                   currentPage={currentPage}
                   totalPages={totalPages}
-                  onPrevPage={() => setCurrentPage(p => p - 1)}
-                  onNextPage={() => setCurrentPage(p => p + 1)}
+                  onPrevPage={() => { setCurrentPage(p => p - 1); document.getElementById('product-grid-top')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onNextPage={() => { setCurrentPage(p => p + 1); document.getElementById('product-grid-top')?.scrollIntoView({ behavior: 'smooth' }); }}
                   highlightedPlanId={highlightedPlanId}
                 />
               </div>
